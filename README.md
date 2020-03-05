@@ -34,3 +34,6 @@ The final demo will tentatively be done on a projector, so be prepared to presen
 
 ## Weekly Scrums
 - GitHub Issues will be used to document weekly scrums, and will be linked here each week.
+
+## Yarn Install for client
+- https://classic.yarnpkg.com/en/docs/install/#windows-stable to get it started, run from webapp/bookstore with yarn start
