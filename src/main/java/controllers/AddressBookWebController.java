@@ -12,9 +12,6 @@ import repositories.BookRepository;
 import repositories.BookstoreOwnerRepository;
 import repositories.BookstoreRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class AddressBookWebController {
 
@@ -33,20 +30,19 @@ public class AddressBookWebController {
         return "index";
     }
 
-    @PostMapping("/viewBookstoreOwner")
-    public String viewBookStoreOwner(@RequestParam(value="bookstoreOwnerId") long bookstoreOwnerId,
-                                     Model model) {
-        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
-        System.out.println(bookstoreOwner.getBookstores());
+    @PostMapping("/newBookstoreOwner")
+    public String newBookstoreOwner(@RequestParam(value="name") String name,
+                                    Model model) {
+        BookstoreOwner bookstoreOwner = new BookstoreOwner(name);
+        bookstoreOwnerRepository.save(bookstoreOwner);
         model.addAttribute("bookstoreOwner", bookstoreOwner);
         return "viewBookstoreOwner";
     }
 
-    @PostMapping("/newBookstoreOwner")
-    public String index(@RequestParam(value="name") String name,
-                        Model model) {
-        BookstoreOwner bookstoreOwner = new BookstoreOwner(name);
-        bookstoreOwnerRepository.save(bookstoreOwner);
+    @PostMapping("/viewBookstoreOwner")
+    public String viewBookStoreOwner(@RequestParam(value="bookstoreOwnerId") long bookstoreOwnerId,
+                                     Model model) {
+        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
         model.addAttribute("bookstoreOwner", bookstoreOwner);
         return "viewBookstoreOwner";
     }
@@ -62,9 +58,28 @@ public class AddressBookWebController {
         return "viewBookstoreOwner";
     }
 
+    @GetMapping("/viewBookstore")
+    public String viewBookStore(@RequestParam(value="bookstoreId") long bookstoreId,
+                                Model model) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
+        model.addAttribute("bookstore", bookstore);
+        return "viewBookstore";
+    }
+
+    @PostMapping("/removeBookstore")
+    public String removeBookstore(@RequestParam(value="bookstoreOwnerId") long bookstoreOwnerId,
+                                  @RequestParam(value="bookstoreId") long bookstoreId,
+                                  Model model ) {
+        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
+        bookstoreOwner.removeBookstore(bookstoreId);
+        bookstoreOwnerRepository.save(bookstoreOwner);
+        bookstoreRepository.deleteById(bookstoreId);
+        model.addAttribute("bookstoreOwner", bookstoreOwner);
+        return "viewBookstoreOwner";
+    }
+
     @PostMapping("/addBook")
-    public String addBook(@RequestParam(value="bookstoreOwnerId") long bookstoreOwnerId,
-                          @RequestParam(value="bookstoreId") long bookstoreId,
+    public String addBook(@RequestParam(value="bookstoreId") long bookstoreId,
                           @RequestParam(value="name") String name,
                           @RequestParam(value="isbn") String isbn,
                           @RequestParam(value="picture") String picture,
@@ -72,12 +87,10 @@ public class AddressBookWebController {
                           @RequestParam(value="author") String author,
                           @RequestParam(value="publisher") String publisher,
                           Model model) {
-        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
-        Bookstore bookstore = bookstoreOwner.getBookstore(bookstoreId);
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
         Book book = new Book(name, isbn, picture, description, author, publisher);
         bookstore.addBook(book);
-        bookstoreOwnerRepository.save(bookstoreOwner);
-        model.addAttribute("bookstoreOwner", bookstoreOwner);
+        bookstoreRepository.save(bookstore);
         model.addAttribute("bookstore", bookstore);
         return "viewBookstore";
     }
@@ -89,17 +102,7 @@ public class AddressBookWebController {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
         bookstore.removeBook(bookId);
         bookstoreRepository.save(bookstore);
-        model.addAttribute("bookstore", bookstore);
-        return "viewBookstore";
-    }
-
-    @GetMapping("/viewBookstore")
-    public String viewBookStore(@RequestParam(value="bookstoreOwnerId") long bookstoreOwnerId,
-                                @RequestParam(value="bookstoreId") long bookstoreId,
-                                Model model) {
-        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
-        Bookstore bookstore = bookstoreOwner.getBookstore(bookstoreId);
-        model.addAttribute("bookstoreOwner", bookstoreOwner);
+        bookRepository.deleteById(bookId);
         model.addAttribute("bookstore", bookstore);
         return "viewBookstore";
     }

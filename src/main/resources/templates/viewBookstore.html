@@ -6,14 +6,13 @@
 </head>
     <body>
         <form action="#" th:action="@{/viewBookstoreOwner}" method="post">
-            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />
+            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstore.getBookstoreOwner().getId()}" />
             <input type="submit" value="Back to BookstoreOwner"/>
         </form>
         <p th:text="'BookStore ID: ' + ${bookstore.getId()}" />
-        <p th:text="'BookStore Owner: ' + ${bookstoreOwner.getName()}" />
+        <p th:text="'BookStore Owner: ' + ${bookstore.getBookstoreOwner().getName()}" />
         <h1>Add Book</h1>
         <form action="/addBook" method="post">
-            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />
             <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
             <label>Name:</label>
             <input type="text" name="name"><br><br>
