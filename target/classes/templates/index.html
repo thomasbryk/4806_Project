@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BookStore</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>AddressBooks-thyme</h1>
+    <form action="#" th:action="@{/newAddressBook}" method="post">
+        <input type="submit" value="Add BookStore"/>
+    </form>
+    <table is="addressBookTable">
+        <th:block th:each="addressBook: ${addressBooks}">
+            <tr>
+                <td><a th:href="@{/viewAddressBook(id=${addressBook.getId()})}" th:text="${addressBook.getId()}"></a></td>
+            </tr>
+        </th:block>
+    </table>
+</body>
+</html>

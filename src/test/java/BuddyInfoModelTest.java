@@ -1,4 +1,4 @@
-import BookStore.models.BuddyInfoModel;
+import models.BuddyInfoModel;
 import org.junit.Before;
 import org.junit.Test;
 
