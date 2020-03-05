@@ -4,17 +4,17 @@
     <title>BookStore</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
-    <h1>AddressBooks-thyme</h1>
-    <form action="#" th:action="@{/newAddressBook}" method="post">
-        <input type="submit" value="Add BookStore"/>
-    </form>
-    <table is="addressBookTable">
-        <th:block th:each="addressBook: ${addressBooks}">
-            <tr>
-                <td><a th:href="@{/viewAddressBook(id=${addressBook.getId()})}" th:text="${addressBook.getId()}"></a></td>
-            </tr>
-        </th:block>
-    </table>
-</body>
+    <body>
+        <h1>Testing</h1>
+        <form action="#" th:action="@{/viewBookstoreOwner}" method="post">
+            <label>BookstoreOwner ID:</label>
+            <input type="text" name="bookstoreOwnerId"><br><br>
+            <input type="submit" value="Owner Login"/>
+        </form>
+        <form action="#" th:action="@{/newBookstoreOwner}" method="post">
+            <label>Name:</label>
+            <input type="text" name="name"><br><br>
+            <input type="submit" value="New Owner"/>
+        </form>
+    </body>
 </html>
