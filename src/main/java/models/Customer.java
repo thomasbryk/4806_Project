@@ -1,4 +1,6 @@
-public class User{
+package models;
+
+public class Customer{
 
     private int id;
     private String name;
@@ -6,7 +8,7 @@ public class User{
     private String email;
     private String number;
 
-    public User(int id, String name, String address, String email, String number) {
+    public Customer(int id, String name, String address, String email, String number) {
         this.id = id;
         this.name = name;
         this.address = address;

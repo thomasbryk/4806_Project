@@ -1,10 +1,12 @@
+package models;
+
 public class ShoppingCart {
     private Collection<Book> books;
-    private User user;
+    private Customer customer;
 
-    public ShoppingCart(Collection<Book> books, User user){
+    public ShoppingCart(Collection<Book> books, Customer customer){
         this.books = books;
-        this.user = user;
+        this.customer = customer;
     }
 
 
@@ -17,12 +19,12 @@ public class ShoppingCart {
         this.books = books;
     }
 
-    public User getUser() {
-        return this.user;
+    public Customer getCustomer() {
+        return this.customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
 }

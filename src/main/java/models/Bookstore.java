@@ -1,3 +1,5 @@
+package models;
+
 public class Bookstore {
     private int id;
     private BookstoreOwner bookstoreOwner;
