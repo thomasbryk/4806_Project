@@ -37,3 +37,4 @@ The final demo will tentatively be done on a projector, so be prepared to presen
 
 ## Yarn Install for client
 - https://classic.yarnpkg.com/en/docs/install/#windows-stable to get it started, run from webapp/bookstore with yarn start
+- if it doesn't work, do yarn install in the directory
