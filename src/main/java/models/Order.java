@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Collection;
+
 public class Order {
     private int id;
     private Collection<Book> books;

@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Collection;
+
 public class ShoppingCart {
     private Collection<Book> books;
     private Customer customer;
