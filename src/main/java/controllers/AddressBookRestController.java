@@ -1,8 +1,8 @@
-package BookStore.controllers;
+package controllers;
 
-import BookStore.models.AddressBookModel;
-import BookStore.models.BuddyInfoModel;
-import BookStore.repositories.AddressBookModelRepository;
+import models.AddressBookModel;
+import models.BuddyInfoModel;
+import repositories.AddressBookModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

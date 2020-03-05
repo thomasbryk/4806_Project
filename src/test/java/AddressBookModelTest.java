@@ -1,5 +1,5 @@
-import BookStore.models.AddressBookModel;
-import BookStore.models.BuddyInfoModel;
+import models.AddressBookModel;
+import models.BuddyInfoModel;
 import org.junit.Before;
 import org.junit.Test;
 

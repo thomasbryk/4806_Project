@@ -1,6 +1,6 @@
-package BookStore.repositories;
+package repositories;
 
-import BookStore.models.BuddyInfoModel;
+import models.BuddyInfoModel;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
