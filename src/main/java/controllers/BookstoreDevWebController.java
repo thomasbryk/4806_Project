@@ -109,7 +109,6 @@ public class BookstoreDevWebController {
                               @RequestParam(value="email") String email,
                               @RequestParam(value="phoneNumber") String phoneNumber,
                               Model model) {
-
         Customer customer = new Customer(name, address, email, phoneNumber);
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCustomer(customer);
