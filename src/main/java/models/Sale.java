@@ -1,33 +1,42 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.*;
+
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
-public class ShoppingCart {
+public class Sale {
     private Long id;
+
     @JsonIgnore
     private Set<Book> books;
     @JsonIgnore
     private Customer customer;
+    @JsonIgnore
+    private Set<Bookstore> bookstores;
 
-    public ShoppingCart(){ }
+    public Sale() { }
 
     @Id
     @GeneratedValue
-    public Long getId(){ return this.id; }
-    public void setId(Long id){ this.id = id; }
+    public Long getId() { return this.id; }
+    public void setId(Long id) { this.id = id; }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "shoppingCarts")
+    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "sale")
     public Set<Book> getBooks() { return this.books; }
     public void setBooks(Set<Book> books) { this.books = books; }
-    public void addBook(Book book){ this.books.add(book); }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
+    @ManyToOne
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
+
+    @ManyToMany
+    public Set<Bookstore> getBookstores() { return this.bookstores; }
+    public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
+    public void addBookstore(Bookstore bookstore) {this.bookstores.add(bookstore);}
 }

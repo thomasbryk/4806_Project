@@ -5,31 +5,38 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
 public class Bookstore {
     private Long id;
     private String name;
+
     @JsonIgnore
     private BookstoreOwner bookstoreOwner;
+    @JsonIgnore
     private List<Book> books;
+    @JsonIgnore
+    private Set<Sale> sales;
 
     public Bookstore(){ this.books = new ArrayList<Book>();	}
 
-    /*public Bookstore(BookstoreOwner bookstoreOwner){
-        this.bookstoreOwner = bookstoreOwner;
-    }*/
+    @Id
+    @GeneratedValue
+    public Long getId() { return this.id; }
+    public void setId(Long id) { this.id = id; }
 
     @ManyToOne
     public BookstoreOwner getBookstoreOwner() { return this.bookstoreOwner; }
     public void setBookstoreOwner(BookstoreOwner bookstoreOwner) { this.bookstoreOwner = bookstoreOwner; }
     public void removeBookstoreOwner() { this.bookstoreOwner = null; }
 
-    @Id
-    @GeneratedValue
-    public Long getId() { return this.id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstores")
+    public Set<Sale> getSales() { return this.sales; }
+    public void setSales(Set<Sale> sales) { this.sales = sales; }
+    public void removeSale(Sale sale) { this.sales.remove(sale); }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
