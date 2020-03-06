@@ -1,11 +1,7 @@
 package models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Customer{
@@ -17,23 +13,25 @@ public class Customer{
     private String address;
     private String email;
     private String number;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id",referencedColumnName = "id")
+    @OneToOne
     private ShoppingCart shoppingCart;
+    private List<Order> orders;
 
-    public Customer(int id, String name, String address, String email, String number, ShoppingCart shoppingCart) {
+    public Customer(){ }
+
+    public Customer(int id, String name, String address, String email, String number, ShoppingCart shoppingCart, List<Order> orders) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
         this.number = number;
         this.shoppingCart = shoppingCart;
+        this.orders = orders;
     }
 
     public int getId() {
         return this.id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -41,7 +39,6 @@ public class Customer{
     public String getName() {
         return this.name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -49,7 +46,6 @@ public class Customer{
     public String getAddress() {
         return this.address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
@@ -57,7 +53,6 @@ public class Customer{
     public String getEmail() {
         return this.email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -65,7 +60,6 @@ public class Customer{
     public String getNumber() {
         return this.number;
     }
-
     public void setNumber(String number) {
         this.number = number;
     }
@@ -73,9 +67,13 @@ public class Customer{
     public ShoppingCart getShoppingCart(){
         return this.shoppingCart;
     }
-
     public void setShoppingCart(ShoppingCart shoppingCart){
         this.shoppingCart = shoppingCart;
     }
+
+    @OneToMany
+    public List<Order> getOrders(){ return this.orders; }
+    public void setOrders(List<Order> orders) { this.orders = orders; }
+    public void addOrder(Order order){ this.orders.add(order); }
 
 }

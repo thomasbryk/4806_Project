@@ -14,6 +14,7 @@ public class Bookstore {
     @JsonIgnore
     private BookstoreOwner bookstoreOwner;
     private List<Book> books;
+    private List<Order> orders;
 
     public Bookstore(){ this.books = new ArrayList<Book>();	}
 
@@ -56,4 +57,9 @@ public class Bookstore {
             bookFound.removeBookstore();
         }
     }
+
+    @OneToMany
+    public List<Order> getOrders(){ return this.orders; }
+    public void setOrders(List<Order> orders) { this.orders = orders; }
+    public void addOrder(Order order){ this.orders.add(order); }
 }

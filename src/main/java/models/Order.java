@@ -1,9 +1,6 @@
 package models;
 
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import java.util.List;
 
@@ -22,26 +19,18 @@ public class Order {
     }
 
 
-    public int getId() {
-        return this.id;
-    }
+    public int getId() { return this.id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public List<Book> getBooks() {
-        return this.books;
-    }
-
+    public List<Book> getBooks() { return this.books; }
     public void setBooks(List<Book> books) {
         this.books = books;
     }
 
+    @ManyToOne
     public Customer getCustomer() {
         return this.customer;
     }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
