@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
+import java.util.Set;
+
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
@@ -15,6 +17,8 @@ public class Customer{
     private String phoneNumber;
     @JsonIgnore
     private ShoppingCart shoppingCart;
+    @JsonIgnore
+    private Set<Sale> sales;
 
     public Customer(){ }
     public Customer( String name, String address, String email, String phoneNumber) {
@@ -69,4 +73,10 @@ public class Customer{
         this.shoppingCart = shoppingCart;
     }
 
+    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy="customer")
+    public Set<Sale> getSales(){ return this.sales; }
+    public void setSales(Set<Sale> sales){
+        this.sales = sales;
+    }
+    public void addSale(Sale sale){this.sales.add(sale);}
 }
