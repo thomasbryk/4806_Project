@@ -1,17 +1,26 @@
 package models;
 
-import java.util.Collection;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import java.util.List;
 
 public class Order {
+    @Id
+    @GeneratedValue
     private int id;
-    private Collection<Book> books;
+    @OneToMany(fetch=FetchType.EAGER, targetEntity = Book.class)
+    private List<Book> books;
     private Customer customer;
 
-    public Order(int id, Collection<Book> books, Customer customer) {
+    public Order(int id, List<Book> books, Customer customer) {
         this.id = id;
         this.books = books;
         this.customer = customer;
     }
+
 
     public int getId() {
         return this.id;
@@ -21,11 +30,11 @@ public class Order {
         this.id = id;
     }
 
-    public Collection<Book> getBooks() {
+    public List<Book> getBooks() {
         return this.books;
     }
 
-    public void setBooks(Collection<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 

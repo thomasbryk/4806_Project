@@ -1,21 +1,34 @@
 package models;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Customer{
 
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private String address;
     private String email;
     private String number;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id",referencedColumnName = "id")
+    private ShoppingCart shoppingCart;
 
-    public Customer(int id, String name, String address, String email, String number) {
+    public Customer(int id, String name, String address, String email, String number, ShoppingCart shoppingCart) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
         this.number = number;
+        this.shoppingCart = shoppingCart;
     }
-
 
     public int getId() {
         return this.id;
@@ -57,6 +70,12 @@ public class Customer{
         this.number = number;
     }
 
-    
+    public ShoppingCart getShoppingCart(){
+        return this.shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart){
+        this.shoppingCart = shoppingCart;
+    }
 
 }
