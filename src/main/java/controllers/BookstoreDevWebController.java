@@ -1,22 +1,16 @@
 package controllers;
 
 import models.*;
-import repositories.AddressBookModelRepository;
+import repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import repositories.BookRepository;
-import repositories.BookstoreOwnerRepository;
-import repositories.BookstoreRepository;
 
 @Controller
-public class AddressBookWebController {
-
-    @Autowired
-    private AddressBookModelRepository addressBookModelRepository;
+public class BookstoreDevWebController {
 
     @Autowired
     private BookRepository bookRepository;
@@ -24,6 +18,10 @@ public class AddressBookWebController {
     private BookstoreRepository bookstoreRepository;
     @Autowired
     private BookstoreOwnerRepository bookstoreOwnerRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -58,12 +56,12 @@ public class AddressBookWebController {
         return "viewBookstoreOwner";
     }
 
-    @GetMapping("/viewBookstore")
-    public String viewBookStore(@RequestParam(value="bookstoreId") long bookstoreId,
+    @GetMapping("/editBookstore")
+    public String editBookstore(@RequestParam(value="bookstoreId") long bookstoreId,
                                 Model model) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
         model.addAttribute("bookstore", bookstore);
-        return "viewBookstore";
+        return "editBookstore";
     }
 
     @PostMapping("/removeBookstore")
@@ -92,18 +90,76 @@ public class AddressBookWebController {
         bookstore.addBook(book);
         bookstoreRepository.save(bookstore);
         model.addAttribute("bookstore", bookstore);
-        return "viewBookstore";
+        return "editBookstore";
     }
 
     @PostMapping("/removeBook")
     public String removeBook(@RequestParam(value="bookstoreId") long bookstoreId,
                              @RequestParam(value="bookId") long bookId,
-                             Model model ) {
+                             Model model) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
         bookstore.removeBook(bookId);
         bookstoreRepository.save(bookstore);
         bookRepository.deleteById(bookId);
         model.addAttribute("bookstore", bookstore);
-        return "viewBookstore";
+        return "editBookstore";
     }
+
+    @PostMapping("/newCustomer")
+    public String newCustomer(@RequestParam(value="name") String name,
+                              @RequestParam(value="address") String address,
+                              @RequestParam(value="email") String email,
+                              @RequestParam(value="phoneNumber") String phoneNumber,
+                              Model model) {
+        Customer customer = new Customer(name, address, email, phoneNumber);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCustomer(customer);
+        customer.setShoppingCart(shoppingCart);
+        customerRepository.save(customer);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        model.addAttribute("bookstores", bookstores);
+        model.addAttribute("customer", customer);
+        return "viewCustomer";
+    }
+
+    @PostMapping("/viewCustomer")
+    public String viewCustomer(@RequestParam(value="customerId") long customerId,
+                               Model model){
+        Customer customer = customerRepository.findById(customerId);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        model.addAttribute("bookstores", bookstores);
+        model.addAttribute("customer", customer);
+        return "viewCustomer";
+
+    }
+
+    @PostMapping("/shopBookstore")
+    public String shopBookstore(@RequestParam(value="customerId") long customerId,
+                                @RequestParam(value="bookstoreId") long bookstoreId,
+                                Model model){
+        Customer customer = customerRepository.findById(customerId);
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
+        model.addAttribute("bookstore", bookstore);
+        model.addAttribute("customer", customer);
+        return "shopBookstore";
+    }
+
+    @PostMapping("/addBookToCart")
+    public String addBookToCart(@RequestParam(value="customerId") long customerId,
+                                @RequestParam(value="bookId") long bookId,
+                                @RequestParam(value="shoppingCartId") long shoppingCartId,
+                                Model model){
+        Customer customer = customerRepository.findById(customerId);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId);
+        Book book = bookRepository.findById(bookId);
+        shoppingCart.addBook(book);
+        book.addShoppingCart(shoppingCart);
+        shoppingCartRepository.save(shoppingCart);
+        model.addAttribute("bookstores", bookstores);
+        model.addAttribute("customer", customer);
+        return "viewCustomer";
+    }
+
+
 }

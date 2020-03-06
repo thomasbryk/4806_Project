@@ -1,38 +1,35 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 public class Customer{
-
-    @Id
-    @GeneratedValue
-    private int id;
+    private Long id;
     private String name;
     private String address;
     private String email;
-    private String number;
-    @OneToOne
+    private String phoneNumber;
+    @JsonIgnore
     private ShoppingCart shoppingCart;
-    private List<Order> orders;
 
     public Customer(){ }
-
-    public Customer(int id, String name, String address, String email, String number, ShoppingCart shoppingCart, List<Order> orders) {
-        this.id = id;
+    public Customer( String name, String address, String email, String phoneNumber) {
         this.name = name;
         this.address = address;
         this.email = email;
-        this.number = number;
-        this.shoppingCart = shoppingCart;
-        this.orders = orders;
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
+    @Id
+    @GeneratedValue
+    public Long getId() {
         return this.id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,23 +54,19 @@ public class Customer{
         this.email = email;
     }
 
-    public String getNumber() {
-        return this.number;
+    public String getPhoneNumber() {
+        return this.phoneNumber;
     }
-    public void setNumber(String number) {
-        this.number = number;
+    public void setPhoneNumber(String number) {
+        this.phoneNumber = phoneNumber;
     }
 
+    @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
     public ShoppingCart getShoppingCart(){
         return this.shoppingCart;
     }
     public void setShoppingCart(ShoppingCart shoppingCart){
         this.shoppingCart = shoppingCart;
     }
-
-    @OneToMany
-    public List<Order> getOrders(){ return this.orders; }
-    public void setOrders(List<Order> orders) { this.orders = orders; }
-    public void addOrder(Order order){ this.orders.add(order); }
 
 }
