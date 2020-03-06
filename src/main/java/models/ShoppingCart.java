@@ -32,19 +32,16 @@ public class ShoppingCart {
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
 
-    public Order checkout() {
-        Order order = new Order(this.books, this.customer);
+    public Sale checkout() {
+        Sale sale = new Sale(this.books, this.customer);
         Bookstore currBookstore;
         for (Book book : books){
             book.setAvailable(false);
-            currBookstore = book.getBookstore();
-            currBookstore.addOrder(order);
-            order.addBookstore(currBookstore);
+            sale.addBookstore(book.getBookstore());
             book.removeShoppingCart();
         }
-        this.customer.addOrder(order);
         this.removeBooks();
 
-        return order;
+        return sale;
     }
 }

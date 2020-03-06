@@ -14,12 +14,13 @@
 
         <h1>ShoppingCart Contents</h1>
         <table>
+            <tr>
+                <form action="#" th:action="@{/newOrder}" method="post">
+                    <input type="hidden" name="shoppingCartId" th:value="${customer.getShoppingCart().getId()}" />
+                    <input type="submit" value="Checkout"/>
+                </form>
+            </tr>
             <th:block th:each="book: ${customer.getShoppingCart().getBooks()}">
-                <tr>
-                    <form action="#" th:action="@{/newOrder}" method="post">
-                        <input type="submit" value="Checkout"/>
-                    </form>
-                </tr>
                 <tr>
                     <td th:text="${book.getName()}" />
                     <td>
@@ -49,10 +50,15 @@
 
         <h1>Orders</h1>
         <table>
-            <th:block th:each="order: ${orders}">
+            <th:block th:each="sale: ${sales}">
                 <tr>
-                    <td th:text="${order.getId()}" />
+                    <td th:text="'Sale ID: ' + ${sale.getId()}" />
                 </tr>
+                <th:block th:each="book: ${sale.getBooks()}">
+                    <tr>
+                        <td th:text="'-  Book ID: ' + ${book.getId()} + ',  Name: ' + ${book.getName()} + ',  Bookstore: ' + ${book.getBookstore().getId()}"/>
+                    </tr>
+                </th:block>
             </th:block>
         </table>
     </body>

@@ -3,9 +3,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -21,6 +19,12 @@ public class Sale {
     private Set<Bookstore> bookstores;
 
     public Sale() { }
+
+    public Sale(Set<Book> books, Customer customer) {
+        this.books = books;
+        this.customer = customer;
+        this.bookstores = new HashSet<>();
+    }
 
     @Id
     @GeneratedValue
@@ -38,5 +42,5 @@ public class Sale {
     @ManyToMany
     public Set<Bookstore> getBookstores() { return this.bookstores; }
     public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
-    public void addBookstore(Bookstore bookstore) {this.bookstores.add(bookstore);}
+    public void addBookstore(Bookstore bookstore) { this.bookstores.add(bookstore);}
 }
