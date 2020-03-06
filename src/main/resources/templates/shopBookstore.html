@@ -16,7 +16,7 @@
 <h1>Books</h1>
 <table>
     <th:block th:each="book: ${bookstore.getBooks()}">
-        <tr>
+        <tr th:if="${book.getAvailable() == true}">
             <td th:text="${book.getId()}"></td>
             <td th:text="${book.getName()}"></td>
             <td>

@@ -39,6 +39,7 @@ public class ShoppingCart {
             book.setAvailable(false);
             sale.addBookstore(book.getBookstore());
             book.removeShoppingCart();
+            book.setSale(sale);
         }
         this.removeBooks();
 

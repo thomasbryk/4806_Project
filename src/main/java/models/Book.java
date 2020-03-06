@@ -80,5 +80,6 @@ public class Book{
         return false;
     }
 
+    public boolean getAvailable(){return this.available;};
     public void setAvailable(boolean available) { this.available = available; }
 }
