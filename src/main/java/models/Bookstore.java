@@ -3,9 +3,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -15,29 +13,30 @@ import static javax.persistence.CascadeType.ALL;
 public class Bookstore {
     private Long id;
     private String name;
+
     @JsonIgnore
     private BookstoreOwner bookstoreOwner;
+    @JsonIgnore
     private List<Book> books;
-    private Set<Order> orders;
+    @JsonIgnore
+    private Set<Sale> sales;
 
-    public Bookstore(){
-        this.books = new ArrayList<Book>();
-        this.orders = Collections.emptySet();
-    }
+    public Bookstore(){ this.books = new ArrayList<Book>();	}
 
-    /*public Bookstore(BookstoreOwner bookstoreOwner){
-        this.bookstoreOwner = bookstoreOwner;
-    }*/
+    @Id
+    @GeneratedValue
+    public Long getId() { return this.id; }
+    public void setId(Long id) { this.id = id; }
 
     @ManyToOne
     public BookstoreOwner getBookstoreOwner() { return this.bookstoreOwner; }
     public void setBookstoreOwner(BookstoreOwner bookstoreOwner) { this.bookstoreOwner = bookstoreOwner; }
     public void removeBookstoreOwner() { this.bookstoreOwner = null; }
 
-    @Id
-    @GeneratedValue
-    public Long getId() { return this.id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstores")
+    public Set<Sale> getSales() { return this.sales; }
+    public void setSales(Set<Sale> sales) { this.sales = sales; }
+    public void removeSale(Sale sale) { this.sales.remove(sale); }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -64,9 +63,4 @@ public class Bookstore {
             bookFound.removeBookstore();
         }
     }
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstores")
-    public Set<Order> getOrders(){ return this.orders; }
-    public void setOrders(Set<Order> orders) { this.orders = orders; }
-    public void addOrder(Order order){ this.orders.add(order); }
 }

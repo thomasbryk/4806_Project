@@ -20,6 +20,8 @@ public class Book{
     private Bookstore bookstore;
     @JsonIgnore
     private List<ShoppingCart> shoppingCarts;
+    @JsonIgnore
+    private Sale sale;
 
     public Book(){	}
     public Book(String name, String isbn, String picture, String description, String author, String publisher){
@@ -41,6 +43,11 @@ public class Book{
     public Bookstore getBookstore(){ return this.bookstore; }
     public void setBookstore(Bookstore bookstore){ this.bookstore = bookstore; }
     public void removeBookstore(){this.bookstore = null;}
+
+    @ManyToOne
+    public Sale getSale(){ return this.sale; }
+    public void setSale(Sale sale){ this.sale = sale; }
+    public void removeSale(){this.sale = null;}
 
     @ManyToMany
     public List<ShoppingCart> getShoppingCarts(){ return this.shoppingCarts; }

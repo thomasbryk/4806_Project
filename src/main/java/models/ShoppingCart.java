@@ -3,6 +3,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import static javax.persistence.CascadeType.ALL;
 
@@ -10,7 +11,7 @@ import static javax.persistence.CascadeType.ALL;
 public class ShoppingCart {
     private Long id;
     @JsonIgnore
-    private List<Book> books;
+    private Set<Book> books;
     @JsonIgnore
     private Customer customer;
 
@@ -22,8 +23,8 @@ public class ShoppingCart {
     public void setId(Long id){ this.id = id; }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "shoppingCarts")
-    public List<Book> getBooks() { return this.books; }
-    public void setBooks(List<Book> books) { this.books = books; }
+    public Set<Book> getBooks() { return this.books; }
+    public void setBooks(Set<Book> books) { this.books = books; }
     public void addBook(Book book){ this.books.add(book); }
     public void removeBooks() { this.books = null; }
 

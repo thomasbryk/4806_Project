@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -18,7 +17,8 @@ public class Customer{
     private String phoneNumber;
     @JsonIgnore
     private ShoppingCart shoppingCart;
-    private List<Order> orders;
+    @JsonIgnore
+    private Set<Sale> sales;
 
     public Customer(){ }
     public Customer( String name, String address, String email, String phoneNumber) {
@@ -26,7 +26,6 @@ public class Customer{
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.orders = new ArrayList<>();
     }
 
     @Id
@@ -74,7 +73,10 @@ public class Customer{
         this.shoppingCart = shoppingCart;
     }
 
-    public void setOrders(List<Order> orders) { this.orders = orders; }
-    public void addOrder(Order order) { this.orders.add(order); }
-    public List<Order> getOrders(){ return this.orders; };
+    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy="customer")
+    public Set<Sale> getSales(){ return this.sales; }
+    public void setSales(Set<Sale> sales){
+        this.sales = sales;
+    }
+    public void addSale(Sale sale){this.sales.add(sale);}
 }
