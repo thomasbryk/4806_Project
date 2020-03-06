@@ -1,50 +1,33 @@
 package models;
 
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+
+@Entity
 public class Order {
-    @Id
-    @GeneratedValue
-    private int id;
-    @OneToMany(fetch=FetchType.EAGER, targetEntity = Book.class)
+    private Long id;
+
+    @JsonIgnore
     private List<Book> books;
+    @JsonIgnore
     private Customer customer;
 
-    public Order(int id, List<Book> books, Customer customer) {
-        this.id = id;
-        this.books = books;
-        this.customer = customer;
-    }
+    public Order() { }
 
+    @Id
+    @GeneratedValue
+    public Long getId() { return this.id; }
+    public void setId(Long id) { this.id = id; }
 
-    public int getId() {
-        return this.id;
-    }
+    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstore")
+    public List<Book> getBooks() { return this.books; }
+    public void setBooks(List<Book> books) { this.books = books; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public List<Book> getBooks() {
-        return this.books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    
+    public Customer getCustomer() { return this.customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 }

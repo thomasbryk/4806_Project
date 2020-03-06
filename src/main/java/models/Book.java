@@ -9,14 +9,17 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Book{
     private Long id;
-    @JsonIgnore
-    private Bookstore bookstore;
     private String name;
     private String isbn;
     private String picture;
     private String description;
     private String author;
     private String publisher;
+
+    @JsonIgnore
+    private Bookstore bookstore;
+    @JsonIgnore
+    private ShoppingCart shoppingCart;
 
     public Book(){	}
     public Book(String name, String isbn, String picture, String description, String author, String publisher){
@@ -37,6 +40,11 @@ public class Book{
     public Bookstore getBookstore(){ return this.bookstore; }
     public void setBookstore(Bookstore bookstore){ this.bookstore = bookstore; }
     public void removeBookstore(){this.bookstore = null;}
+
+    @ManyToOne
+    public ShoppingCart getShoppingCart(){ return this.shoppingCart; }
+    public void setShoppingCart(ShoppingCart shoppingCart){ this.shoppingCart = shoppingCart; }
+    public void removeShoppingCart(){this.shoppingCart = null;}
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
