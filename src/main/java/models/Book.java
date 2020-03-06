@@ -1,10 +1,9 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Book{
@@ -19,7 +18,7 @@ public class Book{
     @JsonIgnore
     private Bookstore bookstore;
     @JsonIgnore
-    private ShoppingCart shoppingCart;
+    private List<ShoppingCart> shoppingCarts;
 
     public Book(){	}
     public Book(String name, String isbn, String picture, String description, String author, String publisher){
@@ -41,10 +40,11 @@ public class Book{
     public void setBookstore(Bookstore bookstore){ this.bookstore = bookstore; }
     public void removeBookstore(){this.bookstore = null;}
 
-    @ManyToOne
-    public ShoppingCart getShoppingCart(){ return this.shoppingCart; }
-    public void setShoppingCart(ShoppingCart shoppingCart){ this.shoppingCart = shoppingCart; }
-    public void removeShoppingCart(){this.shoppingCart = null;}
+    @ManyToMany
+    public List<ShoppingCart> getShoppingCarts(){ return this.shoppingCarts; }
+    public void setShoppingCarts(List<ShoppingCart> shoppingCarts){ this.shoppingCarts = shoppingCarts; }
+    public void addShoppingCart(ShoppingCart shoppingCart){this.shoppingCarts.add(shoppingCart);}
+    public void removeShoppingCart(){this.shoppingCarts = null;}
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

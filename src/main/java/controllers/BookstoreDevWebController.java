@@ -20,6 +20,8 @@ public class BookstoreDevWebController {
     private BookstoreOwnerRepository bookstoreOwnerRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -114,6 +116,48 @@ public class BookstoreDevWebController {
         shoppingCart.setCustomer(customer);
         customer.setShoppingCart(shoppingCart);
         customerRepository.save(customer);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        model.addAttribute("bookstores", bookstores);
+        model.addAttribute("customer", customer);
+        return "viewCustomer";
+    }
+
+    @PostMapping("/viewCustomer")
+    public String viewCustomer(@RequestParam(value="customerId") long customerId,
+                               Model model){
+        Customer customer = customerRepository.findById(customerId);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        model.addAttribute("bookstores", bookstores);
+        model.addAttribute("customer", customer);
+        return "viewCustomer";
+
+    }
+
+    @PostMapping("/shopBookstore")
+    public String shopBookstore(@RequestParam(value="customerId") long customerId,
+                                @RequestParam(value="bookstoreId") long bookstoreId,
+                                Model model){
+        Customer customer = customerRepository.findById(customerId);
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
+        model.addAttribute("bookstore", bookstore);
+        model.addAttribute("customer", customer);
+        return "shopBookstore";
+    }
+
+    @PostMapping("/addBookToCart")
+    public String addBookToCart(@RequestParam(value="customerId") long customerId,
+                                @RequestParam(value="bookId") long bookId,
+                                @RequestParam(value="shoppingCartId") long shoppingCartId,
+                                Model model){
+        Customer customer = customerRepository.findById(customerId);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId);
+        Book book = bookRepository.findById(bookId);
+        shoppingCart.addBook(book);
+        book.addShoppingCart(shoppingCart);
+        shoppingCartRepository.save(shoppingCart);
+        bookRepository.save(book);
+        model.addAttribute("bookstores", bookstores);
         model.addAttribute("customer", customer);
         return "viewCustomer";
     }

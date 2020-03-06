@@ -24,6 +24,7 @@
                     <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
                     <input type="hidden" name="bookId" th:value="${book.getId()}" />
                     <input type="hidden" name="customerId" th:value="${customer.getId()}" />
+                    <input type="hidden" name="shoppingCartId" th:value="${customer.getShoppingCart().getId()}" />
                     <input type="submit" value="Add to Cart"/>
                 </form>
             </td>

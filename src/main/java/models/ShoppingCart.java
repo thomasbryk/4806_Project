@@ -21,9 +21,10 @@ public class ShoppingCart {
     public Long getId(){ return this.id; }
     public void setId(Long id){ this.id = id; }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "shoppingCart")
+    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "shoppingCarts")
     public List<Book> getBooks() { return this.books; }
     public void setBooks(List<Book> books) { this.books = books; }
+    public void addBook(Book book){ this.books.add(book); }
 
     @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
     public Customer getCustomer() { return this.customer; }
