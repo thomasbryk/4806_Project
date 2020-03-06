@@ -36,6 +36,7 @@ public class Bookstore {
     @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstores")
     public Set<Sale> getSales() { return this.sales; }
     public void setSales(Set<Sale> sales) { this.sales = sales; }
+    public void addSale(Sale sale) { this.sales.add(sale); }
     public void removeSale(Sale sale) { this.sales.remove(sale); }
 
     public String getName() { return name; }

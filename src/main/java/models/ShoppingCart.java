@@ -26,8 +26,23 @@ public class ShoppingCart {
     public Set<Book> getBooks() { return this.books; }
     public void setBooks(Set<Book> books) { this.books = books; }
     public void addBook(Book book){ this.books.add(book); }
+    public void removeBooks() { this.books = null; }
 
     @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
+
+    public Sale checkout() {
+        Sale sale = new Sale(this.books, this.customer);
+        Bookstore currBookstore;
+        for (Book book : books){
+            book.setAvailable(false);
+            sale.addBookstore(book.getBookstore());
+            book.removeShoppingCart();
+            book.setSale(sale);
+        }
+        this.removeBooks();
+
+        return sale;
+    }
 }

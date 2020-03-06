@@ -22,6 +22,8 @@ public class BookstoreDevWebController {
     private CustomerRepository customerRepository;
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
+    @Autowired
+    private SaleRepository saleRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -156,10 +158,26 @@ public class BookstoreDevWebController {
         shoppingCart.addBook(book);
         book.addShoppingCart(shoppingCart);
         shoppingCartRepository.save(shoppingCart);
+        Iterable<Sale> sales = saleRepository.findByCustomer(customer);
+        model.addAttribute("bookstores", bookstores);
+        model.addAttribute("customer", customer);
+        model.addAttribute("sales", sales);
+        return "viewCustomer";
+    }
+
+    @PostMapping("/newOrder")
+    public String createOrder(@RequestParam(value="shoppingCartId") long shoppingCartId,
+                              Model model){
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId);
+        Sale sale = shoppingCart.checkout();
+        saleRepository.save(sale);
+        shoppingCartRepository.save(shoppingCart);
+        Customer customer = shoppingCart.getCustomer();
+        Iterable<Sale> sales = saleRepository.findByCustomer(customer);
+        Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        model.addAttribute("sales", sales);
         model.addAttribute("bookstores", bookstores);
         model.addAttribute("customer", customer);
         return "viewCustomer";
     }
-
-
 }
