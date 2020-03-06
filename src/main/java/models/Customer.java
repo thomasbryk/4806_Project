@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
@@ -15,6 +18,7 @@ public class Customer{
     private String phoneNumber;
     @JsonIgnore
     private ShoppingCart shoppingCart;
+    private List<Order> orders;
 
     public Customer(){ }
     public Customer( String name, String address, String email, String phoneNumber) {
@@ -22,6 +26,7 @@ public class Customer{
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.orders = new ArrayList<>();
     }
 
     @Id
@@ -69,4 +74,7 @@ public class Customer{
         this.shoppingCart = shoppingCart;
     }
 
+    public void setOrders(List<Order> orders) { this.orders = orders; }
+    public void addOrder(Order order) { this.orders.add(order); }
+    public List<Order> getOrders(){ return this.orders; };
 }

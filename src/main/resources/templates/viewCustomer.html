@@ -16,6 +16,11 @@
         <table>
             <th:block th:each="book: ${customer.getShoppingCart().getBooks()}">
                 <tr>
+                    <form action="#" th:action="@{/newOrder}" method="post">
+                        <input type="submit" value="Checkout"/>
+                    </form>
+                </tr>
+                <tr>
                     <td th:text="${book.getName()}" />
                     <td>
                         <form action="#" th:action="@{/removeBookFromCart}" method="post">
@@ -31,11 +36,22 @@
             <th:block th:each="bookstore: ${bookstores}">
                 <tr>
                     <td th:text="${bookstore.getId()}" />
-                    <form action="#" th:action="@{/shopBookstore}" method="post">
-                        <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-                        <input type="hidden" name="customerId" th:value="${customer.getId()}" />
-                        <input type="submit" value="Shop store"/>
-                    </form>
+                    <td>
+                        <form action="#" th:action="@{/shopBookstore}" method="post">
+                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
+                            <input type="hidden" name="customerId" th:value="${customer.getId()}" />
+                            <input type="submit" value="Shop store"/>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+
+        <h1>Orders</h1>
+        <table>
+            <th:block th:each="order: ${orders}">
+                <tr>
+                    <td th:text="${order.getId()}" />
                 </tr>
             </th:block>
         </table>

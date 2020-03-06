@@ -14,6 +14,7 @@ public class Book{
     private String description;
     private String author;
     private String publisher;
+    private boolean available;
 
     @JsonIgnore
     private Bookstore bookstore;
@@ -28,6 +29,7 @@ public class Book{
         this.description = description;
         this.author = author;
         this.publisher = publisher;
+        this.available = true;
     }
 
     @Id
@@ -70,4 +72,6 @@ public class Book{
         }
         return false;
     }
+
+    public void setAvailable(boolean available) { this.available = available; }
 }

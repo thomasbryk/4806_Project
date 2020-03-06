@@ -3,8 +3,12 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
@@ -14,9 +18,12 @@ public class Bookstore {
     @JsonIgnore
     private BookstoreOwner bookstoreOwner;
     private List<Book> books;
-    private List<Order> orders;
+    private Set<Order> orders;
 
-    public Bookstore(){ this.books = new ArrayList<Book>();	}
+    public Bookstore(){
+        this.books = new ArrayList<Book>();
+        this.orders = Collections.emptySet();
+    }
 
     /*public Bookstore(BookstoreOwner bookstoreOwner){
         this.bookstoreOwner = bookstoreOwner;
@@ -58,8 +65,8 @@ public class Bookstore {
         }
     }
 
-    @OneToMany
-    public List<Order> getOrders(){ return this.orders; }
-    public void setOrders(List<Order> orders) { this.orders = orders; }
+    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstores")
+    public Set<Order> getOrders(){ return this.orders; }
+    public void setOrders(Set<Order> orders) { this.orders = orders; }
     public void addOrder(Order order){ this.orders.add(order); }
 }
