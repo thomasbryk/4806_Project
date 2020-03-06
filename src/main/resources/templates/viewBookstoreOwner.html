@@ -19,7 +19,7 @@
         <table>
             <th:block th:each="bookstore: ${bookstoreOwner.getBookstores()}">
                 <tr>
-                    <td><a th:href="@{/viewBookstore(bookstoreOwnerId=${bookstoreOwner.getId()},bookstoreId=${bookstore.getId()})}" th:text="${bookstore.getId()}"></a></td>
+                    <td><a th:href="@{/editBookstore(bookstoreOwnerId=${bookstoreOwner.getId()},bookstoreId=${bookstore.getId()})}" th:text="${bookstore.getId()}"></a></td>
                     <td>
                         <form action="#" th:action="@{/removeBookstore}" method="post">
                             <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />

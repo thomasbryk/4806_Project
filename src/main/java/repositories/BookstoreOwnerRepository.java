@@ -7,7 +7,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
-@RepositoryRestResource(collectionResourceRel = "books", path = "books")
+@RepositoryRestResource(collectionResourceRel = "bookstoreowners", path = "bookstoreowners")
 public interface BookstoreOwnerRepository extends PagingAndSortingRepository<BookstoreOwner, Long> {
     BookstoreOwner findById(long id);
     List<BookstoreOwner> findByName(String name);
