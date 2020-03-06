@@ -50,7 +50,7 @@
 
         <h1>Orders</h1>
         <table>
-            <th:block th:each="sale: ${sales}">
+            <th:block th:each="sale: ${customer.getSales()}">
                 <tr>
                     <td th:text="'Sale ID: ' + ${sale.getId()}" />
                 </tr>

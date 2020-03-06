@@ -173,9 +173,8 @@ public class BookstoreDevWebController {
         saleRepository.save(sale);
         shoppingCartRepository.save(shoppingCart);
         Customer customer = shoppingCart.getCustomer();
-        Iterable<Sale> sales = saleRepository.findByCustomer(customer);
+        customer.addSale(sale);
         Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
-        model.addAttribute("sales", sales);
         model.addAttribute("bookstores", bookstores);
         model.addAttribute("customer", customer);
         return "viewCustomer";
