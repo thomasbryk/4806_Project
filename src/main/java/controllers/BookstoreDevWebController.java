@@ -156,9 +156,10 @@ public class BookstoreDevWebController {
         shoppingCart.addBook(book);
         book.addShoppingCart(shoppingCart);
         shoppingCartRepository.save(shoppingCart);
-        bookRepository.save(book);
         model.addAttribute("bookstores", bookstores);
         model.addAttribute("customer", customer);
         return "viewCustomer";
     }
+
+
 }

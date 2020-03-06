@@ -29,5 +29,4 @@ public class ShoppingCart {
     @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
-
 }
