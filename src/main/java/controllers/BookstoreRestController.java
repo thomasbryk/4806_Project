@@ -145,34 +145,30 @@ public class BookstoreRestController {
 
 
     //Sale REST endpoints
-    @GetMapping("/api/getSale")
-    public Sale getSale(@RequestParam(value = "id") long id) {
-        return saleRepository.findById(id);
-    }
-
-    @GetMapping("/api/getSales")
-    public Iterable<Sale> getSales() {
-        return saleRepository.findAll();
-    }
-
     @GetMapping("/api/getSalesByCustomer")
-    public Iterable<Sale> getSalesByCustomer(@RequestParam(value = "customerID") long customerID) {
-        Customer customer = customerRepository.findById(customerID);
+    public Iterable<Sale> getSalesByCustomer(@RequestParam(value = "customerId") long customerId) {
+        Customer customer = customerRepository.findById(customerId);
         if (customer == null)
             return null;
         return saleRepository.findByCustomer(customer);
     }
 
-    @PostMapping("/api/newSale")
-    public Sale newSale(@RequestParam(value = "shoppingCartID") long shoppingCartID) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartID);
-        if (shoppingCart == null)
+    @GetMapping("/api/getSalesByBookstore")
+    public Iterable<Sale> getSalesByBookstore(@RequestParam(value = "bookstoreId") long bookstoreId) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
+        if (bookstore == null)
             return null;
+        return bookstore.getSales();
+    }
+
+    @PostMapping("/api/newSale")
+    public Sale newSale(@RequestParam(value = "customerId") long customerId) {
+        Customer customer = customerRepository.findById(customerId);
+        if (customer == null)
+            return null;
+        ShoppingCart shoppingCart = customer.getShoppingCart();
         Sale sale = shoppingCart.checkout();
         saleRepository.save(sale);
-        for (Book book : sale.getBooks()) {
-            bookRepository.save(book);
-        }
         shoppingCartRepository.save(shoppingCart);
         return sale;
     }
