@@ -6,6 +6,7 @@ import repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 public class BookstoreRestController {
 
@@ -22,6 +23,7 @@ public class BookstoreRestController {
     @Autowired
     private SaleRepository saleRepository;
 
+    //BookstoreOwner REST endpoints
     @GetMapping("/api/getBookstoreOwner")
     public BookstoreOwner getBookstoreOwner(@RequestParam(value = "id") long id) {
         return bookstoreOwnerRepository.findById(id);
@@ -34,11 +36,12 @@ public class BookstoreRestController {
 
     @PostMapping("/api/newBookstoreOwner")
     public BookstoreOwner newBookstoreOwner(@RequestParam(value="name") String name) {
-        BookstoreOwner bso = new BookstoreOwner(name);
-        bookstoreOwnerRepository.save(bso);
-        return bso;
+        BookstoreOwner bookstoreOwner = new BookstoreOwner(name);
+        bookstoreOwnerRepository.save(bookstoreOwner);
+        return bookstoreOwner;
     }
 
+    //Bookstore REST endpoints
     @GetMapping("/api/getBookstore")
     public Bookstore getBookstore(@RequestParam(value = "id") long id) {
         return bookstoreRepository.findById(id);
@@ -51,15 +54,16 @@ public class BookstoreRestController {
 
     @PostMapping("/api/newBookstore")
     public Bookstore newBookstore(@RequestParam(value="bookstoreOwnerId") long bookstoreOwnerId) {
-        BookstoreOwner bso = bookstoreOwnerRepository.findById(bookstoreOwnerId);
-        Bookstore b = new Bookstore();
-        b.setBookstoreOwner(bso);
-        bso.addBookstore(b);
-        bookstoreRepository.save(b);
-        bookstoreOwnerRepository.save(bso);
-        return b;
+        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
+        Bookstore bookstore = new Bookstore();
+        bookstore.setBookstoreOwner(bookstoreOwner);
+        bookstoreOwner.addBookstore(bookstore);
+        bookstoreRepository.save(bookstore);
+        bookstoreOwnerRepository.save(bookstoreOwner);
+        return bookstore;
     }
 
+    //Book REST endpoints
     @GetMapping("/api/getBook")
     public Book getBook(@RequestParam(value = "id") long id) {
         return bookRepository.findById(id);
@@ -70,8 +74,108 @@ public class BookstoreRestController {
         return bookRepository.findAll();
     }
 
+    @GetMapping("/api/getBooksByBookstore")
+    public Iterable<Book> getBooksByBookstore(@RequestParam(value = "bookstoreID") long bookstoreID) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
+        if (bookstore != null)
+            return bookRepository.findByBookstore(bookstore);
+        else
+            return null;
+    }
+
     @PostMapping("/api/newBook")
-    public Book newBook(@RequestParam(value = "id") long id) {
-        return bookRepository.findById(id);
+    public Book newBook(@RequestParam(value = "name") String name, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value="bookstoreID") long bookstoreID) {
+        Book book = new Book(name, isbn, picture, description, author, publisher);
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
+        bookstore.addBook(book);
+        book.setBookstore(bookstore);
+        bookRepository.save(book);
+        bookstoreRepository.save(bookstore);
+        return book;
+    }
+
+    //Customer REST endpoints
+    @GetMapping("/api/getCustomer")
+    public Customer getCustomer(@RequestParam(value = "id") long id) {
+        return customerRepository.findById(id);
+    }
+
+    @GetMapping("/api/getCustomers")
+    public Iterable<Customer> getCustomers() {
+        return customerRepository.findAll();
+    }
+
+    @PostMapping("/api/newCustomer")
+    public Customer newCustomer(@RequestParam(value = "name") String name, @RequestParam(value="address") String address, @RequestParam(value="email") String email, @RequestParam(value="phoneNumber") String phoneNumber) {
+        Customer customer = new Customer(name,address,email, phoneNumber);
+        customerRepository.save(customer);
+        return customer;
+    }
+
+    //Shopping Cart REST endpoints
+    @GetMapping("/api/getShoppingCart")
+    public ShoppingCart getShoppingCart(@RequestParam(value = "id") long id) {
+        return shoppingCartRepository.findById(id);
+    }
+
+    @GetMapping("/api/getShoppingCarts")
+    public Iterable<ShoppingCart> getShoppingCarts() {
+        return shoppingCartRepository.findAll();
+    }
+
+    @GetMapping("/api/getShoppingCartsByCustomer")
+    public Iterable<ShoppingCart> getShoppingCartsByCustomer(@RequestParam(value = "customerID") long customerID) {
+        Customer customer = customerRepository.findById(customerID);
+        if (customer != null)
+            return shoppingCartRepository.findByCustomer(customer);
+        else
+            return null;
+    }
+
+    @PostMapping("/api/newShoppingCart")
+    public ShoppingCart newShoppingCart(@RequestParam(value = "customerID") long customerID) {
+        Customer customer = customerRepository.findById(customerID);
+        ShoppingCart shoppingCart = new ShoppingCart(customer);
+        shoppingCartRepository.save(shoppingCart);
+        customer.setShoppingCart(shoppingCart);
+        customerRepository.save(customer);
+        return shoppingCart;
+    }
+
+    //Sale REST endpoints
+    @GetMapping("/api/getSale")
+    public Sale getSale(@RequestParam(value = "id") long id) {
+        return saleRepository.findById(id);
+    }
+
+    @GetMapping("/api/getSales")
+    public Iterable<Sale> getSales() {
+        return saleRepository.findAll();
+    }
+
+    @GetMapping("/api/getSalesByCustomer")
+    public Iterable<Sale> getSalesByCustomer(@RequestParam(value = "customerID") long customerID) {
+        Customer customer = customerRepository.findById(customerID);
+        return saleRepository.findByCustomer(customer);
+    }
+
+    @GetMapping("/api/getSalesByBookstore")
+    public Iterable<Sale> getSalesByBookstore(@RequestParam(value = "bookstoreID") long bookstoreID) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
+        return saleRepository.findByBookstore(bookstore);
+    }
+
+    @GetMapping("/api/getSalesByBook")
+    public Iterable<Sale> getSalesByBook(@RequestParam(value = "bookID") long bookID) {
+        Book book = bookRepository.findById(bookID);
+        return saleRepository.findByBook(book);
+    }
+
+    @GetMapping("/api/newSale")
+    public Sale newSale(@RequestParam(value = "shoppingCartID") long shoppingCartID) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartID);
+        Sale sale = shoppingCart.checkout();
+        saleRepository.save(sale);
+        return sale;
     }
 }

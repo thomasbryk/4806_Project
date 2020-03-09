@@ -16,6 +16,9 @@ public class ShoppingCart {
     private Customer customer;
 
     public ShoppingCart(){ }
+    public ShoppingCart(Customer customer){
+        this.customer = customer;
+    }
 
     @Id
     @GeneratedValue
