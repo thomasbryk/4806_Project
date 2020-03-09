@@ -101,8 +101,8 @@ public class BookstoreRestController {
 
     //Customer REST endpoints
     @GetMapping("/api/getCustomer")
-    public Customer getCustomer(@RequestParam(value = "id") long id) {
-        return customerRepository.findById(id);
+    public Customer getCustomer(@RequestParam(value = "customerId") long customerId) {
+        return customerRepository.findById(customerId);
     }
 
     @GetMapping("/api/getCustomers")
@@ -111,8 +111,8 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newCustomer")
-    public Customer newCustomer(@RequestParam(value = "name") String name, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber) {
-        Customer customer = new Customer(name, address, email, phoneNumber);
+    public Customer newCustomer(@RequestParam(value = "customerName") String customerName, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber) {
+        Customer customer = new Customer(customerName, address, email, phoneNumber);
         customerRepository.save(customer);
         return customer;
     }
