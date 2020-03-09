@@ -13,15 +13,16 @@ import static javax.persistence.CascadeType.ALL;
 public class Bookstore {
     private Long id;
     private String name;
-
     @JsonIgnore
     private BookstoreOwner bookstoreOwner;
-    @JsonIgnore
     private List<Book> books;
-    @JsonIgnore
     private Set<Sale> sales;
 
     public Bookstore(){ this.books = new ArrayList<Book>();	}
+    public Bookstore(String name) {
+        this.name = name;
+        this.books = new ArrayList<Book>();
+    }
 
     @Id
     @GeneratedValue

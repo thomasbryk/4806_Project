@@ -10,8 +10,6 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class Sale {
     private Long id;
-
-    @JsonIgnore
     private Set<Book> books;
     @JsonIgnore
     private Customer customer;

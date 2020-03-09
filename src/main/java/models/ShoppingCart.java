@@ -10,7 +10,6 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class ShoppingCart {
     private Long id;
-    @JsonIgnore
     private Set<Book> books;
     @JsonIgnore
     private Customer customer;
@@ -37,8 +36,7 @@ public class ShoppingCart {
 
     public Sale checkout() {
         Sale sale = new Sale(this.books, this.customer);
-        Bookstore currBookstore;
-        for (Book book : books){
+        for (Book book : this.books){
             book.setAvailable(false);
             sale.addBookstore(book.getBookstore());
             book.removeShoppingCart();

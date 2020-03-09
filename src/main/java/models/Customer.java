@@ -15,9 +15,7 @@ public class Customer{
     private String address;
     private String email;
     private String phoneNumber;
-    @JsonIgnore
     private ShoppingCart shoppingCart;
-    @JsonIgnore
     private Set<Sale> sales;
 
     public Customer(){ }
@@ -61,7 +59,7 @@ public class Customer{
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
-    public void setPhoneNumber(String number) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

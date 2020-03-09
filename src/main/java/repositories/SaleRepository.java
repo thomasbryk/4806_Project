@@ -11,6 +11,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface SaleRepository extends PagingAndSortingRepository<models.Sale, Long> {
     Sale findById(long id);
     Iterable<Sale> findByCustomer(Customer customer);
-    Iterable<Sale> findByBookstore(Bookstore bookstore);
-    Iterable<Sale> findByBook(Book book);
 }
