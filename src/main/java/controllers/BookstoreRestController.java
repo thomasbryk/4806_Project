@@ -45,8 +45,8 @@ public class BookstoreRestController {
 
     //Bookstore REST endpoints
     @GetMapping("/api/getBookstore")
-    public Bookstore getBookstore(@RequestParam(value = "id") long id) {
-        return bookstoreRepository.findById(id);
+    public Bookstore getBookstore(@RequestParam(value = "bookstoreId") long bookstoreId) {
+        return bookstoreRepository.findById(bookstoreId);
     }
 
     @GetMapping("/api/getBookstores")
@@ -55,14 +55,13 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newBookstore")
-    public Bookstore newBookstore(@RequestParam(value = "name") String name, @RequestParam(value = "bookstoreOwnerID") long bookstoreOwnerID) {
+    public Bookstore newBookstore(@RequestParam(value = "bookstoreName") String bookstoreName, @RequestParam(value = "bookstoreOwnerID") long bookstoreOwnerID) {
         BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerID);
         if (bookstoreOwner == null)
             return null;
-        Bookstore bookstore = new Bookstore(name);
+        Bookstore bookstore = new Bookstore(bookstoreName);
         bookstore.setBookstoreOwner(bookstoreOwner);
         bookstoreOwner.addBookstore(bookstore);
-        bookstoreRepository.save(bookstore);
         bookstoreOwnerRepository.save(bookstoreOwner);
         return bookstore;
     }
