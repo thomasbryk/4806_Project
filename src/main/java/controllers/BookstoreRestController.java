@@ -140,7 +140,6 @@ public class BookstoreRestController {
         shoppingCart.addBook(book);
         book.addShoppingCart(shoppingCart);
         shoppingCartRepository.save(shoppingCart);
-        bookRepository.save(book);
         return shoppingCart;
     }
 
