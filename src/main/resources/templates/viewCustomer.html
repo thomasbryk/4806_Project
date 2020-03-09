@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+    <body>
+        <form action="#" th:action="@{/}" method="get">
+            <input type="submit" value="Home"/>
+        </form>
+        <h1>Customer</h1>
+        <p th:text="'Customer ID: ' + ${customer.getId()}" />
+        <p th:text="'Customer Name: ' + ${customer.getName()}" />
+
+        <h1>ShoppingCart Contents</h1>
+        <table>
+            <tr>
+                <form action="#" th:action="@{/newOrder}" method="post">
+                    <input type="hidden" name="shoppingCartId" th:value="${customer.getShoppingCart().getId()}" />
+                    <input type="submit" value="Checkout"/>
+                </form>
+            </tr>
+            <th:block th:each="book: ${customer.getShoppingCart().getBooks()}">
+                <tr>
+                    <td th:text="${book.getName()}" />
+                    <td>
+                        <form action="#" th:action="@{/removeBookFromCart}" method="post">
+                            <input type="submit" value="Remove Book From Cart"/>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+
+        <h1>Shop Bookstores</h1>
+        <table>
+            <th:block th:each="bookstore: ${bookstores}">
+                <tr>
+                    <td th:text="${bookstore.getId()}" />
+                    <td>
+                        <form action="#" th:action="@{/shopBookstore}" method="post">
+                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
+                            <input type="hidden" name="customerId" th:value="${customer.getId()}" />
+                            <input type="submit" value="Shop store"/>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+
+        <h1>Orders</h1>
+        <table>
+            <th:block th:each="sale: ${customer.getSales()}">
+                <tr>
+                    <td th:text="'Sale ID: ' + ${sale.getId()}" />
+                </tr>
+                <th:block th:each="book: ${sale.getBooks()}">
+                    <tr>
+                        <td th:text="'-  Book ID: ' + ${book.getId()} + ',  Name: ' + ${book.getName()} + ',  Bookstore: ' + ${book.getBookstore().getId()}"/>
+                    </tr>
+                </th:block>
+            </th:block>
+        </table>
+    </body>
+</html>

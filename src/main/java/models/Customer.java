@@ -1,34 +1,45 @@
 package models;
 
-public class Customer{
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-    private int id;
+import javax.persistence.*;
+
+import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
+
+@Entity
+public class Customer{
+    private Long id;
     private String name;
     private String address;
     private String email;
-    private String number;
+    private String phoneNumber;
+    @JsonIgnore
+    private ShoppingCart shoppingCart;
+    @JsonIgnore
+    private Set<Sale> sales;
 
-    public Customer(int id, String name, String address, String email, String number) {
-        this.id = id;
+    public Customer(){ }
+    public Customer( String name, String address, String email, String phoneNumber) {
         this.name = name;
         this.address = address;
         this.email = email;
-        this.number = number;
+        this.phoneNumber = phoneNumber;
     }
 
-
-    public int getId() {
+    @Id
+    @GeneratedValue
+    public Long getId() {
         return this.id;
     }
-
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getName() {
         return this.name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -36,7 +47,6 @@ public class Customer{
     public String getAddress() {
         return this.address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
@@ -44,19 +54,29 @@ public class Customer{
     public String getEmail() {
         return this.email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getNumber() {
-        return this.number;
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+    public void setPhoneNumber(String number) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
+    public ShoppingCart getShoppingCart(){
+        return this.shoppingCart;
+    }
+    public void setShoppingCart(ShoppingCart shoppingCart){
+        this.shoppingCart = shoppingCart;
     }
 
-    
-
+    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy="customer")
+    public Set<Sale> getSales(){ return this.sales; }
+    public void setSales(Set<Sale> sales){
+        this.sales = sales;
+    }
+    public void addSale(Sale sale){this.sales.add(sale);}
 }

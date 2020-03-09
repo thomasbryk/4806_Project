@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Bookstore</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+    <body>
+        <form action="#" th:action="@{/viewBookstoreOwner}" method="post">
+            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstore.getBookstoreOwner().getId()}" />
+            <input type="submit" value="Back to BookstoreOwner"/>
+        </form>
+        <p th:text="'BookStore ID: ' + ${bookstore.getId()}" />
+        <p th:text="'BookStore Owner: ' + ${bookstore.getBookstoreOwner().getName()}" />
+        <h1>Add Book</h1>
+        <form action="/addBook" method="post">
+            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
+            <label>Name:</label>
+            <input type="text" name="name"><br><br>
+            <label>isbn:</label>
+            <input type="text" name="isbn"><br><br>
+            <label>picture:</label>
+            <input type="text" name="picture"><br><br>
+            <label>description:</label>
+            <input type="text" name="description"><br><br>
+            <label>author:</label>
+            <input type="text" name="author"><br><br>
+            <label>publisher:</label>
+            <input type="text" name="publisher"><br><br>
+            <input type="submit" value="Add Book">
+        </form>
+        <h1>Books</h1>
+        <table>
+            <th:block th:each="book: ${bookstore.getBooks()}">
+                <tr>
+                    <td th:text="${book.getId()}"></td>
+                    <td th:text="${book.getName()}"></td>
+                    <td>
+                        <form action="#" th:action="@{/removeBook}" method="post">
+                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
+                            <input type="hidden" name="bookId" th:value="${book.getId()}" />
+                            <input type="submit" value="Remove Book"/>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </body>
+</html>
