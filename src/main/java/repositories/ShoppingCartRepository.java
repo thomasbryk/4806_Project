@@ -9,5 +9,5 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "shoppingcarts", path = "shoppingcarts")
 public interface ShoppingCartRepository extends PagingAndSortingRepository<ShoppingCart, Long> {
     ShoppingCart findById(long id);
-    Iterable<ShoppingCart> findByCustomer(Customer customer);
+    ShoppingCart findByCustomer(Customer customer);
 }

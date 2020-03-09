@@ -113,47 +113,27 @@ public class BookstoreRestController {
     @PostMapping("/api/newCustomer")
     public Customer newCustomer(@RequestParam(value = "customerName") String customerName, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber) {
         Customer customer = new Customer(customerName, address, email, phoneNumber);
+        customer.setShoppingCart(new ShoppingCart(customer));
         customerRepository.save(customer);
         return customer;
     }
 
 
     //Shopping Cart REST endpoints
-    @GetMapping("/api/getShoppingCart")
-    public ShoppingCart getShoppingCart(@RequestParam(value = "id") long id) {
-        return shoppingCartRepository.findById(id);
-    }
-
-    @GetMapping("/api/getShoppingCarts")
-    public Iterable<ShoppingCart> getShoppingCarts() {
-        return shoppingCartRepository.findAll();
-    }
-
-    @GetMapping("/api/getShoppingCartsByCustomer")
-    public Iterable<ShoppingCart> getShoppingCartsByCustomer(@RequestParam(value = "customerID") long customerID) {
+    @GetMapping("/api/getShoppingCartByCustomer")
+    public ShoppingCart getShoppingCartByCustomer(@RequestParam(value = "customerID") long customerID) {
         Customer customer = customerRepository.findById(customerID);
         if (customer == null)
             return null;
         return shoppingCartRepository.findByCustomer(customer);
     }
 
-    @PostMapping("/api/newShoppingCart")
-    public ShoppingCart newShoppingCart(@RequestParam(value = "customerID") long customerID) {
-        Customer customer = customerRepository.findById(customerID);
+    @PostMapping("/api/addBookToCustomersShoppingCart")
+    public ShoppingCart addBookToShoppingCart(@RequestParam(value = "customerId") long customerId , @RequestParam(value = "bookID") long bookID) {
+        Customer customer = customerRepository.findById(customerId);
         if (customer == null)
             return null;
-        ShoppingCart shoppingCart = new ShoppingCart(customer);
-        shoppingCartRepository.save(shoppingCart);
-        customer.setShoppingCart(shoppingCart);
-        customerRepository.save(customer);
-        return shoppingCart;
-    }
-
-    @PostMapping("/api/addBookToShoppingCart")
-    public ShoppingCart addBookToShoppingCart(@RequestParam(value = "shoppingCartID") long shoppingCartID, @RequestParam(value = "bookID") long bookID) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartID);
-        if (shoppingCart == null)
-            return null;
+        ShoppingCart shoppingCart = customer.getShoppingCart();
         Book book = bookRepository.findById(bookID);
         if (book == null)
             return null;
