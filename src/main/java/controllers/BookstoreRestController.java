@@ -26,8 +26,8 @@ public class BookstoreRestController {
 
     //BookstoreOwner REST endpoints
     @GetMapping("/api/getBookstoreOwner")
-    public BookstoreOwner getBookstoreOwner(@RequestParam(value = "id") long id) {
-        return bookstoreOwnerRepository.findById(id);
+    public BookstoreOwner getBookstoreOwner(@RequestParam(value = "bookstoreOwnerId") long bookstoreOwnerId) {
+        return bookstoreOwnerRepository.findById(bookstoreOwnerId);
     }
 
     @GetMapping("/api/getBookstoreOwners")
@@ -36,8 +36,8 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newBookstoreOwner")
-    public BookstoreOwner newBookstoreOwner(@RequestParam(value = "name") String name) {
-        BookstoreOwner bookstoreOwner = new BookstoreOwner(name);
+    public BookstoreOwner newBookstoreOwner(@RequestParam(value = "bookstoreOwnerName") String bookstoreOwnerName) {
+        BookstoreOwner bookstoreOwner = new BookstoreOwner(bookstoreOwnerName);
         bookstoreOwnerRepository.save(bookstoreOwner);
         return bookstoreOwner;
     }
