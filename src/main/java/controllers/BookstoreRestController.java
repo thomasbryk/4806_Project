@@ -113,7 +113,9 @@ public class BookstoreRestController {
     @PostMapping("/api/newCustomer")
     public Customer newCustomer(@RequestParam(value = "customerName") String customerName, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber) {
         Customer customer = new Customer(customerName, address, email, phoneNumber);
-        customer.setShoppingCart(new ShoppingCart(customer));
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCustomer(customer);
+        customer.setShoppingCart(shoppingCart);
         customerRepository.save(customer);
         return customer;
     }
