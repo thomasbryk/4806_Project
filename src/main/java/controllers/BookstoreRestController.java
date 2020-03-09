@@ -69,8 +69,8 @@ public class BookstoreRestController {
 
     //Book REST endpoints
     @GetMapping("/api/getBook")
-    public Book getBook(@RequestParam(value = "id") long id) {
-        return bookRepository.findById(id);
+    public Book getBook(@RequestParam(value = "bookId") long bookId) {
+        return bookRepository.findById(bookId);
     }
 
     @GetMapping("/api/getBooks")
@@ -87,14 +87,13 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newBook")
-    public Book newBook(@RequestParam(value = "name") String name, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value = "bookstoreID") long bookstoreID) {
+    public Book newBook(@RequestParam(value = "bookName") String bookName, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value = "bookstoreID") long bookstoreID) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
         if (bookstore == null)
             return null;
-        Book book = new Book(name, isbn, picture, description, author, publisher);
+        Book book = new Book(bookName, isbn, picture, description, author, publisher);
         bookstore.addBook(book);
         book.setBookstore(bookstore);
-        bookRepository.save(book);
         bookstoreRepository.save(bookstore);
         return book;
     }
