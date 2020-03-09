@@ -36,7 +36,7 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newBookstoreOwner")
-    public BookstoreOwner newBookstoreOwner(@RequestParam(value="name") String name) {
+    public BookstoreOwner newBookstoreOwner(@RequestParam(value = "name") String name) {
         BookstoreOwner bookstoreOwner = new BookstoreOwner(name);
         bookstoreOwnerRepository.save(bookstoreOwner);
         return bookstoreOwner;
@@ -55,8 +55,10 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newBookstore")
-    public Bookstore newBookstore(@RequestParam(value="name") String name, @RequestParam(value="bookstoreOwnerID") long bookstoreOwnerID) {
+    public Bookstore newBookstore(@RequestParam(value = "name") String name, @RequestParam(value = "bookstoreOwnerID") long bookstoreOwnerID) {
         BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerID);
+        if (bookstoreOwner == null)
+            return null;
         Bookstore bookstore = new Bookstore(name);
         bookstore.setBookstoreOwner(bookstoreOwner);
         bookstoreOwner.addBookstore(bookstore);
@@ -80,16 +82,17 @@ public class BookstoreRestController {
     @GetMapping("/api/getBooksByBookstore")
     public Iterable<Book> getBooksByBookstore(@RequestParam(value = "bookstoreID") long bookstoreID) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
-        if (bookstore != null)
-            return bookRepository.findByBookstore(bookstore);
-        else
+        if (bookstore == null)
             return null;
+        return bookRepository.findByBookstore(bookstore);
     }
 
     @PostMapping("/api/newBook")
-    public Book newBook(@RequestParam(value = "name") String name, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value="bookstoreID") long bookstoreID) {
-        Book book = new Book(name, isbn, picture, description, author, publisher);
+    public Book newBook(@RequestParam(value = "name") String name, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value = "bookstoreID") long bookstoreID) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
+        if (bookstore == null)
+            return null;
+        Book book = new Book(name, isbn, picture, description, author, publisher);
         bookstore.addBook(book);
         book.setBookstore(bookstore);
         bookRepository.save(book);
@@ -110,8 +113,8 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newCustomer")
-    public Customer newCustomer(@RequestParam(value = "name") String name, @RequestParam(value="address") String address, @RequestParam(value="email") String email, @RequestParam(value="phoneNumber") String phoneNumber) {
-        Customer customer = new Customer(name,address,email, phoneNumber);
+    public Customer newCustomer(@RequestParam(value = "name") String name, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber) {
+        Customer customer = new Customer(name, address, email, phoneNumber);
         customerRepository.save(customer);
         return customer;
     }
@@ -131,15 +134,16 @@ public class BookstoreRestController {
     @GetMapping("/api/getShoppingCartsByCustomer")
     public Iterable<ShoppingCart> getShoppingCartsByCustomer(@RequestParam(value = "customerID") long customerID) {
         Customer customer = customerRepository.findById(customerID);
-        if (customer != null)
-            return shoppingCartRepository.findByCustomer(customer);
-        else
+        if (customer == null)
             return null;
+        return shoppingCartRepository.findByCustomer(customer);
     }
 
     @PostMapping("/api/newShoppingCart")
     public ShoppingCart newShoppingCart(@RequestParam(value = "customerID") long customerID) {
         Customer customer = customerRepository.findById(customerID);
+        if (customer == null)
+            return null;
         ShoppingCart shoppingCart = new ShoppingCart(customer);
         shoppingCartRepository.save(shoppingCart);
         customer.setShoppingCart(shoppingCart);
@@ -148,9 +152,13 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/addBookToShoppingCart")
-    public ShoppingCart addBookToShoppingCart(@RequestParam(value = "shoppingCartID") long shoppingCartID, @RequestParam(value = "bookID") long bookID){
+    public ShoppingCart addBookToShoppingCart(@RequestParam(value = "shoppingCartID") long shoppingCartID, @RequestParam(value = "bookID") long bookID) {
         ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartID);
+        if (shoppingCart == null)
+            return null;
         Book book = bookRepository.findById(bookID);
+        if (book == null)
+            return null;
         shoppingCart.addBook(book);
         book.addShoppingCart(shoppingCart);
         shoppingCartRepository.save(shoppingCart);
@@ -173,15 +181,19 @@ public class BookstoreRestController {
     @GetMapping("/api/getSalesByCustomer")
     public Iterable<Sale> getSalesByCustomer(@RequestParam(value = "customerID") long customerID) {
         Customer customer = customerRepository.findById(customerID);
+        if (customer == null)
+            return null;
         return saleRepository.findByCustomer(customer);
     }
 
     @PostMapping("/api/newSale")
     public Sale newSale(@RequestParam(value = "shoppingCartID") long shoppingCartID) {
         ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartID);
+        if (shoppingCart == null)
+            return null;
         Sale sale = shoppingCart.checkout();
         saleRepository.save(sale);
-        for (Book book : sale.getBooks()){
+        for (Book book : sale.getBooks()) {
             bookRepository.save(book);
         }
         shoppingCartRepository.save(shoppingCart);
