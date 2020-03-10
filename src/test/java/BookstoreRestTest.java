@@ -1,20 +1,19 @@
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-
-
 import models.*;
 import repositories.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,14 +40,22 @@ public class BookstoreRestTest {
     @Autowired
     private SaleRepository saleRepository;
 
-    static String testBookStoreOwnerName = "testBookStoreOwner";
-    static Long testBookStoreOwnerId;
-    static String testBookstoreName = "testBookstoreName";
+    static Long testBookstoreOwnerId;
+    static String testBookstoreOwnerName = "testBookStoreOwner";
     static Long testBookstoreId;
-    static String testBookName = "testBookName";
-    static Long testBookId;
-    static String testCustomerName = "testCustomer";
+    static String testBookstoreName = "testBookstoreName";
     static Long testCustomerId;
+    static String testCustomerName = "testCustomer";
+    static String testCustomerAddress = "123 Fake St.";
+    static String testCustomerEmail = "test@email.com";
+    static String testCustomerPhoneNumber = "555-1234";
+    static Long testBookId;
+    static String testBookName = "testBookName";
+    static String testBookIsbn = "0123456789";
+    static String testBookPicture = "testPicture.jpeg";
+    static String testBookDescription = "This is a book for testing purposes.";
+    static String testBookAuthor = "Test Author";
+    static String testBookPublisher = "Test Publisher";
 
     /**
      * Creates a new BookstoreOwner via REST, then queries the bookstoreOwnerRepository to confirm that the BookstoreOwner has been created with the correct attributes.
@@ -58,21 +65,21 @@ public class BookstoreRestTest {
     @Order(1)
     public void createBookstoreOwner() throws Exception {
         this.mockMvc.perform(
-                post("/api/newBookstoreOwner").param("bookstoreOwnerName", this.testBookStoreOwnerName))
+                post("/api/newBookstoreOwner").param("bookstoreOwnerName", this.testBookstoreOwnerName))
                 .andExpect(status().isOk());
 
         //Query repository for newly created BookstoreOwner
-        List<BookstoreOwner> bookstoreOwners = this.bookstoreOwnerRepository.findByName(this.testBookStoreOwnerName);
+        List<BookstoreOwner> bookstoreOwners = this.bookstoreOwnerRepository.findByName(this.testBookstoreOwnerName);
 
         //Test that there is one BookstoreOwner in the repository
         assert(bookstoreOwners.size() == 1);
 
         //Test that the BookstoreOwner that exists in the repository is the newly created BookStoreOwner
         BookstoreOwner bookstoreOwner = bookstoreOwners.get(0);
-        assert(bookstoreOwner.getName().equals(this.testBookStoreOwnerName));
+        assert(bookstoreOwner.getName().equals(this.testBookstoreOwnerName));
 
         //Save ID of BookstoreOwner for future test case use
-        this.testBookStoreOwnerId = bookstoreOwner.getId();
+        this.testBookstoreOwnerId = bookstoreOwner.getId();
     }
 
     /**
@@ -85,11 +92,11 @@ public class BookstoreRestTest {
         this.mockMvc.perform(
                 post("/api/newBookstore")
                         .param("bookstoreName", this.testBookstoreName)
-                        .param("bookstoreOwnerId", this.testBookStoreOwnerId.toString()))
+                        .param("bookstoreOwnerId", this.testBookstoreOwnerId.toString()))
                 .andExpect(status().isOk());
 
         //Query repository for BookstoreOwner created in createBookstoreOwner() test
-        Optional<BookstoreOwner> bookstoreOwner = this.bookstoreOwnerRepository.findById(this.testBookStoreOwnerId);
+        Optional<BookstoreOwner> bookstoreOwner = this.bookstoreOwnerRepository.findById(this.testBookstoreOwnerId);
 
         //Get all Bookstores from the BookstoreOwner
         List<Bookstore> bookstores = new ArrayList<Bookstore>(bookstoreOwner.get().getBookstores());
@@ -112,20 +119,14 @@ public class BookstoreRestTest {
     @Test
     @Order(3)
     public void createBook() throws Exception {
-        String isbn = "0123456789";
-        String picture = "testPicture.jpeg";
-        String description = "This is a book for testing purposes.";
-        String author = "Test Author";
-        String publisher = "Test Publisher";
-
         this.mockMvc.perform(
                 post("/api/newBook")
                         .param("bookName", this.testBookName)
-                        .param("isbn", isbn)
-                        .param("picture", picture)
-                        .param("description", description)
-                        .param("author", author)
-                        .param("publisher", publisher)
+                        .param("isbn", this.testBookIsbn)
+                        .param("picture", this.testBookPicture)
+                        .param("description", this.testBookDescription)
+                        .param("author", this.testBookAuthor)
+                        .param("publisher", this.testBookPublisher)
                         .param("bookstoreId", this.testBookstoreId.toString()))
                 .andExpect(status().isOk());
 
@@ -142,11 +143,11 @@ public class BookstoreRestTest {
         //Test that the Book that exists in the repository is the newly created Book
         Book book = books.get(0);
         assert(book.getName().equals(this.testBookName)
-            && book.getIsbn().equals(isbn)
-            && book.getPicture().equals(picture)
-            && book.getDescription().equals(description)
-            && book.getAuthor().equals(author)
-            && book.getPublisher().equals(publisher));
+            && book.getIsbn().equals(this.testBookIsbn)
+            && book.getPicture().equals(this.testBookPicture)
+            && book.getDescription().equals(this.testBookDescription)
+            && book.getAuthor().equals(this.testBookAuthor)
+            && book.getPublisher().equals(this.testBookPublisher));
 
         //Save ID of Book for future test case use
         this.testBookId = book.getId();
@@ -159,15 +160,12 @@ public class BookstoreRestTest {
     @Test
     @Order(4)
     public void createCustomer() throws Exception {
-        String address = "123 Fake St.";
-        String email = "test@email.com";
-        String phoneNumber = "555-1234";
         this.mockMvc.perform(
                 post("/api/newCustomer")
                         .param("customerName", this.testCustomerName)
-                        .param("address", address)
-                        .param("email", email)
-                        .param("phoneNumber", phoneNumber))
+                        .param("address", this.testCustomerAddress)
+                        .param("email", this.testCustomerEmail)
+                        .param("phoneNumber", this.testCustomerPhoneNumber))
                 .andExpect(status().isOk());
 
         //Query repository for newly created Customer
@@ -179,9 +177,9 @@ public class BookstoreRestTest {
         //Test that the Customer that exists in the repository is the newly created Customer
         Customer customer = customers.get(0);
         assert(customer.getName().equals(this.testCustomerName)
-            && customer.getAddress().equals(address)
-            && customer.getEmail().equals(email)
-            && customer.getPhoneNumber().equals(phoneNumber));
+            && customer.getAddress().equals(this.testCustomerAddress)
+            && customer.getEmail().equals(this.testCustomerEmail)
+            && customer.getPhoneNumber().equals(this.testCustomerPhoneNumber));
 
         //Save ID of Customer for future test case use
         this.testCustomerId = customer.getId();
@@ -272,5 +270,191 @@ public class BookstoreRestTest {
         ArrayList<Bookstore> bookstores = new ArrayList<Bookstore>(sale.getBookstores());
         Bookstore bookstore = bookstores.get(0);
         assert(bookstore.getId() == this.testBookstoreId && bookstore.getName().equals(this.testBookstoreName));
+    }
+
+    /**
+     * Queries for a BookstoreOwner by bookstoreOwnerId via REST, compares JSON returned to expected JSON value
+     * Expected value:{"id":1,"name":"testBookStoreOwner"}
+     * @throws Exception
+     */
+    @Test
+    public void getBookstoreOwner() throws Exception {
+        String expectedResult = String.format("{\"id\":%d,\"name\":\"%s\"}",
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBookstoreOwner").param("bookstoreOwnerId", this.testBookstoreOwnerId.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for all BookstoreOwners via REST, compares JSON returned to expected JSON value
+     * Expected value:[{"id":1,"name":"testBookStoreOwner"}]
+     * @throws Exception
+     */
+    @Test
+    public void getBookstoreOwners() throws Exception {
+        String expectedResult = String.format("[{\"id\":%d,\"name\":\"%s\"}]",
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBookstoreOwners"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for all Bookstores via REST, compares JSON returned to expected JSON value
+     * Expected value:[{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}]
+     * @throws Exception
+     */
+    @Test
+    public void getBookstores() throws Exception {
+        String expectedResult = String.format("[{\"id\":%d,\"name\":\"%s\",\"bookstoreOwner\":{\"id\":%d,\"name\":\"%s\"}}]",
+                this.testBookstoreId,
+                this.testBookstoreName,
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBookstores"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for all Bookstores for a BookstoreOwner via REST, compares JSON returned to expected JSON value
+     * Expected value:[{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}]
+     * @throws Exception
+     */
+    @Test
+    public void getBookstoresByBookstoreOwner() throws Exception {
+        String expectedResult = String.format("[{\"id\":%d,\"name\":\"%s\",\"bookstoreOwner\":{\"id\":%d,\"name\":\"%s\"}}]",
+                this.testBookstoreId,
+                this.testBookstoreName,
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBookstoresByBookstoreOwner").param("bookstoreOwnerId", this.testBookstoreOwnerId.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for all Books via REST, compares JSON returned to expected JSON value
+     * Expected value:[{"id":3,"name":"testBookName","isbn":"0123456789","picture":"testPicture.jpeg","description":"This is a book for testing purposes.","author":"Test Author","publisher":"Test Publisher","available":false,"bookstore":{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}}]
+     * @throws Exception
+     */
+    @Test
+    public void getBooks() throws Exception {
+        String expectedResult = String.format("[{\"id\":%d,\"name\":\"%s\",\"isbn\":\"%s\",\"picture\":\"%s\",\"description\":\"%s\",\"author\":\"%s\",\"publisher\":\"%s\",\"available\":%s,\"bookstore\":{\"id\":%d,\"name\":\"%s\",\"bookstoreOwner\":{\"id\":%d,\"name\":\"%s\"}}}]",
+                this.testBookId,
+                this.testBookName,
+                this.testBookIsbn,
+                this.testBookPicture,
+                this.testBookDescription,
+                this.testBookAuthor,
+                this.testBookPublisher,
+                false,
+                this.testBookstoreId,
+                this.testBookstoreName,
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBooks"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for a Books by bookId via REST, compares JSON returned to expected JSON value
+     * Expected value:{"id":3,"name":"testBookName","isbn":"0123456789","picture":"testPicture.jpeg","description":"This is a book for testing purposes.","author":"Test Author","publisher":"Test Publisher","available":false,"bookstore":{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}}
+     * @throws Exception
+     */
+    @Test
+    public void getBook() throws Exception {
+        String expectedResult = String.format("{\"id\":%d,\"name\":\"%s\",\"isbn\":\"%s\",\"picture\":\"%s\",\"description\":\"%s\",\"author\":\"%s\",\"publisher\":\"%s\",\"available\":%s,\"bookstore\":{\"id\":%d,\"name\":\"%s\",\"bookstoreOwner\":{\"id\":%d,\"name\":\"%s\"}}}",
+                this.testBookId,
+                this.testBookName,
+                this.testBookIsbn,
+                this.testBookPicture,
+                this.testBookDescription,
+                this.testBookAuthor,
+                this.testBookPublisher,
+                false,
+                this.testBookstoreId,
+                this.testBookstoreName,
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBook").param("bookId", this.testBookId.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for a Books for a specific BookStore via REST, compares JSON returned to expected JSON value
+     * Expected value:[{"id":3,"name":"testBookName","isbn":"0123456789","picture":"testPicture.jpeg","description":"This is a book for testing purposes.","author":"Test Author","publisher":"Test Publisher","available":false,"bookstore":{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}}]
+     * @throws Exception
+     */
+    @Test
+    public void getBooksByBookstore() throws Exception {
+        String expectedResult = String.format("[{\"id\":%d,\"name\":\"%s\",\"isbn\":\"%s\",\"picture\":\"%s\",\"description\":\"%s\",\"author\":\"%s\",\"publisher\":\"%s\",\"available\":%s,\"bookstore\":{\"id\":%d,\"name\":\"%s\",\"bookstoreOwner\":{\"id\":%d,\"name\":\"%s\"}}}]",
+                this.testBookId,
+                this.testBookName,
+                this.testBookIsbn,
+                this.testBookPicture,
+                this.testBookDescription,
+                this.testBookAuthor,
+                this.testBookPublisher,
+                false,
+                this.testBookstoreId,
+                this.testBookstoreName,
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBooksByBookstore").param("bookstoreId", this.testBookstoreId.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for a Books for a specific BookStore that are available for sale via REST, compares JSON returned to expected JSON value
+     * Expected value:{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}
+     * @throws Exception
+     */
+    @Test
+    public void getBooksAvailableByBookstore() throws Exception {
+        String expectedResult = "";
+        this.mockMvc.perform(
+                get("/api/getBooksAvailableByBookstore").param("bookstoreId", this.testBookstoreId.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    /**
+     * Queries for a Books for a specific BookStore that have been sold via REST, compares JSON returned to expected JSON value
+     * Expected value:[{"id":3,"name":"testBookName","isbn":"0123456789","picture":"testPicture.jpeg","description":"This is a book for testing purposes.","author":"Test Author","publisher":"Test Publisher","available":false,"bookstore":{"id":2,"name":"testBookstoreName","bookstoreOwner":{"id":1,"name":"testBookStoreOwner"}}}]
+     * @throws Exception
+     */
+    @Test
+    public void getBooksSoldByBookstore() throws Exception {
+        String expectedResult = String.format("[{\"id\":%d,\"name\":\"%s\",\"isbn\":\"%s\",\"picture\":\"%s\",\"description\":\"%s\",\"author\":\"%s\",\"publisher\":\"%s\",\"available\":%s,\"bookstore\":{\"id\":%d,\"name\":\"%s\",\"bookstoreOwner\":{\"id\":%d,\"name\":\"%s\"}}}]",
+                this.testBookId,
+                this.testBookName,
+                this.testBookIsbn,
+                this.testBookPicture,
+                this.testBookDescription,
+                this.testBookAuthor,
+                this.testBookPublisher,
+                false,
+                this.testBookstoreId,
+                this.testBookstoreName,
+                this.testBookstoreOwnerId,
+                this.testBookstoreOwnerName);
+        this.mockMvc.perform(
+                get("/api/getBooksSoldByBookstore").param("bookstoreId", this.testBookstoreId.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
     }
 }
