@@ -11,7 +11,6 @@ import static javax.persistence.CascadeType.ALL;
 public class ShoppingCart {
     private Long id;
     private Set<Book> books;
-    @JsonIgnore
     private Customer customer;
 
     public ShoppingCart(){ }

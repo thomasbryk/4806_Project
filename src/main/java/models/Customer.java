@@ -15,7 +15,9 @@ public class Customer{
     private String address;
     private String email;
     private String phoneNumber;
+    @JsonIgnore
     private ShoppingCart shoppingCart;
+    @JsonIgnore
     private Set<Sale> sales;
 
     public Customer(){ }

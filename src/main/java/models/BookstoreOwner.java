@@ -1,5 +1,7 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,6 +14,7 @@ import static javax.persistence.CascadeType.ALL;
 public class BookstoreOwner{
     private Long id;
     private String name;
+    @JsonIgnore
     private Set<Bookstore> bookstores;
 
     public BookstoreOwner(){ this.bookstores = new HashSet<Bookstore>(); }

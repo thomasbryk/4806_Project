@@ -16,7 +16,6 @@ public class Book{
     private String publisher;
     private boolean available;
 
-    @JsonIgnore
     private Bookstore bookstore;
     @JsonIgnore
     private List<ShoppingCart> shoppingCarts;
