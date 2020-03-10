@@ -47,14 +47,15 @@ public class BookstoreRestController {
 
 
     //Bookstore REST endpoints
-    @GetMapping("/api/getBookstore")
-    public Bookstore getBookstore(@RequestParam(value = "bookstoreId") long bookstoreId) {
-        return bookstoreRepository.findById(bookstoreId);
-    }
-
     @GetMapping("/api/getBookstores")
     public Iterable<Bookstore> getBookstores() {
         return bookstoreRepository.findAll();
+    }
+
+    @GetMapping("/api/getBookstoresByBookstoreOwner")
+    public Iterable<Bookstore> getBookstoreByBookstoreOwner(@RequestParam(value = "bookstoreOwnerId") long bookstoreOwnerId) {
+        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
+        return bookstoreOwner.getBookstores();
     }
 
     @PostMapping("/api/newBookstore")
