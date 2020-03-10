@@ -55,8 +55,8 @@ public class BookstoreRestController {
     }
 
     @PostMapping("/api/newBookstore")
-    public Bookstore newBookstore(@RequestParam(value = "bookstoreName") String bookstoreName, @RequestParam(value = "bookstoreOwnerID") long bookstoreOwnerID) {
-        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerID);
+    public Bookstore newBookstore(@RequestParam(value = "bookstoreName") String bookstoreName, @RequestParam(value = "bookstoreOwnerId") long bookstoreOwnerId) {
+        BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
         if (bookstoreOwner == null)
             return null;
         Bookstore bookstore = new Bookstore(bookstoreName);
@@ -79,16 +79,16 @@ public class BookstoreRestController {
     }
 
     @GetMapping("/api/getBooksByBookstore")
-    public Iterable<Book> getBooksByBookstore(@RequestParam(value = "bookstoreID") long bookstoreID) {
-        Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
+    public Iterable<Book> getBooksByBookstore(@RequestParam(value = "bookstoreId") long bookstoreId) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
         if (bookstore == null)
             return null;
         return bookRepository.findByBookstore(bookstore);
     }
 
     @PostMapping("/api/newBook")
-    public Book newBook(@RequestParam(value = "bookName") String bookName, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value = "bookstoreID") long bookstoreID) {
-        Bookstore bookstore = bookstoreRepository.findById(bookstoreID);
+    public Book newBook(@RequestParam(value = "bookName") String bookName, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value = "bookstoreId") long bookstoreId) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
         if (bookstore == null)
             return null;
         Book book = new Book(bookName, isbn, picture, description, author, publisher);
@@ -123,20 +123,20 @@ public class BookstoreRestController {
 
     //Shopping Cart REST endpoints
     @GetMapping("/api/getShoppingCartByCustomer")
-    public ShoppingCart getShoppingCartByCustomer(@RequestParam(value = "customerID") long customerID) {
-        Customer customer = customerRepository.findById(customerID);
+    public ShoppingCart getShoppingCartByCustomer(@RequestParam(value = "customerId") long customerId) {
+        Customer customer = customerRepository.findById(customerId);
         if (customer == null)
             return null;
         return shoppingCartRepository.findByCustomer(customer);
     }
 
     @PostMapping("/api/addBookToCustomersShoppingCart")
-    public ShoppingCart addBookToShoppingCart(@RequestParam(value = "customerId") long customerId , @RequestParam(value = "bookID") long bookID) {
+    public ShoppingCart addBookToShoppingCart(@RequestParam(value = "customerId") long customerId , @RequestParam(value = "bookId") long bookId) {
         Customer customer = customerRepository.findById(customerId);
         if (customer == null)
             return null;
         ShoppingCart shoppingCart = customer.getShoppingCart();
-        Book book = bookRepository.findById(bookID);
+        Book book = bookRepository.findById(bookId);
         if (book == null)
             return null;
         shoppingCart.addBook(book);
