@@ -50,6 +50,10 @@ public class BookstoreRestTest {
     static String testCustomerName = "testCustomer";
     static Long testCustomerId;
 
+    /**
+     * Creates a new BookstoreOwner via REST, then queries the bookstoreOwnerRepository to confirm that the BookstoreOwner has been created with the correct attributes.
+     * @throws Exception
+     */
     @Test
     @Order(1)
     public void createBookstoreOwner() throws Exception {
@@ -71,6 +75,10 @@ public class BookstoreRestTest {
         this.testBookStoreOwnerId = bookstoreOwner.getId();
     }
 
+    /**
+     * Creates a new Bookstore for the test BookstoreOwner via REST, then queries the bookstoreOwnerRepository to confirm the Bookstore has been created with the correct attributes and added to the BookstoreOwners bookstores
+     * @throws Exception
+     */
     @Test
     @Order(2)
     public void createBookstore() throws Exception {
@@ -97,17 +105,27 @@ public class BookstoreRestTest {
         this.testBookstoreId = bookstore.getId();
     }
 
+    /**
+     * Creates a new Book for the BookstoreOwner's first Bookstore via REST, then queries bookstoreRepository to confirm the Book has been added to the Bookstore with the correct attributes.
+     * @throws Exception
+     */
     @Test
     @Order(3)
     public void createBook() throws Exception {
+        String isbn = "0123456789";
+        String picture = "testPicture.jpeg";
+        String description = "This is a book for testing purposes.";
+        String author = "Test Author";
+        String publisher = "Test Publisher";
+
         this.mockMvc.perform(
                 post("/api/newBook")
                         .param("bookName", this.testBookName)
-                        .param("isbn", "0123456789")
-                        .param("picture", "testPicture.jpeg")
-                        .param("description", "This is a book for testing purposes.")
-                        .param("author", "Test Author")
-                        .param("publisher", "Test Publisher")
+                        .param("isbn", isbn)
+                        .param("picture", picture)
+                        .param("description", description)
+                        .param("author", author)
+                        .param("publisher", publisher)
                         .param("bookstoreId", this.testBookstoreId.toString()))
                 .andExpect(status().isOk());
 
@@ -123,21 +141,33 @@ public class BookstoreRestTest {
 
         //Test that the Book that exists in the repository is the newly created Book
         Book book = books.get(0);
-        assert(book.getName().equals(this.testBookName));
+        assert(book.getName().equals(this.testBookName)
+            && book.getIsbn().equals(isbn)
+            && book.getPicture().equals(picture)
+            && book.getDescription().equals(description)
+            && book.getAuthor().equals(author)
+            && book.getPublisher().equals(publisher));
 
         //Save ID of Book for future test case use
         this.testBookId = book.getId();
     }
 
+    /**
+     * Creates a new Customer via REST, then queries customerRepository to confirm customer has been created with the correct attributes.
+     * @throws Exception
+     */
     @Test
     @Order(4)
     public void createCustomer() throws Exception {
+        String address = "123 Fake St.";
+        String email = "test@email.com";
+        String phoneNumber = "555-1234";
         this.mockMvc.perform(
                 post("/api/newCustomer")
                         .param("customerName", this.testCustomerName)
-                        .param("address", "123 Fake St.")
-                        .param("email", "test@email.com")
-                        .param("phoneNumber", "555-1234"))
+                        .param("address", address)
+                        .param("email", email)
+                        .param("phoneNumber", phoneNumber))
                 .andExpect(status().isOk());
 
         //Query repository for newly created Customer
@@ -148,12 +178,19 @@ public class BookstoreRestTest {
 
         //Test that the Customer that exists in the repository is the newly created Customer
         Customer customer = customers.get(0);
-        assert(customer.getName().equals(this.testCustomerName));
+        assert(customer.getName().equals(this.testCustomerName)
+            && customer.getAddress().equals(address)
+            && customer.getEmail().equals(email)
+            && customer.getPhoneNumber().equals(phoneNumber));
 
-        //Save ID of BookstoreOwner for future test case use
+        //Save ID of Customer for future test case use
         this.testCustomerId = customer.getId();
     }
 
+    /**
+     * Adds a Book to a Customer's ShoppingCart via REST, then queries customerRepository to confirm that the Customer's ShoppingCart contains the Book
+     * @throws Exception
+     */
     @Test
     @Order(5)
     public void addBookToCustomersShoppingCart() throws Exception {
@@ -176,12 +213,21 @@ public class BookstoreRestTest {
         //Test that there is one Book in the Shopping Cart
         assert(books.size() == 1);
 
-        Book book = books.get(0);
-
         //Test that the Book is the testBook
+        Book book = books.get(0);
         assert(book.getName().equals(this.testBookName) && book.getId() == this.testBookId);
     }
 
+    /**
+     * Creates a Sale for Customer via Rest, then queries the customerRepository to determine whether:
+     *   - Customer's ShoppingCart is now empty
+     *   - Customer contains a single Sale
+     *   - The Sale contains only the Book that was previously in the Customer's Shopping Cart
+     *   - The Book is no longer available for Sale
+     *   - The Book is from the Bookstore that it was bought from
+     *   - The Bookstore associated with the Sale is the same as the Bookstore that the Book is from
+     * @throws Exception
+     */
     @Test
     @Order(6)
     public void newSale() throws Exception {
