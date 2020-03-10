@@ -6,6 +6,9 @@ import repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
 public class BookstoreRestController {
@@ -84,6 +87,36 @@ public class BookstoreRestController {
         if (bookstore == null)
             return null;
         return bookRepository.findByBookstore(bookstore);
+    }
+
+    @GetMapping("/api/getBooksAvailableByBookstore")
+    public Iterable<Book> getBooksAvailableByBookstore(@RequestParam(value = "bookstoreId") long bookstoreId) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
+        if (bookstore == null)
+            return null;
+        ArrayList<Book> books = new ArrayList<>();
+        for (Book book : bookstore.getBooks()){
+            if (book.getAvailable())
+                books.add(book);
+        }
+        if (books.size() == 0)
+            return null;
+        return books;
+    }
+
+    @GetMapping("/api/getBooksSoldByBookstore")
+    public Iterable<Book> getBooksSoldByBookstore(@RequestParam(value = "bookstoreId") long bookstoreId) {
+        Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
+        if (bookstore == null)
+            return null;
+        ArrayList<Book> books = new ArrayList<>();
+        for (Book book : bookstore.getBooks()){
+            if (!book.getAvailable())
+                books.add(book);
+        }
+        if (books.size() == 0)
+            return null;
+        return books;
     }
 
     @PostMapping("/api/newBook")
