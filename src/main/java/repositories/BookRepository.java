@@ -1,6 +1,7 @@
 package repositories;
 
 import models.Book;
+import models.Bookstore;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -14,4 +15,5 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     List<Book> findByDescription(String description);
     List<Book> findByAuthor(String author);
     List<Book> findByPublisher(String publisher);
+    Iterable<Book> findByBookstore(Bookstore bookstore);
 }

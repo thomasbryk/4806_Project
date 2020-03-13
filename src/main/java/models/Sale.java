@@ -10,12 +10,8 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class Sale {
     private Long id;
-
-    @JsonIgnore
     private Set<Book> books;
-    @JsonIgnore
     private Customer customer;
-    @JsonIgnore
     private Set<Bookstore> bookstores;
 
     public Sale() { }
@@ -39,7 +35,7 @@ public class Sale {
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL)
     public Set<Bookstore> getBookstores() { return this.bookstores; }
     public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
     public void addBookstore(Bookstore bookstore) { this.bookstores.add(bookstore);}
