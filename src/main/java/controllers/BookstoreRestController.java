@@ -314,7 +314,6 @@ public class BookstoreRestController {
         ShoppingCart shoppingCart = customer.getShoppingCart();
         Sale sale = shoppingCart.checkout();
         saleRepository.save(sale);
-        shoppingCartRepository.save(shoppingCart);
         return sale;
     }
 }

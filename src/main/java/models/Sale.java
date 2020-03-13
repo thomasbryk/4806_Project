@@ -35,7 +35,7 @@ public class Sale {
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL)
     public Set<Bookstore> getBookstores() { return this.bookstores; }
     public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
     public void addBookstore(Bookstore bookstore) { this.bookstores.add(bookstore);}
