@@ -1,5 +1,7 @@
 package repositories;
 
+import models.Book;
+import models.Bookstore;
 import models.Customer;
 import models.Sale;
 import org.springframework.data.repository.PagingAndSortingRepository;
