@@ -13,4 +13,5 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
     List<Customer> findByAddress(String address);
     List<Customer> findByEmail(String email);
     List<Customer> findByPhoneNumber(String phoneNumber);
+    List<Customer> findByUsername(String username);
 }
