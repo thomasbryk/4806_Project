@@ -1,6 +1,6 @@
 import models.Customer;
-import org.junit.Before;
-import org.junit.Test;
+        import org.junit.Before;
+        import org.junit.Test;
 
 public class CustomerTest {
     private String name = "Test Customer";
@@ -13,6 +13,4 @@ public class CustomerTest {
     public void setUp() {
         this.customer = new Customer(this.name, this.address, this.email, this.phoneNumber);
     }
-
-
 }
