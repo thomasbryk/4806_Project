@@ -39,7 +39,7 @@ public class BookstoreOwner extends BookstoreUser{
     public Set<Bookstore> getBookstores() { return this.bookstores; }
     public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
 
-    public Bookstore getBookstore(long bookstoreId){
+    public Bookstore getBookstoreById(long bookstoreId){
         for (Bookstore bookstore: this.bookstores){
             if (bookstore.getId() == bookstoreId){
                 return bookstore;
@@ -53,7 +53,7 @@ public class BookstoreOwner extends BookstoreUser{
         this.bookstores.add(bookstore);
     }
 
-    public void removeBookstore(long bookstoreId){
+    public void removeBookstoreById(long bookstoreId){
         Bookstore bookstoreFound = null;
         for (Bookstore bookstore : this.bookstores){
             if (bookstore.getId() == bookstoreId){
