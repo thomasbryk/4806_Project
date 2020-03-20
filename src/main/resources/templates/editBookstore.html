@@ -35,7 +35,7 @@
                     <td th:text="${book.getId()}"></td>
                     <td th:text="${book.getName()}"></td>
                     <td>
-                        <form action="#" th:action="@{/removeBook}" method="post">
+                        <form th:if="${book.getAvailable()}" action="#" th:action="@{/removeBook}" method="post">
                             <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
                             <input type="hidden" name="bookId" th:value="${book.getId()}" />
                             <input type="submit" value="Remove Book"/>
