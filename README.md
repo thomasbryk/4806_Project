@@ -11,6 +11,9 @@
 ## Project Description
 Bookstore Owner can upload and edit Book information (ISBN, picture, description, author, publisher,...) and inventory. User can search for, and browse through, the books in the bookstore, sort/filter them based on the above information. User can then decide to purchase one or many books by putting them in the Shopping Cart and proceeding to Checkout. The purchase itself will obviously be simulated, but purchases cannot exceed the inventory. User can also view Book Recommendations based on past purchases. This is done by looking for users whose purchases are most similar (using Jaccard distance: Google it!), and then recommending books purchased by those similar users but that the current User hasn't yet purchased.
 
+## Heroku App
+- #### [Heroku App](https://sysc-4806-project-2020.herokuapp.com/)
+
 ## Milestones
 - #### [Milestone 1: Early prototype (March 6th, 2020)](../../milestone/1)
 - #### [Milestone 2: Alpha Release (March 20th, 2020)](../../milestone/2)
@@ -19,6 +22,7 @@ Bookstore Owner can upload and edit Book information (ISBN, picture, description
 ## Weekly Scrums
 1. #### [Weekly Scrum - March 6th, 2020](../../issues/24)
 2. #### [Weekly Scrum - March 13th, 2020](../../issues/34)
+2. #### [Weekly Scrum - March 20th, 2020](../../issues/56)
 
 ## UML
 #### Class Diagram:
