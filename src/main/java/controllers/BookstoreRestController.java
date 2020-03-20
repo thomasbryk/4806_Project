@@ -73,7 +73,6 @@ public class BookstoreRestController {
      * @param bookstoreOwnerName Name for new BookstoreOwner
      * @return Newly created BookstoreOwner
      */
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/api/newBookstoreOwner")
     public BookstoreOwner newBookstoreOwner(@RequestParam(value = "bookstoreOwnerName") String bookstoreOwnerName, @RequestParam(value = "bookstoreOwnerUsername") String bookstoreOwnerUsername, @RequestParam(value = "bookstoreOwnerPassword") String bookstoreOwnerPassword) {
         BookstoreOwner bookstoreOwner = new BookstoreOwner(bookstoreOwnerUsername, bookstoreOwnerPassword, bookstoreOwnerName);
@@ -350,22 +349,22 @@ public class BookstoreRestController {
         return "successfully authenticated";
     }
 
-    /**
-     * Register Customer endpoint
-     */
-    @PostMapping(value="/registerCustomer")
-    public Customer postMethodName(@RequestBody Customer customer) {
-        customerRepository.save(customer);
-        return customer;
-    }
+    // /**
+    //  * Register Customer endpoint
+    //  */
+    // @PostMapping(value="/registerCustomer")
+    // public Customer postMethodName(@RequestBody Customer customer) {
+    //     customerRepository.save(customer);
+    //     return customer;
+    // }
 
-    /**
-     * Register Bookstore Owner endpoint
-     */
-    @PostMapping(value="/registerBookstoreOwner")
-    public BookstoreOwner postMethodName(@RequestBody BookstoreOwner bookstoreOwner) {
-        bookstoreOwnerRepository.save(bookstoreOwner);
-        return bookstoreOwner;
-    }
+    // /**
+    //  * Register Bookstore Owner endpoint
+    //  */
+    // @PostMapping(value="/registerBookstoreOwner")
+    // public BookstoreOwner postMethodName(@RequestBody BookstoreOwner bookstoreOwner) {
+    //     bookstoreOwnerRepository.save(bookstoreOwner);
+    //     return bookstoreOwner;
+    // }
     
 }
