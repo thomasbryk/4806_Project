@@ -16,9 +16,17 @@ public class BookTest {
         this.book = new Book(this.name, this.isbn, this.picture, this.description, this.author, this.publisher);
     }
 
+    /**
+     * Test the equals() method in Book.
+     *
+     * Expected outcome: The same book is equal and a different book is not equal.
+     */
     @Test
     public void testEquals(){
-        Book secondBook = new Book(this.name, this.isbn, this.picture, this.description, this.author, this.publisher);
-        assert (this.book.equals(secondBook));
+        Book sameBook = new Book(this.name, this.isbn, this.picture, this.description, this.author, this.publisher);
+        Book differentBook = new Book("Different Test Book", "987654321", "different_picture.jpeg", "book for testing purposes", "Mark Twain", "96024 publishing");
+
+        assert (this.book.equals(sameBook));
+        assert (!this.book.equals(differentBook));
     }
 }

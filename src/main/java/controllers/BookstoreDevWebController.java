@@ -100,7 +100,7 @@ public class BookstoreDevWebController {
                              @RequestParam(value="bookId") long bookId,
                              Model model) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
-        bookstore.removeBook(bookId);
+        bookstore.removeBookById(bookId);
         bookstoreRepository.save(bookstore);
         bookRepository.deleteById(bookId);
         model.addAttribute("bookstore", bookstore);
