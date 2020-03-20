@@ -24,12 +24,12 @@
 
     <h1>Create Customer</h1>
     <form id="customerCreate" th:action="@{/newCustomer}" method="post">
+        <label>(*) Name:</label>
+        <input type="text" name="name"><br><br>
         <label>(*) Username:</label>
         <input type="text" name="username"><br><br>
         <label>(*) Password:</label>
         <input type="text" name="password"><br><br>
-        <label>(*) Name:</label>
-        <input type="text" name="name"><br><br>
         <label>Address:</label>
         <input type="text" name="address"><br><br>
         <label>Email:</label>
