@@ -14,6 +14,15 @@ Bookstore Owner can upload and edit Book information (ISBN, picture, description
 ## Heroku App
 - #### [Heroku App](https://sysc-4806-project-2020.herokuapp.com/)
 
+## Instruction to use app
+The functionality is through our dev portal. It provides basic bookstore functionality, but it is not representative of the final product we plan to have working by Milestone 3.
+1. Create BookstoreOwner
+2. Create Bookstore
+3. Add Books to Bookstore
+4. Create Customer
+5. Shop Bookstore, and add Books to ShoppingCart.
+6. Checkout on Customer page
+
 ## Milestones
 - #### [Milestone 1: Early prototype (March 6th, 2020)](../../milestone/1)
 - #### [Milestone 2: Alpha Release (March 20th, 2020)](../../milestone/2)
