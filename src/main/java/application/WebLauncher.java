@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"controllers","models","repositories"})
+@ComponentScan({"controllers","models","repositories","security"})
 @EntityScan({"models"})
 @EnableJpaRepositories("repositories")
 public class WebLauncher {

@@ -3,6 +3,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class Book{
     @JsonIgnore
     private Sale sale;
 
-    public Book(){	}
+    public Book(){ this.shoppingCarts = new ArrayList<ShoppingCart>(); }
     public Book(String name, String isbn, String picture, String description, String author, String publisher){
         this.name = name;
         this.isbn = isbn;
@@ -31,6 +32,7 @@ public class Book{
         this.author = author;
         this.publisher = publisher;
         this.available = true;
+        this.shoppingCarts = new ArrayList<ShoppingCart>();
     }
 
     @Id
@@ -52,7 +54,13 @@ public class Book{
     public List<ShoppingCart> getShoppingCarts(){ return this.shoppingCarts; }
     public void setShoppingCarts(List<ShoppingCart> shoppingCarts){ this.shoppingCarts = shoppingCarts; }
     public void addShoppingCart(ShoppingCart shoppingCart){this.shoppingCarts.add(shoppingCart);}
-    public void removeShoppingCart(){this.shoppingCarts = null;}
+    public void removeShoppingCarts(){
+        //The reason this does not call .clear() and changes the reference to a new ArrayList is because of the
+        //Hibernate layer. If it is cleared here, it is possible a situation could arise that would  causes
+        //issues when Hibernate tries to persist (this would occur if the reference to shoppingCarts was copied
+        //somewhere else).
+        this.shoppingCarts = new ArrayList<ShoppingCart>();;
+    }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -73,7 +81,7 @@ public class Book{
     public void setPublisher(String publisher) { this.publisher = publisher; }
 
     public boolean equals(Book book){
-        if (this.name == book.getName() && this.isbn == book.getIsbn() && this.picture == book.getPicture() && this.description == book.getDescription() && this.author == book.getAuthor() && this.publisher == book.getPublisher()){
+        if (this.name.equals(book.getName()) && this.isbn.equals(book.getIsbn()) && this.picture.equals(book.getPicture()) && this.description.equals(book.getDescription()) && this.author.equals(book.getAuthor()) && this.publisher.equals(book.getPublisher())){
             return true;
         }
         return false;

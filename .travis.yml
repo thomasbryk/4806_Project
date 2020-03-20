@@ -4,3 +4,5 @@ deploy:
   api-key:
     secure: $HEROKU_API_KEY
   app: sysc-4806-project-2020
+services:
+  - redis-server

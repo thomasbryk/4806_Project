@@ -8,6 +8,9 @@
         <form action="#" th:action="@{/}" method="get">
             <input type="submit" value="Home"/>
         </form>
+        <form action="/perform_logout">
+            <input type="submit" value="Log out" />
+        </form>
         <h1>Customer</h1>
         <p th:text="'Customer ID: ' + ${customer.getId()}" />
         <p th:text="'Customer Name: ' + ${customer.getName()}" />
@@ -38,7 +41,7 @@
                 <tr>
                     <td th:text="${bookstore.getId()}" />
                     <td>
-                        <form action="#" th:action="@{/shopBookstore}" method="post">
+                        <form action="#" th:action="@{/shopBookstore}" method="get">
                             <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
                             <input type="hidden" name="customerId" th:value="${customer.getId()}" />
                             <input type="submit" value="Shop store"/>

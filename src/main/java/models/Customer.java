@@ -9,7 +9,7 @@ import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
-public class Customer{
+public class Customer extends BookstoreUser{
     private Long id;
     private String name;
     private String address;
@@ -20,8 +20,20 @@ public class Customer{
     @JsonIgnore
     private Set<Sale> sales;
 
-    public Customer(){ }
-    public Customer( String name, String address, String email, String phoneNumber) {
+    public Customer(){
+        super("USER");
+    }
+
+    public Customer(String name, String address, String email, String phoneNumber) {
+        super();
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Customer(String username, String password, String name, String address, String email, String phoneNumber ){
+        super(username, password, "USER");
         this.name = name;
         this.address = address;
         this.email = email;

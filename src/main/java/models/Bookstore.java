@@ -3,8 +3,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -15,14 +14,14 @@ public class Bookstore {
     private String name;
     private BookstoreOwner bookstoreOwner;
     @JsonIgnore
-    private List<Book> books;
+    private Set<Book> books;
     @JsonIgnore
     private Set<Sale> sales;
 
-    public Bookstore(){ this.books = new ArrayList<Book>();	}
+    public Bookstore(){ this.books = new HashSet<Book>();	}
     public Bookstore(String name) {
         this.name = name;
-        this.books = new ArrayList<Book>();
+        this.books = new HashSet<Book>();
     }
 
     @Id
@@ -45,15 +44,15 @@ public class Bookstore {
     public void setName(String name) { this.name = name; }
 
     @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstore")
-    public List<Book> getBooks(){ return this.books; }
-    public void setBooks(List<Book> books){ this.books = books; }
+    public Set<Book> getBooks(){ return this.books; }
+    public void setBooks(Set<Book> books){ this.books = books; }
 
     public void addBook(Book book){
         book.setBookstore(this);
         this.books.add(book);
     }
 
-    public void removeBook(long bookId){
+    public void removeBookById(long bookId){
         Book bookFound = null;
         for (Book book : this.books){
             if (book.getId() == bookId){
@@ -62,8 +61,10 @@ public class Bookstore {
             }
         }
         if (bookFound != null) {
-            this.books.remove(bookFound);
-            bookFound.removeBookstore();
+            if (bookFound.getAvailable()) {
+                this.books.remove(bookFound);
+                bookFound.removeBookstore();
+            }
         }
     }
 }
