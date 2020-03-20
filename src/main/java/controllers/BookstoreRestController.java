@@ -71,6 +71,8 @@ public class BookstoreRestController {
     /**
      * Create new BookstoreOwner with given name
      * @param bookstoreOwnerName Name for new BookstoreOwner
+     * @param bookstoreOwnerUsername Username for new BookstoreOwner
+     * @param bookstoreOwnerPassword Password for new BookstoreOwner
      * @return Newly created BookstoreOwner
      */
     @PostMapping("/api/newBookstoreOwner")
@@ -246,6 +248,8 @@ public class BookstoreRestController {
      * @param address Address of new Customer
      * @param email Email of new Customer
      * @param phoneNumber Phone Number of new Customer
+     * @param username Username for new Customer
+     * @param password Password for new Customer
      * @return Newly created Customer
      */
     @PostMapping("/api/newCustomer")
