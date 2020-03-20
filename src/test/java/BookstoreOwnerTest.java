@@ -4,12 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BookstoreOwnerTest {
-    private String name = "Test Bookstore";
+    private String name = "Test BookstoreOwner";
+    private String username = "bookstoreUsername";
+    private String password = "bookstorePassword";
     private BookstoreOwner bookstoreOwner;
 
     @Before
     public void setUp() {
-        this.bookstoreOwner = new BookstoreOwner(name);
+        this.bookstoreOwner = new BookstoreOwner(this.name, this.username, this.password);
     }
 
     /**
