@@ -1,8 +1,5 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import static javax.persistence.CascadeType.ALL;
@@ -35,7 +32,7 @@ public class ShoppingCart {
         for (Book book : this.books){
             book.setAvailable(false);
             sale.addBookstore(book.getBookstore());
-            book.removeShoppingCart();
+            book.removeShoppingCarts();
             book.setSale(sale);
         }
         this.removeBooks();

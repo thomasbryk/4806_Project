@@ -22,7 +22,7 @@ public class Book{
     @JsonIgnore
     private Sale sale;
 
-    public Book(){	}
+    public Book(){}
     public Book(String name, String isbn, String picture, String description, String author, String publisher){
         this.name = name;
         this.isbn = isbn;
@@ -52,7 +52,7 @@ public class Book{
     public List<ShoppingCart> getShoppingCarts(){ return this.shoppingCarts; }
     public void setShoppingCarts(List<ShoppingCart> shoppingCarts){ this.shoppingCarts = shoppingCarts; }
     public void addShoppingCart(ShoppingCart shoppingCart){this.shoppingCarts.add(shoppingCart);}
-    public void removeShoppingCart(){this.shoppingCarts = null;}
+    public void removeShoppingCarts(){this.shoppingCarts = null;}
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
