@@ -5,46 +5,54 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+import models.BookstoreOwner;
+import models.BookstoreUser;
 import models.Customer;
+import repositories.BookstoreOwnerRepository;
 import repositories.CustomerRepository;
 
+@Service
 public class UserServiceDetails implements UserDetailsService {
     
     @Autowired
     CustomerRepository customerRepository;
 
-    public UserServiceDetails() {
-        //in a real application, instead of using local data,
-        // we will find user details by some other means e.g. from an external system
-        // add new customers and new bookstore owners
+    @Autowired
+    BookstoreOwnerRepository bookstoreOwnerRepository;
+
+    @Autowired
+    public UserServiceDetails(CustomerRepository customerRepository, BookstoreOwnerRepository bookstoreOwnerRepository) {
+        // this instantiates a couple users to start out with
+        Customer c = new Customer("user1","pass1","Customer 1", "somewhere", "e@ma.il", "613-613-6136");
+        customerRepository.save(c);
+
+        BookstoreOwner b = new BookstoreOwner("user2", "pass2", "Bookstore owner 1");
+        bookstoreOwnerRepository.save(b);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Got username: "+username);
         Customer c = customerRepository.findByUsername(username);
-        
-        if (!user.isPresent()) {
-            throw new UsernameNotFoundException("User not found by name: " + username);
+        if(c != null){
+            return toUserDetails(c);
         }
-        return toUserDetails(user.get());
-    }
 
-    private UserDetails toUserDetails(UserObject userObject) {
-        return User.withUsername(userObject.name)
-                   .password(userObject.password)
-                   .roles(userObject.role).build();
-    }
-
-    private static class UserObject {
-        private String name;
-        private String password;
-        private String role;
-
-        public UserObject(String name, String password, String role) {
-            this.name = name;
-            this.password = password;
-            this.role = role;
+        BookstoreOwner b = bookstoreOwnerRepository.findByUsername(username);
+        if(b != null){
+            return toUserDetails(b);
         }
+
+        throw new UsernameNotFoundException("Username not found for either customer or bookstore");
+
     }
+
+    private UserDetails toUserDetails(BookstoreUser user) {
+        return User.withUsername(user.getUsername())
+                   .password(user.getPassword())
+                   .roles(user.getRole()).build();
+    }
+
 }

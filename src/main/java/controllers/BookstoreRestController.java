@@ -1,10 +1,29 @@
 package controllers;
 
-import models.*;
-import repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import models.Book;
+import models.Bookstore;
+import models.BookstoreOwner;
+import models.Customer;
+import models.Sale;
+import models.ShoppingCart;
+import repositories.BookRepository;
+import repositories.BookstoreOwnerRepository;
+import repositories.BookstoreRepository;
+import repositories.CustomerRepository;
+import repositories.SaleRepository;
+import repositories.ShoppingCartRepository;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 /**
  * Controller with endpoints used to create and access entities for the bookstore system
@@ -54,9 +73,10 @@ public class BookstoreRestController {
      * @param bookstoreOwnerName Name for new BookstoreOwner
      * @return Newly created BookstoreOwner
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/api/newBookstoreOwner")
-    public BookstoreOwner newBookstoreOwner(@RequestParam(value = "bookstoreOwnerName") String bookstoreOwnerName) {
-        BookstoreOwner bookstoreOwner = new BookstoreOwner(bookstoreOwnerName);
+    public BookstoreOwner newBookstoreOwner(@RequestParam(value = "bookstoreOwnerName") String bookstoreOwnerName, @RequestParam(value = "bookstoreOwnerUsername") String bookstoreOwnerUsername, @RequestParam(value = "bookstoreOwnerPassword") String bookstoreOwnerPassword) {
+        BookstoreOwner bookstoreOwner = new BookstoreOwner(bookstoreOwnerUsername, bookstoreOwnerPassword, bookstoreOwnerName);
         bookstoreOwnerRepository.save(bookstoreOwner);
         return bookstoreOwner;
     }
@@ -89,6 +109,7 @@ public class BookstoreRestController {
      * @param bookstoreOwnerId ID of BookstoreOwner to be set as owner of new Bookstore
      * @return Newly created Bookstore
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/api/newBookstore")
     public Bookstore newBookstore(@RequestParam(value = "bookstoreName") String bookstoreName, @RequestParam(value = "bookstoreOwnerId") long bookstoreOwnerId) {
         BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
@@ -186,6 +207,7 @@ public class BookstoreRestController {
      * @param bookstoreId ID of Bookstore that new Book will be located in
      * @return Newly created Book
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/api/newBook")
     public Book newBook(@RequestParam(value = "bookName") String bookName, @RequestParam(value = "isbn") String isbn, @RequestParam(value = "picture") String picture, @RequestParam(value = "description") String description, @RequestParam(value = "author") String author, @RequestParam(value = "publisher") String publisher, @RequestParam(value = "bookstoreId") long bookstoreId) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
@@ -228,8 +250,8 @@ public class BookstoreRestController {
      * @return Newly created Customer
      */
     @PostMapping("/api/newCustomer")
-    public Customer newCustomer(@RequestParam(value = "customerName") String customerName, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber) {
-        Customer customer = new Customer(customerName, address, email, phoneNumber);
+    public Customer newCustomer(@RequestParam(value = "customerName") String customerName, @RequestParam(value = "address") String address, @RequestParam(value = "email") String email, @RequestParam(value = "phoneNumber") String phoneNumber, @RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+        Customer customer = new Customer(username, password, customerName, address, email, phoneNumber);
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCustomer(customer);
         customer.setShoppingCart(shoppingCart);
@@ -258,6 +280,7 @@ public class BookstoreRestController {
      * @param bookId ID of Book to add to ShoppingCart
      * @return ShoppingCart of given Customer, containing given Book
      */
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/api/addBookToCustomersShoppingCart")
     public ShoppingCart addBookToShoppingCart(@RequestParam(value = "customerId") long customerId , @RequestParam(value = "bookId") long bookId) {
         Customer customer = customerRepository.findById(customerId);
@@ -306,6 +329,7 @@ public class BookstoreRestController {
      * @param customerId ID of Customer
      * @return Newly create Sale linked to given Customer
      */
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/api/newSale")
     public Sale newSale(@RequestParam(value = "customerId") long customerId) {
         Customer customer = customerRepository.findById(customerId);
@@ -316,4 +340,32 @@ public class BookstoreRestController {
         saleRepository.save(sale);
         return sale;
     }
+
+    /**
+     * Endpoint for logging in, doesn't do anything significant other than start a session
+     */
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PostMapping("/login")
+    public String login(){
+        return "successfully authenticated";
+    }
+
+    /**
+     * Register Customer endpoint
+     */
+    @PostMapping(value="/registerCustomer")
+    public Customer postMethodName(@RequestBody Customer customer) {
+        customerRepository.save(customer);
+        return customer;
+    }
+
+    /**
+     * Register Bookstore Owner endpoint
+     */
+    @PostMapping(value="/registerBookstoreOwner")
+    public BookstoreOwner postMethodName(@RequestBody BookstoreOwner bookstoreOwner) {
+        bookstoreOwnerRepository.save(bookstoreOwner);
+        return bookstoreOwner;
+    }
+    
 }
