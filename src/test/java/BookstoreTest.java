@@ -32,12 +32,12 @@ public class BookstoreTest {
     }
 
     /**
-     * Test the removeBook() method in Book.
+     * Test the removeBook() method in Bookstore when Book is available.
      *
      * Expected condition: The Bookstore no longer contains the Book and the Book no longer has a Bookstore
      */
     @Test
-    public void testRemoveBook(){
+    public void testRemoveBookWhenAvailable(){
         Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
         book.setId(1L);
 
@@ -46,5 +46,23 @@ public class BookstoreTest {
 
         assert(!this.bookstore.getBooks().contains(book));
         assert(book.getBookstore() == null);
+    }
+
+    /**
+     * Test the removeBook() method in Bookstore when Book is not available.
+     *
+     * Expected condition: The Bookstore still contains the Book and the Book
+     */
+    @Test
+    public void testRemoveBookWhenNotAvailable(){
+        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
+        book.setId(1L);
+        book.setAvailable(false);
+
+        this.bookstore.addBook(book);
+        this.bookstore.removeBookById(1L);
+
+        assert(this.bookstore.getBooks().contains(book));
+        assert(book.getBookstore() == this.bookstore);
     }
 }
