@@ -62,8 +62,10 @@ public class Bookstore {
             }
         }
         if (bookFound != null) {
-            this.books.remove(bookFound);
-            bookFound.removeBookstore();
+            if (bookFound.getAvailable()) {
+                this.books.remove(bookFound);
+                bookFound.removeBookstore();
+            }
         }
     }
 }
