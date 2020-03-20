@@ -71,7 +71,7 @@ public class BookstoreDevWebController {
                                   @RequestParam(value="bookstoreId") long bookstoreId,
                                   Model model ) {
         BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
-        bookstoreOwner.removeBookstore(bookstoreId);
+        bookstoreOwner.removeBookstoreById(bookstoreId);
         bookstoreOwnerRepository.save(bookstoreOwner);
         bookstoreRepository.deleteById(bookstoreId);
         model.addAttribute("bookstoreOwner", bookstoreOwner);
