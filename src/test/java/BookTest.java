@@ -4,21 +4,29 @@ import org.junit.Test;
 
 public class BookTest {
     private Book book;
-    private String name;
-    private String isbn;
-    private String picture;
-    private String description;
-    private String author;
-    private String publisher;
+    private String name = "Test Book";
+    private String isbn = "1234567890";
+    private String picture = "picture.jpeg";
+    private String description = "book for testing purposes";
+    private String author = "George Orwell";
+    private String publisher = "96024 publishing";
 
     @Before
     public void setUp() {
-        this.name = "Test Book";
-        this.isbn = "1234567890";
-        this.picture = "picture.jpeg";
-        this.description = "book for testing purposes";
-        this.author = "George Orwell";
-        this.publisher = "96024 publishing";
         this.book = new Book(this.name, this.isbn, this.picture, this.description, this.author, this.publisher);
+    }
+
+    /**
+     * Test the equals() method in Book.
+     *
+     * Expected outcome: The same book is equal and a different book is not equal.
+     */
+    @Test
+    public void testEquals(){
+        Book sameBook = new Book(this.name, this.isbn, this.picture, this.description, this.author, this.publisher);
+        Book differentBook = new Book("Different Test Book", "987654321", "different_picture.jpeg", "book for testing purposes", "Mark Twain", "96024 publishing");
+
+        assert (this.book.equals(sameBook));
+        assert (!this.book.equals(differentBook));
     }
 }

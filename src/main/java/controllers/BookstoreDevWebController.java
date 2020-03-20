@@ -88,7 +88,7 @@ public class BookstoreDevWebController {
                                   @RequestParam(value="bookstoreId") long bookstoreId,
                                   Model model ) {
         BookstoreOwner bookstoreOwner = bookstoreOwnerRepository.findById(bookstoreOwnerId);
-        bookstoreOwner.removeBookstore(bookstoreId);
+        bookstoreOwner.removeBookstoreById(bookstoreId);
         bookstoreOwnerRepository.save(bookstoreOwner);
         bookstoreRepository.deleteById(bookstoreId);
         model.addAttribute("bookstoreOwner", bookstoreOwner);
@@ -119,7 +119,7 @@ public class BookstoreDevWebController {
                              @RequestParam(value="bookId") long bookId,
                              Model model) {
         Bookstore bookstore = bookstoreRepository.findById(bookstoreId);
-        bookstore.removeBook(bookId);
+        bookstore.removeBookById(bookId);
         bookstoreRepository.save(bookstore);
         bookRepository.deleteById(bookId);
         model.addAttribute("bookstore", bookstore);
