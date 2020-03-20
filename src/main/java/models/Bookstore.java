@@ -53,7 +53,7 @@ public class Bookstore {
         this.books.add(book);
     }
 
-    public void removeBookById(long bookId){
+    public void removeBook(long bookId){
         Book bookFound = null;
         for (Book book : this.books){
             if (book.getId() == bookId){
