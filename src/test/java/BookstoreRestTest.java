@@ -143,7 +143,7 @@ public class BookstoreRestTest {
         Bookstore bookstore = optionalBookstore.get();
 
         //Get all Books from the Bookstore
-        List<Book> books = bookstore.getBooks();
+        ArrayList<Book> books = new ArrayList<Book>(bookstore.getBooks());
 
         //Test that there is one Book in the Bookstore (from the repository)
         assert(books.size() == 1);
