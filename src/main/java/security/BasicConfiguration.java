@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -18,6 +19,9 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public UserDetailsService userDetailsService;
+
+    @Autowired
+    AuthenticationSuccessHandler authenticationSuccessHandler;
 
 
     /**
@@ -45,7 +49,20 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
         .httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers("/h2**").permitAll();
+        .antMatchers("/h2**").permitAll()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .successHandler(authenticationSuccessHandler)
+        .permitAll()
+        .and()
+        .exceptionHandling().accessDeniedPage("/accessDenied.jsp")
+        .and()
+        .logout()
+        .logoutUrl("/perform_logout")
+        .logoutSuccessUrl("/login?logout=true")
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID");
 
         http.csrf().disable();
         http.headers().frameOptions().disable();

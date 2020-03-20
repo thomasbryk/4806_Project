@@ -340,13 +340,13 @@ public class BookstoreRestController {
         return sale;
     }
 
-    /**
-     * Endpoint for logging in, doesn't do anything significant other than start a session
-     */
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @PostMapping("/login")
-    public String login(){
-        return "successfully authenticated";
-    }
+    // /**
+    //  * Endpoint for logging in, doesn't do anything significant other than start a session
+    //  */
+    // @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    // @GetMapping("/login")
+    // public String login(){
+    //     return "successfully authenticated";
+    // }
     
 }

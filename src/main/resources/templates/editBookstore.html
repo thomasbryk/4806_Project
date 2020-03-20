@@ -5,9 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
     <body>
-        <form action="#" th:action="@{/viewBookstoreOwner}" method="post">
+        <form action="#" th:action="@{/viewBookstoreOwner}" method="get">
             <input type="hidden" name="bookstoreOwnerId" th:value="${bookstore.getBookstoreOwner().getId()}" />
             <input type="submit" value="Back to BookstoreOwner"/>
+        </form>
+        <form action="/perform_logout">
+            <input type="submit" value="Log out" />
         </form>
         <p th:text="'BookStore ID: ' + ${bookstore.getId()}" />
         <p th:text="'BookStore Owner: ' + ${bookstore.getBookstoreOwner().getName()}" />
