@@ -311,7 +311,7 @@ public class BookstoreRestTest {
      */
     @Test
     public void getBookstoreOwners() throws Exception {
-        String expectedResult = String.format("[{\"id\":2,\"username\":\"user2\",\"password\":\"pass2\",\"role\":\"ADMIN\",\"name\":\"Bookstore owner 1\"},{\"id\":%d,\"username\":\"%s\",\"password\":\"%s\",\"role\":\"%s\",\"name\":\"%s\"}]",
+        String expectedResult = String.format("[{\"id\":%d,\"username\":\"%s\",\"password\":\"%s\",\"role\":\"%s\",\"name\":\"%s\"}]",
                 this.testBookstoreOwnerId,
                 this.testBookstoreOwnerUsername,
                 this.testBookstoreOwnerPassword,

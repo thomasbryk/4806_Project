@@ -348,23 +348,5 @@ public class BookstoreRestController {
     public String login(){
         return "successfully authenticated";
     }
-
-    // /**
-    //  * Register Customer endpoint
-    //  */
-    // @PostMapping(value="/registerCustomer")
-    // public Customer postMethodName(@RequestBody Customer customer) {
-    //     customerRepository.save(customer);
-    //     return customer;
-    // }
-
-    // /**
-    //  * Register Bookstore Owner endpoint
-    //  */
-    // @PostMapping(value="/registerBookstoreOwner")
-    // public BookstoreOwner postMethodName(@RequestBody BookstoreOwner bookstoreOwner) {
-    //     bookstoreOwnerRepository.save(bookstoreOwner);
-    //     return bookstoreOwner;
-    // }
     
 }

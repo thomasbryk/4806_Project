@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import models.BookstoreOwner;
 
-@Repository
 @RepositoryRestResource(collectionResourceRel = "bookstoreowners", path = "bookstoreowners")
 public interface BookstoreOwnerRepository extends PagingAndSortingRepository<BookstoreOwner, Long> {
     BookstoreOwner findById(long id);

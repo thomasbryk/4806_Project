@@ -19,16 +19,26 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public UserDetailsService userDetailsService;
 
+
+    /**
+     * Password encoder with no encoding, for simplicity's sake
+     */
     @Bean
     public static NoOpPasswordEncoder passwordEncoder() {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
     
+    /**
+     * Users provided user details service, which retrieves users based on username, and finds their authorizations
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Disables CORS and allows h2 console to be accesssed with Spring Security
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -39,15 +49,6 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
-        
-        
-        // http.authorizeRequests().antMatchers("/**").anonymous().and().httpBasic();
-        // http
-        // .authorizeRequests()
-        // .anyRequest()
-        // .authenticated()
-        // .and()
-        // .httpBasic();
     }
 
 

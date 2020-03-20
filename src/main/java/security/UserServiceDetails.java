@@ -22,16 +22,13 @@ public class UserServiceDetails implements UserDetailsService {
     @Autowired
     BookstoreOwnerRepository bookstoreOwnerRepository;
 
-    @Autowired
-    public UserServiceDetails(CustomerRepository customerRepository, BookstoreOwnerRepository bookstoreOwnerRepository) {
-        // this instantiates a couple users to start out with
-        Customer c = new Customer("user1","pass1","Customer 1", "somewhere", "e@ma.il", "613-613-6136");
-        customerRepository.save(c);
+    public UserServiceDetails() {
 
-        BookstoreOwner b = new BookstoreOwner("user2", "pass2", "Bookstore owner 1");
-        bookstoreOwnerRepository.save(b);
     }
 
+    /**
+     * Loads a user's credentials given a username. First sees if it is a customer, then checks if it is a bookstore Owner
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("Got username: "+username);
@@ -49,6 +46,7 @@ public class UserServiceDetails implements UserDetailsService {
 
     }
 
+    
     private UserDetails toUserDetails(BookstoreUser user) {
         return User.withUsername(user.getUsername())
                    .password(user.getPassword())
