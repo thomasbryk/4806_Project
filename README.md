@@ -18,6 +18,7 @@ Bookstore Owner can upload and edit Book information (ISBN, picture, description
 
 ## Weekly Scrums
 1. #### [Weekly Scrum - March 6th, 2020](../../issues/24)
+2. #### [Weekly Scrum - March 13th, 2020](../../issues/34)
 
 ## Yarn Install for client
 - [Install Yarn](https://classic.yarnpkg.com/en/docs/install). To get it started, run from webapp/bookstore with `yarn start`
