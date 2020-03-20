@@ -15,6 +15,6 @@ public class SessionConfig extends AbstractHttpSessionApplicationInitializer{
 
     @Bean
     public static ConfigureRedisAction configureRedisAction() {
-         ConfigureRedisAction.NO_OP;
+        return ConfigureRedisAction.NO_OP;
     }
 }
