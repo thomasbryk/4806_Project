@@ -21,28 +21,53 @@ public class BookstoreOwnerController {
     @Autowired
     BookstoreOwnerRepository bookstoreOwnerRepository;
     
+    /**
+     * Returns a list of bookstore owners, given filtering parameters defined in @BookstoreOwnerSpec
+     * @param spec Interface defining the filtering parameters
+     * @return list of BookstoreOwners with filters applied
+     */
     @GetMapping()
     public Iterable<BookstoreOwner> getBookstoreOwners(BookstoreOwnerSpec spec){
         return bookstoreOwnerRepository.findAll(spec);
     }
 
+    /**
+     * Returns a bookstore owner given an ID in the path
+     * @param id ID of the bookstore owner
+     */
     @GetMapping("/{id}")
     public BookstoreOwner getBookstoreOwner(@PathVariable long id){
         return bookstoreOwnerRepository.findById(id);
     }
 
+    /**
+     * Creates a bookstore owner given a JSON representation of the owner. Ex: {"name":"bookstore_owner"}
+     * @param bookstoreOwner Owner to create
+     * @return Created owner with an ID
+     */
     @PostMapping()
     public BookstoreOwner createBookstoreOwner(@RequestBody BookstoreOwner bookstoreOwner){
         BookstoreOwner b = bookstoreOwnerRepository.save(bookstoreOwner);
         return b;
     }
 
+    /**
+     * Returns the list of bookstores for a given bookstore owner's ID
+     * @param id Bookstore Owner ID
+     * @return list of bookstores the owner has
+     */
     @GetMapping("/{id}/bookstores")
     public Iterable<Bookstore> getBookstoresByBookstoreOwner(@PathVariable long id){
         BookstoreOwner b = bookstoreOwnerRepository.findById(id);
         return b.getBookstores();
     }
 
+    /**
+     * Appends a bookstore to the owner's list of bookstores
+     * @param id Bookstore owner 
+     * @param bookstore Bookstore to add 
+     * @return List of bookstores the owner has
+     */
     @PutMapping("/{id}/bookstores")
     public Iterable<Bookstore> addBookstoreToOwner(@PathVariable long id, @RequestBody Bookstore bookstore){
         BookstoreOwner b = bookstoreOwnerRepository.findById(id);
