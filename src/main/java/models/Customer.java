@@ -22,14 +22,16 @@ public class Customer extends BookstoreUser{
 
     public Customer(){
         super("USER");
+        this.shoppingCart = new ShoppingCart(this);
     }
 
     public Customer(String name, String address, String email, String phoneNumber) {
-        super();
+        super("USER");
         this.name = name;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.shoppingCart = new ShoppingCart(this);
     }
 
     public Customer(String username, String password, String name, String address, String email, String phoneNumber ){
@@ -38,6 +40,7 @@ public class Customer extends BookstoreUser{
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.shoppingCart = new ShoppingCart(this);
     }
 
     @Id

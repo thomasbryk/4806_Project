@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.jpa.domain.Specification;
 
 import models.Book;
 import models.Bookstore;
 import models.BookstoreSpec;
 import models.Sale;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import repositories.BookstoreRepository;
 
 @RestController
@@ -25,7 +24,6 @@ public class BookstoreController {
     
     @GetMapping()
     public Iterable<Bookstore> getBookstores(BookstoreSpec spec){
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHH"+spec.toString());
         return bookstoreRepository.findAll(spec);
     }
 
@@ -40,17 +38,29 @@ public class BookstoreController {
         return b;
     }
 
+    @PutMapping("/{id}/books")
+    public Iterable<Book> addBookToBookstore(@PathVariable long id, @RequestBody Book book){
+        Bookstore b = bookstoreRepository.findById(id);
+        b.addBook(book);
+        bookstoreRepository.save(b);
+        return b.getBooks();
+    }
+
     @GetMapping("/{id}/books")
     public Iterable<Book> getBooksByBookstore(@PathVariable long id){
         Bookstore b = bookstoreRepository.findById(id);
         return b.getBooks();
     }
+
+  
     
     @GetMapping("/{id}/sales")
     public Iterable<Sale> getSalesByBookstore(@PathVariable long id){
         Bookstore b = bookstoreRepository.findById(id);
         return b.getSales();
     }
+
+
 }
 
 

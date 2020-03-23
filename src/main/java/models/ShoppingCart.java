@@ -12,6 +12,9 @@ public class ShoppingCart {
     private Customer customer;
 
     public ShoppingCart(){ this.books = new HashSet<Book>();}
+    public ShoppingCart(Customer customer){
+        this.customer = customer;
+    }
 
     @Id
     @GeneratedValue

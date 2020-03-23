@@ -39,7 +39,7 @@ public class CustomerController {
         return b;
     }
 
-    @GetMapping("/{id}/shoppingCart")
+    @GetMapping("/{id}/shoppingcart")
     public ShoppingCart getBookstoresByCustomer(@PathVariable long id){
         Customer b = customerRepository.findById(id);
         return b.getShoppingCart();
@@ -51,7 +51,7 @@ public class CustomerController {
         return b.getSales();
     }
 
-    @GetMapping("/{id}/checkout")
+    @PostMapping("/{id}/checkout")
     public Sale checkoutCustomer(@PathVariable long id){
         Customer b = customerRepository.findById(id);
         ShoppingCart sc = b.getShoppingCart();
@@ -62,7 +62,7 @@ public class CustomerController {
     }
 
 
-    @PutMapping("/{id}/shoppingCart")
+    @PutMapping("/{id}/shoppingcart")
     public ShoppingCart addBookstoreToOwner(@PathVariable long id, @RequestBody Book book){
         Customer b = customerRepository.findById(id);
         ShoppingCart sc = b.getShoppingCart();

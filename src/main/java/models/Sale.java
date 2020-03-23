@@ -14,7 +14,9 @@ public class Sale {
     private Customer customer;
     private Set<Bookstore> bookstores;
 
-    public Sale() { }
+    public Sale() {
+        this.bookstores = new HashSet<>();
+     }
 
     public Sale(Set<Book> books, Customer customer) {
         this.books = books;
