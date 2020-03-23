@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.After;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import models.Book;
 import models.Bookstore;
+import repositories.BookstoreRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= {application.WebLauncher.class})
@@ -30,6 +32,11 @@ public class BookstoreControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BookstoreRepository bookstoreRepository;
+
+    private boolean lastTestCase = false;
 
     String path = "/api/bookstores";
 
@@ -90,6 +97,12 @@ public class BookstoreControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1))
             .andExpect(jsonPath("$.[0].name").value("book_name"));
+        lastTestCase = true;
+    }
+
+    @After
+    public void cleanup(){
+        if(lastTestCase) bookstoreRepository.deleteAll();
     }
 
 

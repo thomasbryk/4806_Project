@@ -1,10 +1,9 @@
 
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+import org.junit.After;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import models.Bookstore;
 import models.BookstoreOwner;
+import repositories.BookstoreOwnerRepository;
 
 import static helpers.TestHelper.*;
 
@@ -32,6 +32,11 @@ public class BookstoreOwnerControllerTest {
     private MockMvc mockMvc;
 
     String path = "/api/bookstoreowners";
+
+    @Autowired
+    private BookstoreOwnerRepository bookstoreOwnerRepository;
+
+    private boolean lastTestCase = false;
 
     
     @Test
@@ -91,6 +96,13 @@ public class BookstoreOwnerControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1))
             .andExpect(jsonPath("$.[0].name").value("bookstore_name"));
-    }
+            lastTestCase = true;
+        }
+    
+        @After
+        public void cleanup(){
+            if(lastTestCase) bookstoreOwnerRepository.deleteAll();
+        }
+
 
 }
