@@ -36,7 +36,7 @@ public class BookControllerTest {
 
     
     @Test
-    public void testACreateBook() throws Exception{
+    public void TestACreateBook() throws Exception{
         book = new Book("book_name", "book_isbn", "book_picture", "book_description", "book_author", "book_publisher");
 
         mockMvc.perform(
@@ -49,7 +49,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void testBGetBooks() throws Exception {
+    public void TestBGetBooks() throws Exception {
         mockMvc.perform(
             get(path)
             .accept(MediaType.APPLICATION_JSON)
@@ -59,7 +59,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void testCGetBookById() throws Exception {
+    public void TestCGetBookById() throws Exception {
         mockMvc.perform(
             get(path+"/1")
             .accept(MediaType.APPLICATION_JSON)

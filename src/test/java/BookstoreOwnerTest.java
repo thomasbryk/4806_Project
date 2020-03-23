@@ -20,7 +20,7 @@ public class BookstoreOwnerTest {
      * Expected condition: The BookstoreOwner now contains the Bookstore and the Bookstore contains this BookstoreOwner
      */
     @Test
-    public void testAddBookstore(){
+    public void TestAddBookstore(){
         Bookstore bookstore = new Bookstore("Test Bookstore");
 
         this.bookstoreOwner.addBookstore(bookstore);
@@ -35,7 +35,7 @@ public class BookstoreOwnerTest {
      * Expected condition: The BookstoreOwner no longer contains the Bookstore and the Bookstore no longer has a BookstoreOwner
      */
     @Test
-    public void testRemoveBookstore(){
+    public void TestRemoveBookstore(){
         Bookstore bookstore = new Bookstore("Test Bookstore");
         bookstore.setId(1L);
 

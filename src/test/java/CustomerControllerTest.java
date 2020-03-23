@@ -38,7 +38,7 @@ public class CustomerControllerTest {
 
     
     @Test
-    public void testACreateCustomer() throws Exception{
+    public void TestACreateCustomer() throws Exception{
         customer = new Customer("cus_user", "cus_password", "cus_name", "cus_address", "cus_email", "cus_phoneNumber");
 
         mockMvc.perform(
@@ -51,7 +51,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testBGetCustomers() throws Exception {
+    public void TestBGetCustomers() throws Exception {
         mockMvc.perform(
             get(path)
             .accept(MediaType.APPLICATION_JSON)
@@ -61,7 +61,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testCGetCustomerById() throws Exception {
+    public void TestCGetCustomerById() throws Exception {
         mockMvc.perform(
             get(path+"/1")
             .accept(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testDAddBookToCustomerCart() throws Exception {
+    public void TestDAddBookToCustomerCart() throws Exception {
         Book b = new Book("book_name", "book_isbn", "book_picture", "book_description", "book_author", "book_publisher");
         mockMvc.perform(
             put(path+"/1/shoppingcart")
@@ -85,7 +85,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testEGetCustomerShoppingCart() throws Exception {
+    public void TestEGetCustomerShoppingCart() throws Exception {
         mockMvc.perform(
             get(path+"/1/shoppingcart")
             .accept(MediaType.APPLICATION_JSON)
@@ -96,7 +96,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testFCheckoutCustomer() throws Exception {
+    public void TestFCheckoutCustomer() throws Exception {
         mockMvc.perform(
             post(path+"/1/checkout")
             .accept(MediaType.APPLICATION_JSON)
@@ -107,7 +107,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testFGetCustomerSales() throws Exception {
+    public void TestFGetCustomerSales() throws Exception {
         mockMvc.perform(
             get(path+"/1/sales")
             .accept(MediaType.APPLICATION_JSON)

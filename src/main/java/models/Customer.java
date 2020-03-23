@@ -44,7 +44,7 @@ public class Customer extends BookstoreUser{
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long getId() {
         return this.id;
     }

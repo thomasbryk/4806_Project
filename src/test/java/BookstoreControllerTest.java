@@ -38,7 +38,7 @@ public class BookstoreControllerTest {
 
     
     @Test
-    public void testACreateBookstore() throws Exception{
+    public void TestACreateBookstore() throws Exception{
         bookstore = new Bookstore("bookstore_name");
         System.out.println(mockMvc);
         mockMvc.perform(
@@ -51,7 +51,7 @@ public class BookstoreControllerTest {
     }
 
     @Test
-    public void testBGetBookstores() throws Exception {
+    public void TestBGetBookstores() throws Exception {
         mockMvc.perform(
             get(path)
             .accept(MediaType.APPLICATION_JSON)
@@ -61,7 +61,7 @@ public class BookstoreControllerTest {
     }
 
     @Test
-    public void testCGetBookstoreById() throws Exception {
+    public void TestCGetBookstoreById() throws Exception {
         mockMvc.perform(
             get(path+"/1")
             .accept(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ public class BookstoreControllerTest {
     }
 
     @Test
-    public void testDAddBookToBookstore() throws Exception {
+    public void TestDAddBookToBookstore() throws Exception {
         Book b = new Book("book_name", "book_isbn", "book_picture", "book_description", "book_author", "book_publisher");
         mockMvc.perform(
             put(path+"/1/books")
@@ -85,7 +85,7 @@ public class BookstoreControllerTest {
     }
 
     @Test
-    public void testEGetBookstoreBooks() throws Exception {
+    public void TestEGetBookstoreBooks() throws Exception {
         mockMvc.perform(
             get(path+"/1/books")
             .accept(MediaType.APPLICATION_JSON)

@@ -36,7 +36,7 @@ public class BookstoreOwnerControllerTest {
 
     
     @Test
-    public void testACreateOwner() throws Exception{
+    public void TestACreateOwner() throws Exception{
         owner = new BookstoreOwner("owner_username","owner_password","owner_name");
         System.out.println(mockMvc);
         mockMvc.perform(
@@ -49,7 +49,7 @@ public class BookstoreOwnerControllerTest {
     }
 
     @Test
-    public void testBGetOwners() throws Exception {
+    public void TestBGetOwners() throws Exception {
         mockMvc.perform(
             get(path)
             .accept(MediaType.APPLICATION_JSON)
@@ -59,7 +59,7 @@ public class BookstoreOwnerControllerTest {
     }
 
     @Test
-    public void testCGetOwnerById() throws Exception {
+    public void TestCGetOwnerById() throws Exception {
         mockMvc.perform(
             get(path+"/1")
             .accept(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ public class BookstoreOwnerControllerTest {
     }
 
     @Test
-    public void testDAddBookstoreToOwner() throws Exception {
+    public void TestDAddBookstoreToOwner() throws Exception {
         Bookstore bs = new Bookstore("bookstore_name");
         mockMvc.perform(
             put(path+"/1/bookstores")
@@ -84,7 +84,7 @@ public class BookstoreOwnerControllerTest {
     }
 
     @Test
-    public void testEGetOwnerBookstores() throws Exception {
+    public void TestEGetOwnerBookstores() throws Exception {
         mockMvc.perform(
             get(path+"/1/bookstores")
             .accept(MediaType.APPLICATION_JSON)
