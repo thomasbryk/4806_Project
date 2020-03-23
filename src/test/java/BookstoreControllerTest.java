@@ -98,12 +98,11 @@ public class BookstoreControllerTest {
             .andExpect(jsonPath("$.length()").value(1))
             .andExpect(jsonPath("$.[0].name").value("book_name"));
         lastTestCase = true;
+        bookstoreRepository.deleteAll();
     }
 
-    @After
-    public void cleanup(){
-        if(lastTestCase) bookstoreRepository.deleteAll();
-    }
+
+    
 
 
 
