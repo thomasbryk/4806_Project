@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,22 +37,34 @@ public class BookstoreControllerTest {
     @Autowired
     private BookstoreRepository bookstoreRepository;
 
-    private boolean lastTestCase = false;
 
     String path = "/api/bookstores";
+
+    @Before
+    public void setup(){
+        bookstore = new Bookstore("bookstore_name");
+        bookstore = bookstoreRepository.save(bookstore);
+    }
+
+    @After
+    public void cleanup(){
+        bookstoreRepository.deleteAll();
+    }
 
     
     @Test
     public void TestACreateBookstore() throws Exception{
-        bookstore = new Bookstore("bookstore_name");
+        Bookstore bookstore2 = new Bookstore("bookstore_name2");
         System.out.println(mockMvc);
         mockMvc.perform(
             post(path)
-            .content(asJsonString(bookstore))
+            .content(asJsonString(bookstore2))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").exists());
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.id").value(2))
+            .andExpect(jsonPath("$.name").value("bookstore_name2"));
     }
 
     @Test
@@ -67,7 +80,7 @@ public class BookstoreControllerTest {
     @Test
     public void TestCGetBookstoreById() throws Exception {
         mockMvc.perform(
-            get(path+"/1")
+            get(path+"/"+bookstore.getId())
             .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -78,7 +91,7 @@ public class BookstoreControllerTest {
     public void TestDAddBookToBookstore() throws Exception {
         Book b = new Book("book_name", "book_isbn", "book_picture", "book_description", "book_author", "book_publisher");
         mockMvc.perform(
-            put(path+"/1/books")
+            put(path+"/"+bookstore.getId()+"/books")
             .content(asJsonString(b))
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
@@ -90,15 +103,15 @@ public class BookstoreControllerTest {
 
     @Test
     public void TestEGetBookstoreBooks() throws Exception {
+        TestDAddBookToBookstore();
+
         mockMvc.perform(
-            get(path+"/1/books")
+            get(path+"/"+bookstore.getId()+"/books")
             .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1))
             .andExpect(jsonPath("$.[0].name").value("book_name"));
-        lastTestCase = true;
-        bookstoreRepository.deleteAll();
     }
 
 

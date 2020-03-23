@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,22 +35,32 @@ public class BookControllerTest {
     @Autowired
     private BookRepository bookRepository;
 
-    private boolean lastTestCase = false;
-
     String path = "/api/books";
+
+    @Before
+    public void setup(){
+        book = new Book("book_name", "book_isbn", "book_picture", "book_description", "book_author", "book_publisher");
+        book = bookRepository.save(book);
+    }
+
+    @After
+    public void cleanup(){
+        bookRepository.deleteAll();
+    }
 
     
     @Test
     public void TestACreateBook() throws Exception{
-        book = new Book("book_name", "book_isbn", "book_picture", "book_description", "book_author", "book_publisher");
+        Book book2 = new Book("book2_name", "book2_isbn", "book2_picture", "book2_description", "book2_author", "book2_publisher");
 
         mockMvc.perform(
             post(path)
-            .content(asJsonString(book))
+            .content(asJsonString(book2))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").exists());
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.name").value("book2_name"));
     }
 
     @Test
@@ -65,19 +76,10 @@ public class BookControllerTest {
     @Test
     public void TestCGetBookById() throws Exception {
         mockMvc.perform(
-            get(path+"/1")
+            get(path+"/"+book.getId())
             .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.name").value("book_name"))
-            .andExpect(jsonPath("$.id").value(1));
-        lastTestCase = true;
+            .andExpect(jsonPath("$.name").value("book_name"));
     }
-
-    @After
-    public void cleanup(){
-        if(lastTestCase) bookRepository.deleteAll();
-    }
-
-
 }

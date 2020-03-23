@@ -1,9 +1,13 @@
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static helpers.TestHelper.asJsonString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import models.Bookstore;
 import models.BookstoreOwner;
 import repositories.BookstoreOwnerRepository;
-
-import static helpers.TestHelper.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= {application.WebLauncher.class})
@@ -38,18 +40,30 @@ public class BookstoreOwnerControllerTest {
 
     private boolean lastTestCase = false;
 
+    @Before
+    public void setup(){
+        owner = new BookstoreOwner("owner_username","owner_password","owner_name");
+        owner = bookstoreOwnerRepository.save(owner);
+    }
+
+    @After
+    public void cleanup(){
+        bookstoreOwnerRepository.deleteAll();
+    }
     
     @Test
     public void TestACreateOwner() throws Exception{
-        owner = new BookstoreOwner("owner_username","owner_password","owner_name");
+        BookstoreOwner owner2 = new BookstoreOwner("owner_username2","owner_password","owner_name2");
         System.out.println(mockMvc);
         mockMvc.perform(
             post(path)
-            .content(asJsonString(owner))
+            .content(asJsonString(owner2))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").exists());
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.id").value(2))
+            .andExpect(jsonPath("$.name").value("owner_name2"));
     }
 
     @Test
@@ -65,7 +79,7 @@ public class BookstoreOwnerControllerTest {
     @Test
     public void TestCGetOwnerById() throws Exception {
         mockMvc.perform(
-            get(path+"/1")
+            get(path+"/"+owner.getId())
             .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -75,9 +89,11 @@ public class BookstoreOwnerControllerTest {
 
     @Test
     public void TestDAddBookstoreToOwner() throws Exception {
+        
+
         Bookstore bs = new Bookstore("bookstore_name");
         mockMvc.perform(
-            put(path+"/1/bookstores")
+            put(path+"/"+owner.getId()+"/bookstores")
             .content(asJsonString(bs))
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
@@ -89,19 +105,15 @@ public class BookstoreOwnerControllerTest {
 
     @Test
     public void TestEGetOwnerBookstores() throws Exception {
+        TestDAddBookstoreToOwner();
+        
         mockMvc.perform(
-            get(path+"/1/bookstores")
+            get(path+"/"+owner.getId()+"/bookstores")
             .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1))
             .andExpect(jsonPath("$.[0].name").value("bookstore_name"));
-            lastTestCase = true;
-        }
-    
-        @After
-        public void cleanup(){
-            if(lastTestCase) bookstoreOwnerRepository.deleteAll();
         }
 
 
