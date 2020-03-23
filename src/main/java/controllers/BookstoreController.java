@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.jpa.domain.Specification;
 
 import models.Book;
 import models.Bookstore;
 import models.BookstoreSpec;
 import models.Sale;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import repositories.BookstoreRepository;
 
 @RestController
@@ -23,6 +25,7 @@ public class BookstoreController {
     
     @GetMapping()
     public Iterable<Bookstore> getBookstores(BookstoreSpec spec){
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHH"+spec.toString());
         return bookstoreRepository.findAll(spec);
     }
 
