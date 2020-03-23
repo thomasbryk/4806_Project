@@ -1,9 +1,10 @@
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static helpers.TestHelper.asJsonString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -17,12 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import models.Book;
-import models.Bookstore;
-import models.BookstoreOwner;
 import models.Customer;
-import models.Sale;
-
-import static helpers.TestHelper.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= {application.WebLauncher.class})

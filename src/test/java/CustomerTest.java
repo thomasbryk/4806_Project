@@ -1,6 +1,6 @@
+import org.junit.Before;
+
 import models.Customer;
-        import org.junit.Before;
-        import org.junit.Test;
 
 public class CustomerTest {
     private String name = "Test Customer";

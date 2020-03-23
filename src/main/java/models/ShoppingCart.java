@@ -1,17 +1,24 @@
 package models;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.*;
 import static javax.persistence.CascadeType.ALL;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class ShoppingCart {
     private Long id;
-    private Set<Book> books;
+    private List<Book> books;
     private Customer customer;
 
-    public ShoppingCart(){ this.books = new HashSet<Book>();}
+    public ShoppingCart(){ this.books = new ArrayList<Book>();}
     public ShoppingCart(Customer customer){
         this.customer = customer;
     }
@@ -21,9 +28,9 @@ public class ShoppingCart {
     public Long getId(){ return this.id; }
     public void setId(Long id){ this.id = id; }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "shoppingCarts")
-    public Set<Book> getBooks() { return this.books; }
-    public void setBooks(Set<Book> books) { this.books = books; }
+    @ManyToMany( cascade=ALL, mappedBy = "shoppingCarts")
+    public List<Book> getBooks() { return this.books; }
+    public void setBooks(List<Book> books) { this.books = books; }
     public void addBook(Book book){
         this.books.add(book);
         book.addShoppingCart(this);
@@ -32,10 +39,10 @@ public class ShoppingCart {
         //The reason this does not call .clear() and changes the reference to a new Set is because of the
         //Hibernate layer, when a checkout occurs the books collection is moved to the Sale object,
         //if it is cleared here, it causes issues when Hibernate tries to persist.
-        this.books = new HashSet<Book>();
+        this.books = new ArrayList<Book>();
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
+    @OneToOne( cascade=ALL)
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
 

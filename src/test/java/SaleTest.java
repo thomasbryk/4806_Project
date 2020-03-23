@@ -1,6 +1,6 @@
-import models.Sale;
 import org.junit.Before;
-import org.junit.Test;
+
+import models.Sale;
 
 public class SaleTest {
     private Sale sale;

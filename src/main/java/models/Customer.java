@@ -1,12 +1,17 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-
-import java.util.Set;
-
 import static javax.persistence.CascadeType.ALL;
+
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Customer extends BookstoreUser{
@@ -18,7 +23,7 @@ public class Customer extends BookstoreUser{
     @JsonIgnore
     private ShoppingCart shoppingCart;
     @JsonIgnore
-    private Set<Sale> sales;
+    private List<Sale> sales;
 
     public Customer(){
         super("USER");
@@ -80,7 +85,7 @@ public class Customer extends BookstoreUser{
         this.phoneNumber = phoneNumber;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade=ALL)
+    @OneToOne( cascade=ALL)
     public ShoppingCart getShoppingCart(){
         return this.shoppingCart;
     }
@@ -88,9 +93,9 @@ public class Customer extends BookstoreUser{
         this.shoppingCart = shoppingCart;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy="customer")
-    public Set<Sale> getSales(){ return this.sales; }
-    public void setSales(Set<Sale> sales){
+    @OneToMany( cascade=ALL, mappedBy="customer")
+    public List<Sale> getSales(){ return this.sales; }
+    public void setSales(List<Sale> sales){
         this.sales = sales;
     }
     public void addSale(Sale sale){this.sales.add(sale);}
