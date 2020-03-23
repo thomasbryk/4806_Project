@@ -63,7 +63,6 @@ public class BookstoreControllerTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").exists())
-            .andExpect(jsonPath("$.id").value(2))
             .andExpect(jsonPath("$.name").value("bookstore_name2"));
     }
 
