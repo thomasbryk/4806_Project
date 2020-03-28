@@ -103,6 +103,7 @@ public class CustomerController {
         Customer b = customerRepository.findById(id);
         ShoppingCart sc = b.getShoppingCart();
         sc.addBook(book);
+        book.addShoppingCart(sc);
         customerRepository.save(b);
         return sc;
     }

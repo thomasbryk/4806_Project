@@ -2,6 +2,7 @@ package models;
 
 import static javax.persistence.CascadeType.ALL;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -28,6 +29,7 @@ public class Customer extends BookstoreUser{
     public Customer(){
         super("USER");
         this.shoppingCart = new ShoppingCart(this);
+        this.sales = new ArrayList<>();
     }
 
     public Customer(String name, String address, String email, String phoneNumber) {
@@ -37,6 +39,7 @@ public class Customer extends BookstoreUser{
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.shoppingCart = new ShoppingCart(this);
+        this.sales = new ArrayList<>();
     }
 
     public Customer(String username, String password, String name, String address, String email, String phoneNumber ){
@@ -46,6 +49,7 @@ public class Customer extends BookstoreUser{
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.shoppingCart = new ShoppingCart(this);
+        this.sales = new ArrayList<>();
     }
 
     @Id

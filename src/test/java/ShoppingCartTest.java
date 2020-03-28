@@ -1,5 +1,6 @@
 import models.Book;
 import models.Bookstore;
+import models.Customer;
 import models.Sale;
 import models.ShoppingCart;
 import org.junit.Before;
@@ -10,7 +11,10 @@ public class ShoppingCartTest {
 
     @Before
     public void setUp() {
+        Customer customer = new Customer("username", "password", "name", "address", "email", "phoneNumber");
         this.shoppingCart = new ShoppingCart();
+        this.shoppingCart.setCustomer(customer);
+        customer.setShoppingCart(shoppingCart);
     }
 
     /**
@@ -23,6 +27,7 @@ public class ShoppingCartTest {
     public void TestAddBook(){
         Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for Testing purposes", "George Orwell", "96024 publishing");
         this.shoppingCart.addBook(book);
+        book.addShoppingCart(shoppingCart);
 
         assert(this.shoppingCart.getBooks().contains(book));
         assert(book.getShoppingCarts().contains(this.shoppingCart));
