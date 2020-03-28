@@ -164,11 +164,10 @@ public class BookstoreDevWebController {
     @PostMapping("/addBookToCart")
     public String addBookToCart(@RequestParam(value="customerId") long customerId,
                                 @RequestParam(value="bookId") long bookId,
-                                @RequestParam(value="shoppingCartId") long shoppingCartId,
                                 Model model){
         Customer customer = customerRepository.findById(customerId);
         Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
-        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
         Book book = bookRepository.findById(bookId);
         shoppingCart.addBook(book);
         book.addShoppingCart(shoppingCart);
@@ -188,9 +187,8 @@ public class BookstoreDevWebController {
         Sale sale = shoppingCart.checkout();
         saleRepository.save(sale);
         shoppingCartRepository.save(shoppingCart);
-        Customer customer = shoppingCart.getCustomer();
-        customer.addSale(sale);
         Iterable<Bookstore> bookstores = bookstoreRepository.findAll();
+        Customer customer = shoppingCart.getCustomer(); 
         model.addAttribute("bookstores", bookstores);
         model.addAttribute("customer", customer);
         return "viewCustomer";

@@ -33,7 +33,6 @@ public class ShoppingCart {
     public void setBooks(List<Book> books) { this.books = books; }
     public void addBook(Book book){
         this.books.add(book);
-        book.addShoppingCart(this);
     }
     private void removeBooks() {
         //The reason this does not call .clear() and changes the reference to a new Set is because of the
@@ -56,7 +55,7 @@ public class ShoppingCart {
                 book.setSale(sale);
             }
             this.removeBooks();
-
+            this.customer.addSale(sale);
             return sale;
         } else {
             return null;
