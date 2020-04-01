@@ -9,3 +9,7 @@
 .vscode/
 
 target/
+
+node_modules/
+
+node/
