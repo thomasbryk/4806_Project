@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import NavigationBar from '../NavigationBar/NavigationBar';
 import { Link } from 'react-router-dom';
+import '!style-loader!css-loader!bootstrap/dist/css/bootstrap.css';
 
 class BookList extends Component {
 
