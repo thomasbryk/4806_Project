@@ -15,7 +15,7 @@
     "reactstrap": "^8.4.1"
   },
   "scripts": {
-    "build:prod": "webpack --mode production",
+    "build:prod": "PORT=8081 webpack --mode production",
     "start:dev": "webpack-dev-server --open --mode development"
   },
   "devDependencies": {
