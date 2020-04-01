@@ -54,7 +54,7 @@ class AddBook extends Component {
             },
             body: JSON.stringify(item),
         });
-        this.props.history.push('/api/books');
+        this.props.history.push('/books');
     }
 
     render() {
