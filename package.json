@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build:prod": "webpack --mode production",
-    "start:dev": "webpack-dev-server --open --mode development"
+    "start:dev": "set PORT=8080 && webpack-dev-server --open --mode development"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
