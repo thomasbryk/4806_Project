@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * Controller with endpoints used to create and access entities for the bookstore system
  */
+@CrossOrigin(origins= "http://localhost:3000", allowedHeaders = "*")
 @RestController
 public class BookstoreRestController {
 
