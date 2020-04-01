@@ -1,42 +1,50 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import java.util.*;
-
 import static javax.persistence.CascadeType.ALL;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Sale {
     private Long id;
-    private Set<Book> books;
+    private List<Book> books;
     private Customer customer;
-    private Set<Bookstore> bookstores;
+    private List<Bookstore> bookstores;
 
-    public Sale() { }
+    public Sale() {
+        this.bookstores = new ArrayList<>();
+     }
 
-    public Sale(Set<Book> books, Customer customer) {
+    public Sale(List<Book> books, Customer customer) {
         this.books = books;
         this.customer = customer;
-        this.bookstores = new HashSet<>();
+        this.bookstores = new ArrayList<>();
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long getId() { return this.id; }
     public void setId(Long id) { this.id = id; }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "sale")
-    public Set<Book> getBooks() { return this.books; }
-    public void setBooks(Set<Book> books) { this.books = books; }
+    @OneToMany( cascade=ALL, mappedBy = "sale")
+    public List<Book> getBooks() { return this.books; }
+    public void setBooks(List<Book> books) { this.books = books; }
 
     @ManyToOne
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL)
-    public Set<Bookstore> getBookstores() { return this.bookstores; }
-    public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
+    @ManyToMany( cascade=ALL)
+    public List<Bookstore> getBookstores() { return this.bookstores; }
+    public void setBookstores(List<Bookstore> bookstores) { this.bookstores = bookstores; }
     public void addBookstore(Bookstore bookstore) { this.bookstores.add(bookstore);}
 }
