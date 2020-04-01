@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: ['./src/main/webapp/bookstoreapp/index.js'],
@@ -36,11 +37,11 @@ module.exports = {
                 ],
             },
         ],
-    },
+},
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/main/webapp/public/index.html',
-            filename: './index.html',
+            filename: './index.html'
         }),
     ],
     resolve: {
