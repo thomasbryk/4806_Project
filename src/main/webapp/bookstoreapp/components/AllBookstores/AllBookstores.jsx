@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Input, ButtonGroup, Container, Table } from 'reactstrap';
-import NavigationBar from './NavigationBar';
+import NavigationBar from '../NavigationBar/NavigationBar';
 import { Link } from 'react-router-dom';
 
 class AllBookstores extends Component {

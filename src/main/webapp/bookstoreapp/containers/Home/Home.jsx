@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
-import NavigationBar from "./NavigationBar";
+import '../App/App.css';
+import NavigationBar from "../../components/NavigationBar";
 import { Link } from 'react-router-dom';
 import { Button, Container } from 'reactstrap';
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
-import NavigationBar from './NavigationBar';
+import NavigationBar from '../NavigationBar/NavigationBar';
 import { Link } from 'react-router-dom';
 
 class BookList extends Component {
@@ -45,7 +45,7 @@ class BookList extends Component {
                     <div className="float-right">
                         <Button color="success" tag={Link} to={"/books/new"}>Add book</Button>
                     </div>
-                    <h3>BOOKS YO</h3>
+                    <h3>Book List</h3>
                     <Table className="mt-4">
                         <tbody>
                         {bookList}

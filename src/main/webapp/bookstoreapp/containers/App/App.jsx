@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import Home from "./Home";
+import Home from "../Home";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import BookList from "./BookList";
-import BookStoreList from "./BookStoreList";
-import AllBookstores from './AllBookstores';
-import AddBook from "./AddBook";
+import BookList from "../../components/BookList";
+import BookStoreList from "../../components/BookStoreList";
+import AllBookstores from '../../components/AllBookstores';
+import AddBook from "../AddBook";
 
 class App extends Component {
     render() {
