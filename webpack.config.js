@@ -1,12 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
     entry: ['./src/main/webapp/bookstoreapp/index.js'],
     output: {
         path: path.resolve(__dirname, 'target/classes/static/'),
-        filename: 'app/[name].bundle.js',
+        filename: 'app/[name].bundle.js'
     },
     module: {
         rules: [
@@ -14,14 +13,14 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
+                    loader: 'babel-loader'
                 },
             },
             {
                 test: /\.html$/,
                 use: {
                     loader: 'html-loader',
-                    options: {minimize: true},
+                    options: {minimize: true}
                 },
             },
             {
@@ -32,7 +31,7 @@ module.exports = {
                 test: /\.(png|pge?g|gif)$/i,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'file-loader'
                     },
                 ],
             },
