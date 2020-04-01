@@ -1,6 +1,7 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -106,6 +107,17 @@ public class CustomerController {
         book.addShoppingCart(sc);
         customerRepository.save(b);
         return sc;
+    }
+    
+    /**
+     * Deletes a customer given the JSON representation as a request body
+     * @param customer Serialized customer from JSON
+     * @return customer if present or null otherwise 
+     */
+    @DeleteMapping()
+    public Customer deleteCustomerById(@RequestBody Customer customer ) {
+      customerRepository.delete(customer);
+      return customerRepository.findById(customer.getId()).isPresent() ? customer : null;
     }
 }
 

@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import org.junit.After;
 import org.junit.Before;
@@ -117,4 +118,15 @@ public class BookstoreOwnerControllerTest {
         }
 
 
+    @Test
+    public void TestFDeleteBookstoreOwner() throws Exception {
+        mockMvc.perform(
+            delete(path)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(asJsonString(owner))
+            .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").doesNotExist());
+    }
 }
