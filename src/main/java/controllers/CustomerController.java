@@ -61,7 +61,7 @@ public class CustomerController {
      * @return Shopping cart of customer
      */
     @GetMapping("/{id}/shoppingcart")
-    public ShoppingCart getBookstoresByCustomer(@PathVariable long id){
+    public ShoppingCart getCustomerShoppingCart(@PathVariable long id){
         Customer b = customerRepository.findById(id);
         return b.getShoppingCart();
     }
@@ -99,7 +99,7 @@ public class CustomerController {
      * @return Shopping cart with added book
      */
     @PutMapping("/{id}/shoppingcart")
-    public ShoppingCart addBookstoreToOwner(@PathVariable long id, @RequestBody Book book){
+    public ShoppingCart addBookToShoppingCart(@PathVariable long id, @RequestBody Book book){
         Customer b = customerRepository.findById(id);
         ShoppingCart sc = b.getShoppingCart();
         sc.addBook(book);
