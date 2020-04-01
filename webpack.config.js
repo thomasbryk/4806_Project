@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: ['./src/main/webapp/bookstoreapp/index.js'],
+    entry: ['./src/main/webapp/bookstoreapp/index.jsx'],
     output: {
         path: path.resolve(__dirname, 'target/classes/static/'),
         filename: 'app/[name].bundle.js'
