@@ -18,8 +18,8 @@ public class BookstoreTest {
      * Expected condition: The Bookstore contains the Book and the Book contains the Bookstore
      */
     @Test
-    public void testAddBook(){
-        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
+    public void TestAddBook(){
+        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for Testing purposes", "George Orwell", "96024 publishing");
 
         //Add's a Book to Bookstore
         this.bookstore.addBook(book);
@@ -37,8 +37,8 @@ public class BookstoreTest {
      * Expected condition: The Bookstore no longer contains the Book and the Book no longer has a Bookstore
      */
     @Test
-    public void testRemoveBookWhenAvailable(){
-        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
+    public void TestRemoveBookWhenAvailable(){
+        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for Testing purposes", "George Orwell", "96024 publishing");
         book.setId(1L);
 
         this.bookstore.addBook(book);
@@ -54,8 +54,8 @@ public class BookstoreTest {
      * Expected condition: The Bookstore still contains the Book and the Book
      */
     @Test
-    public void testRemoveBookWhenNotAvailable(){
-        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
+    public void TestRemoveBookWhenNotAvailable(){
+        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for Testing purposes", "George Orwell", "96024 publishing");
         book.setId(1L);
         book.setAvailable(false);
 

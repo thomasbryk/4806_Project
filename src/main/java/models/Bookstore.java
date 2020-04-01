@@ -1,12 +1,19 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
 import static javax.persistence.CascadeType.ALL;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Bookstore {
@@ -14,18 +21,18 @@ public class Bookstore {
     private String name;
     private BookstoreOwner bookstoreOwner;
     @JsonIgnore
-    private Set<Book> books;
+    private List<Book> books;
     @JsonIgnore
-    private Set<Sale> sales;
+    private List<Sale> sales;
 
-    public Bookstore(){ this.books = new HashSet<Book>();	}
+    public Bookstore(){ this.books = new ArrayList<Book>();	}
     public Bookstore(String name) {
         this.name = name;
-        this.books = new HashSet<Book>();
+        this.books = new ArrayList<Book>();
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long getId() { return this.id; }
     public void setId(Long id) { this.id = id; }
 
@@ -34,18 +41,18 @@ public class Bookstore {
     public void setBookstoreOwner(BookstoreOwner bookstoreOwner) { this.bookstoreOwner = bookstoreOwner; }
     public void removeBookstoreOwner() { this.bookstoreOwner = null; }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstores")
-    public Set<Sale> getSales() { return this.sales; }
-    public void setSales(Set<Sale> sales) { this.sales = sales; }
+    @ManyToMany( cascade=ALL, mappedBy = "bookstores")
+    public List<Sale> getSales() { return this.sales; }
+    public void setSales(List<Sale> sales) { this.sales = sales; }
     public void addSale(Sale sale) { this.sales.add(sale); }
     public void removeSale(Sale sale) { this.sales.remove(sale); }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstore")
-    public Set<Book> getBooks(){ return this.books; }
-    public void setBooks(Set<Book> books){ this.books = books; }
+    @OneToMany( cascade=ALL, mappedBy = "bookstore")
+    public List<Book> getBooks(){ return this.books; }
+    public void setBooks(List<Book> books){ this.books = books; }
 
     public void addBook(Book book){
         book.setBookstore(this);

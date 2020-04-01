@@ -2,11 +2,10 @@ package models;
 
 import static javax.persistence.CascadeType.ALL;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,29 +14,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class BookstoreOwner extends BookstoreUser{
     private String name;
     @JsonIgnore
-    private Set<Bookstore> bookstores;
+    private List<Bookstore> bookstores;
 
     public BookstoreOwner(){
         super("ADMIN");
-        this.bookstores = new HashSet<Bookstore>(); 
+        this.bookstores = new ArrayList<Bookstore>(); 
     }
     public BookstoreOwner(String name){
         super();
         this.name = name;
-        this.bookstores = new HashSet<Bookstore>();
+        this.bookstores = new ArrayList<Bookstore>();
     }
 
     public BookstoreOwner(String username, String password, String name){
         super(username, password, "ADMIN");
         this.name = name;
-        this.bookstores = new HashSet<Bookstore>();
+        this.bookstores = new ArrayList<Bookstore>();
     }
 
 
 
-    @OneToMany(fetch = FetchType.EAGER, cascade=ALL, mappedBy = "bookstoreOwner")
-    public Set<Bookstore> getBookstores() { return this.bookstores; }
-    public void setBookstores(Set<Bookstore> bookstores) { this.bookstores = bookstores; }
+    @OneToMany( cascade=ALL, mappedBy = "bookstoreOwner")
+    public List<Bookstore> getBookstores() { return this.bookstores; }
+    public void setBookstores(List<Bookstore> bookstores) { this.bookstores = bookstores; }
 
     public Bookstore getBookstoreById(long bookstoreId){
         for (Bookstore bookstore: this.bookstores){

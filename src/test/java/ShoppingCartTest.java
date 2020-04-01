@@ -1,5 +1,6 @@
 import models.Book;
 import models.Bookstore;
+import models.Customer;
 import models.Sale;
 import models.ShoppingCart;
 import org.junit.Before;
@@ -10,7 +11,10 @@ public class ShoppingCartTest {
 
     @Before
     public void setUp() {
+        Customer customer = new Customer("username", "password", "name", "address", "email", "phoneNumber");
         this.shoppingCart = new ShoppingCart();
+        this.shoppingCart.setCustomer(customer);
+        customer.setShoppingCart(shoppingCart);
     }
 
     /**
@@ -20,9 +24,10 @@ public class ShoppingCartTest {
      *                   Sale that is created, the Sale has a reference to the Book's Bookstore,
      */
     @Test
-    public void testAddBook(){
-        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
+    public void TestAddBook(){
+        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for Testing purposes", "George Orwell", "96024 publishing");
         this.shoppingCart.addBook(book);
+        book.addShoppingCart(shoppingCart);
 
         assert(this.shoppingCart.getBooks().contains(book));
         assert(book.getShoppingCarts().contains(this.shoppingCart));
@@ -34,7 +39,7 @@ public class ShoppingCartTest {
      * Expected outcome: null is returned from checkout()
      */
     @Test
-    public void testCheckoutEmptyCart(){
+    public void TestCheckoutEmptyCart(){
         assert(this.shoppingCart.checkout() == null);
     }
 
@@ -45,8 +50,8 @@ public class ShoppingCartTest {
      *                   Sale that is created, the Sale has a reference to the Book's Bookstore,
      */
     @Test
-    public void testCheckoutSingleBook(){
-        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for testing purposes", "George Orwell", "96024 publishing");
+    public void TestCheckoutSingleBook(){
+        Book book = new Book("Test Book", "1234567890", "picture.jpeg", "book for Testing purposes", "George Orwell", "96024 publishing");
         Bookstore bookstore = new Bookstore("Test Bookstore");
         bookstore.addBook(book);
 
@@ -67,9 +72,9 @@ public class ShoppingCartTest {
      *                   Sale that is created, the Sale has a reference to the Book's Bookstore,
      */
     @Test
-    public void testCheckoutMultipleBooksFromOneBookstore(){
-        Book book1 = new Book("Test Book 1", "1234567890", "picture1.jpeg", "book 1 for testing purposes", "George Orwell", "96024 publishing");
-        Book book2 = new Book("Test Book 2", "1234567890", "picture2.jpeg", "book 2 for testing purposes", "Mark Twain", "96024 publishing");
+    public void TestCheckoutMultipleBooksFromOneBookstore(){
+        Book book1 = new Book("Test Book 1", "1234567890", "picture1.jpeg", "book 1 for Testing purposes", "George Orwell", "96024 publishing");
+        Book book2 = new Book("Test Book 2", "1234567890", "picture2.jpeg", "book 2 for Testing purposes", "Mark Twain", "96024 publishing");
         Bookstore bookstore = new Bookstore("Test Bookstore");
         bookstore.addBook(book1);
         bookstore.addBook(book2);
@@ -95,9 +100,9 @@ public class ShoppingCartTest {
      *                   Sale that is created, the Sale has a reference to both the Book's Bookstores,
      */
     @Test
-    public void testCheckoutMultipleBooksFromMultipleBookstores(){
-        Book book1 = new Book("Test Book 1", "1234567890", "picture1.jpeg", "book 1 for testing purposes", "George Orwell", "96024 publishing");
-        Book book2 = new Book("Test Book 2", "1234567890", "picture2.jpeg", "book 2 for testing purposes", "Mark Twain", "96024 publishing");
+    public void TestCheckoutMultipleBooksFromMultipleBookstores(){
+        Book book1 = new Book("Test Book 1", "1234567890", "picture1.jpeg", "book 1 for Testing purposes", "George Orwell", "96024 publishing");
+        Book book2 = new Book("Test Book 2", "1234567890", "picture2.jpeg", "book 2 for Testing purposes", "Mark Twain", "96024 publishing");
         Bookstore bookstore1 = new Bookstore("Test Bookstore");
         Bookstore bookstore2 = new Bookstore("Test Bookstore");
         bookstore1.addBook(book1);
