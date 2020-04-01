@@ -115,7 +115,7 @@ public class CustomerController {
      * @return customer if present or null otherwise 
      */
     @DeleteMapping()
-    public Customer deleteCustomerById(@RequestBody Customer customer ) {
+    public Customer deleteCustomer(@RequestBody Customer customer ) {
       customerRepository.delete(customer);
       return customerRepository.findById(customer.getId()).isPresent() ? customer : null;
     }
