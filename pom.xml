@@ -111,8 +111,8 @@
                 <version>LATEST_VERSION</version>
 
                 <configuration>
-                    <nodeVersion>v12.6.0</nodeVersion>
-                    <yarnVersion>v1.22.0</yarnVersion>
+                    <nodeVersion>LATEST_VERSION</nodeVersion>
+                    <yarnVersion>LATEST_VERSION</yarnVersion>
                 </configuration>
 
                 <executions>
@@ -128,6 +128,9 @@
                         <goals>
                             <goal>yarn</goal>
                         </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
                     </execution>
 
                     <execution>
