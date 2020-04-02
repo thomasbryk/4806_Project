@@ -28,11 +28,15 @@ public class ShoppingCart {
     public Long getId(){ return this.id; }
     public void setId(Long id){ this.id = id; }
 
-    @ManyToMany( cascade=ALL, mappedBy = "shoppingCarts")
+    @ManyToMany( cascade=ALL)
     public List<Book> getBooks() { return this.books; }
     public void setBooks(List<Book> books) { this.books = books; }
     public void addBook(Book book){
         this.books.add(book);
+    }
+    public void removeBook(Book book){
+        this.books.remove(book);
+    
     }
     private void removeBooks() {
         //The reason this does not call .clear() and changes the reference to a new Set is because of the
@@ -41,9 +45,11 @@ public class ShoppingCart {
         this.books = new ArrayList<Book>();
     }
 
-    @OneToOne( cascade=ALL)
+    @OneToOne(mappedBy = "shoppingCart")
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
+
+
 
     public Sale checkout() {
         if (!this.books.isEmpty()) {
@@ -60,5 +66,14 @@ public class ShoppingCart {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof ShoppingCart)) return false;
+        ShoppingCart shoppingCart = (ShoppingCart) object;
+        if(this.customer.equals(shoppingCart.getCustomer()))
+            return true;
+        return false;
     }
 }
