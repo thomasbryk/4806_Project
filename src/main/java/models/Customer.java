@@ -6,12 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -115,6 +110,16 @@ public class Customer extends BookstoreUser{
         }
         Customer customer = (Customer) o;
         return  this.name == customer.name && this.address == customer.address && this.email == customer.email && this.phoneNumber == customer.phoneNumber;
+    }
+
+    @Transient
+    public ArrayList<Book> getPurchasedBooks(){
+        ArrayList<Book> purchasedBooks = new ArrayList<Book>();
+        for (Sale sale : this.sales){
+            purchasedBooks.addAll(sale.getBooks());
+        }
+
+        return purchasedBooks;
     }
     
 }

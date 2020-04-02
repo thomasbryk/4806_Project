@@ -21,6 +21,7 @@ public class ShoppingCart {
     public ShoppingCart(){ this.books = new ArrayList<Book>();}
     public ShoppingCart(Customer customer){
         this.customer = customer;
+        this.books = new ArrayList<Book>();
     }
 
     @Id
