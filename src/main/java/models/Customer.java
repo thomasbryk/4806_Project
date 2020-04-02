@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -103,4 +104,17 @@ public class Customer extends BookstoreUser{
         this.sales = sales;
     }
     public void addSale(Sale sale){this.sales.add(sale);}
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Customer)) {
+            return false;
+        }
+        Customer customer = (Customer) o;
+        return  this.name == customer.name && this.address == customer.address && this.email == customer.email && this.phoneNumber == customer.phoneNumber;
+    }
+    
 }
