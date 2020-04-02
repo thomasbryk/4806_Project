@@ -134,9 +134,11 @@
 
                     <execution>
                         <id>build-webapp</id>
+                        
                         <goals>
                             <goal>yarn</goal>
                         </goals>
+                        
                         <configuration>
                             <arguments>build:prod</arguments>
                         </configuration>
@@ -147,6 +149,7 @@
                         <goals>
                             <goal>yarn</goal>
                         </goals>
+                        <phase>exec</phase>
                         <configuration>
                             <arguments>start:dev</arguments>
                         </configuration>
