@@ -50,10 +50,11 @@ public class Book{
     public void setSale(Sale sale){ this.sale = sale; }
     public void removeSale(){this.sale = null;}
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "books")
     public List<ShoppingCart> getShoppingCarts(){ return this.shoppingCarts; }
     public void setShoppingCarts(List<ShoppingCart> shoppingCarts){ this.shoppingCarts = shoppingCarts; }
     public void addShoppingCart(ShoppingCart shoppingCart){this.shoppingCarts.add(shoppingCart);}
+    public void removeShoppingCart(ShoppingCart shoppingCart){this.shoppingCarts.remove(shoppingCart);}
     public void removeShoppingCarts(){
         //The reason this does not call .clear() and changes the reference to a new ArrayList is because of the
         //Hibernate layer. If it is cleared here, it is possible a situation could arise that would  causes
@@ -80,7 +81,10 @@ public class Book{
     public String getPublisher() { return this.publisher; }
     public void setPublisher(String publisher) { this.publisher = publisher; }
 
-    public boolean equals(Book book){
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof Book)) return false;
+        Book book = (Book) object;
         if (this.name.equals(book.getName()) && this.isbn.equals(book.getIsbn()) && this.picture.equals(book.getPicture()) && this.description.equals(book.getDescription()) && this.author.equals(book.getAuthor()) && this.publisher.equals(book.getPublisher())){
             return true;
         }
