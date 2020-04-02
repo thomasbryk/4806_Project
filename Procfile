@@ -1,1 +1,2 @@
-web: mvn exec $JAVA_OPTS -Dserver.port=$PORT -Dspring.profiles.active=prod
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/*.jar -Dspring.profiles.active=prod
+web: yarn start:dev

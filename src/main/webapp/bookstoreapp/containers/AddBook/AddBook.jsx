@@ -46,7 +46,7 @@ class AddBook extends Component {
         e.preventDefault();
         const {item} = this.state;
 
-        await fetch('books', {
+        await fetch('/api/books', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',

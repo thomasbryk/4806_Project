@@ -143,17 +143,6 @@
                             <arguments>build:prod</arguments>
                         </configuration>
                     </execution>
-
-                    <execution>
-                        <id>run-webapp</id>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <phase>exec</phase>
-                        <configuration>
-                            <arguments>start:dev</arguments>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
