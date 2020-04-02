@@ -43,7 +43,7 @@ public class Sale {
     public Customer getCustomer() { return this.customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
 
-    @ManyToMany( cascade=ALL)
+    @ManyToMany( cascade=ALL, mappedBy = "sales")
     public List<Bookstore> getBookstores() { return this.bookstores; }
     public void setBookstores(List<Bookstore> bookstores) { this.bookstores = bookstores; }
     public void addBookstore(Bookstore bookstore) { this.bookstores.add(bookstore);}
