@@ -4,14 +4,32 @@
 <head>
     <title>BookStore</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    </script>
 </head>
 
 <body>
     <h1>Create Bookstore Owner</h1>
     <p>Please include all mandatory fields as indicated by (*). No parameter authentication yet.</p>
 
-    <form id="ownerCreate" th:action="@{/newBookstoreOwner}" method="post">
+    <form id="ownerCreate" action="/api/bookstoreowners" method="post">
         <label>(*) Name:</label>
         <input type="text" name="name"><br><br>
         <label>(*) Username:</label>
@@ -23,7 +41,7 @@
     </form>
 
     <h1>Create Customer</h1>
-    <form id="customerCreate" th:action="@{/newCustomer}" method="post">
+    <form id="customerCreate" action="/api/customers" method="post">
         <label>(*) Name:</label>
         <input type="text" name="name"><br><br>
         <label>(*) Username:</label>
@@ -49,21 +67,7 @@
 
 <script>
     $(document).ready(function(){
-    $.fn.serializeObject = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
+    
     var auth = function(username, password){
         $.ajax
         ({
@@ -83,11 +87,11 @@
     var createUser = function (e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
 
+
         var form = $(this);
         var url = form.attr('action');
         var textObj = form.serializeObject();
         var text = JSON.stringify(textObj);
-        console.log(textObj);
 
         var call = $.ajax({
             type: "POST",
