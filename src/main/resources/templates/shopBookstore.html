@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <script src="js/scripts.js"></script>
+    <link rel="stylesheet" href="css/editBookstore.css">
     <script>
         $.fn.serializeObject = function () {
             var o = {};
@@ -28,22 +29,31 @@
 <body>
     <form action="/viewCustomer" method="get">
         <input id="customerId" type="hidden" name="customerId" />
-        <input type="submit" value="Back to Customer" />
+        <input type="submit" value="Back to Customer" class="button1"/>
     </form>
     <form action="/perform_logout">
-        <input type="submit" value="Log out" />
+        <input type="submit" value="Log out" class="button1"/>
     </form>
+    <br>
+    <div class="container">
     <div id="bookstoreInfo">
 
     </div>
+    </div>
+    <br>
 
-
+    <div class="container">
     <div id="customerInfo">
 
     </div>
+    </div>
+    <br>
+
+    <div class="container">
     <h1>Books</h1>
     <table id="books">
     </table>
+    </div>
 </body>
 <script>
 
@@ -109,6 +119,7 @@
                         if(book.available){
                             let bookName = '<td>' + book.name + '</td>';
                             let bookAddButton = document.createElement("button");
+                            bookAddButton.className = "button3";
                             bookAddButton.setAttribute('id', 'add-' + indx)
                             bookAddButton.addEventListener("click", function () {
                                 addBookToCart(indx)

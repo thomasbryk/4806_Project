@@ -7,43 +7,60 @@
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
         <script src="js/scripts.js"></script>
         <script src="js/viewCustomer.js"></script>
+        <link rel="stylesheet" href="css/editBookstore.css">
     </head>
 
     <body>
         <form action="/" method="get">
-            <input type="submit" value="Home"/>
+            <input type="submit" value="Home" class="button1"/>
         </form>
         <form action="/perform_logout">
-            <input type="submit" value="Log out" />
+            <input type="submit" value="Log out" class="button1" />
         </form>
-        <h1>Customer</h1>
+        <br>
+        <br>
+        
+        <div class="container">
+        <h1 >Customer</h1>
         <div id="customerInfo">
 
         </div>
+</div>
+<br>
 
-        <h1>ShoppingCart Contents</h1>
+        <div class="container">
+        <h2>ShoppingCart Contents</h2>
         <table id="shoppingcart">
             <tr>
-                <form id="checkout" action="#"  method="post">
-                    <input type="submit" value="Checkout"/>
+                <form id="checkout" action="#"  method="post" >
+                    <input type="submit" value="Checkout" class="button"/>
                 </form>
             </tr>
             <tbody id="books">
             </tbody>
         </table>
+        </div>
 
-        <h1>Shop Bookstores</h1>
+        <div class="container">
+        <h2>Shop Bookstores</h2>
         <table id="bookstores">
         </table>
+        </div>
+        <br>
 
-        <h1>Orders</h1>
+        <div class="container">
+        <h2>Orders</h2>
         <table id="sales">
         </table>
+        </div>
+        <br>
 
-        <h1>Book Recommendations</h1>
+        <div class="container">
+        <h2>Book Recommendations</h2>
         <div id="emptyMessage">No recommendations to show</div>
         <table id="bookRecommendationTable">
         </table>
+        </div>
     </body>
 
 </html>

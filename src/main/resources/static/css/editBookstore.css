@@ -28,6 +28,8 @@ button:hover {
     padding: 10px;
     background-color: rgba(220, 220, 220, 0.5);
     width: 30%;
+    border-style: ridge;
+    border-color: aliceblue;
 }
 
 .bookTable {
@@ -65,7 +67,7 @@ th {
 }
 
 .deleteButton {
-    background-color: #4CAF50;
+    background-color: red;
     color: white;
     border: none;
     cursor: pointer;
@@ -79,4 +81,22 @@ th {
     border: none;
     cursor: pointer;
     width: 15%;
+}
+.button3 {
+    background-color:  #4CAF50;
+    color: white;
+    padding: 10px 5px;
+    margin: 1px 0;
+    border: none;
+    cursor: pointer;
+    width: 70%;
+}
+.button3 {
+    background-color:  #4CAF50;
+    color: white;
+    padding: 10px 5px;
+    margin: 1px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
 }

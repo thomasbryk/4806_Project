@@ -6,22 +6,33 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <script src="js/scripts.js"></script>
     <script src="js/viewBookstoreOwner.js"></script>
+    <link rel="stylesheet" href="css/editBookstore.css">
 </head>
     <body>
         <form action="/" method="get">
-            <input type="submit" value="Home"/>
+            <input type="submit" value="Home" class="button1"/>
         </form>
         <form action="/perform_logout">
-            <input type="submit" value="Log out" />
+            <input type="submit" value="Log out" class="button1"/>
         </form>
+
+        <div class="container">
         <h1>Bookstore Owner Information</h1>
+        
         <div id="bookstoreOwnerInfo"></div>
+        </div>
+        <br>
+
+        <div class="container">
         <h1>Bookstores</h1>
         <form id="create-store-form" action="#" method="put">
             <input type="hidden" name="bookstoreOwnerId" />
-            <input type="submit" value="Create New Bookstore"/>
+            <input type="submit" value="Create New Bookstore" class="button3"/>
         </form>
+        </div>
         <br><br>
+        <div class="container">
         <table id="bookstores"></table>
+        </div>
     </body>
 </html>

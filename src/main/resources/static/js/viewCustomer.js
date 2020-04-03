@@ -36,7 +36,7 @@ $(document).ready(function(){
                     let shopBookstoreForm = '<form action="/shopBookstore" method="get">';
                     shopBookstoreForm += '<input type="hidden" name="bookstoreId" value="'+bookstore.id+'"/>';
                     shopBookstoreForm += '<input type="hidden" name="customerId" value="'+urlParam('customerId')+'"/>';
-                    shopBookstoreForm += '<input type="submit" value="Shop store"/>';
+                    shopBookstoreForm += '<input type="submit" value="Shop store" class="button4"/>';
                     shopBookstoreForm += '</form>';
                     bookstoresTable.append('<tr><td>'+bookstore.id+'</td><td>'+shopBookstoreForm+'</td></tr>');
                 })
@@ -97,7 +97,7 @@ $(document).ready(function(){
             let buttonId = 'delete-' + indx;
             cartTable.append('<tr>' +
                 '<td>' + book.name + '</td>' +
-                '<td><button id="' + buttonId + '">Remove Book from Cart</button></td>' +
+                '<td><button id="' + buttonId + '" class="deleteButton">Remove Book from Cart</button></td>' +
                 '</tr>');
             $('#' + buttonId).click(function () {
                 removeBookFromCart(indx);
