@@ -54,6 +54,12 @@
         background-color: rgba(220,220,220,0.5);
         width:30%;
       }
+
+    .bookTable {
+        border-raduis:5px;
+        padding: 10px;
+        background-color: rgba(220,220,220,0.5);
+    }
       
       .button {
         background-color: #4CAF50;
@@ -114,7 +120,6 @@
         </div>
         <h2>Add Book</h2>
         <form id="addBook" action="#" method="post" class="container">
-            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
             <label>Name:</label><br>
             <input type="text" name="name"><br><br>
             <label>isbn:</label><br>
@@ -130,18 +135,20 @@
             <input type="submit" value="Add Book" class="button">
         </form>
         <h2>Books Available</h2>
-        <table id="books" class="container">
+        <table id="books" class="bookTable">
         </table>
     </body>
 </html>
 
 <script>
 $(document).ready(function(){
+    var bookstoreId = urlParam('bookstoreId');
     $('#ownerId').val(urlParam('bookstoreOwnerId'))
+
     var populateBooks = function(){
         $.ajax({
             type: "GET",
-            url: "/api/bookstores/"+urlParam('bookstoreId')+"/books",
+            url: "/api/bookstores/" + bookstoreId + "/books",
             headers: {
                 'Accept':'application/json'
             },
@@ -160,7 +167,7 @@ $(document).ready(function(){
     var populateBookstoreInfo = function(){
         $.ajax({
             type: "GET",
-            url: "/api/bookstores/"+urlParam('bookstoreId'),
+            url: "/api/bookstores/" + bookstoreId,
             headers: {
                 'Accept':'application/json'
             },
@@ -178,27 +185,40 @@ $(document).ready(function(){
     }
 
     var populateBooksTable = function(data){
-        let booksTable = $('#books')
+        let booksTable = $('#books');
         booksTable.empty();
+        booksTable.append('<tr> ' +
+            '<th>ID</th> ' +
+            '<th>Name</th>' +
+            '<th>ISBN</th>' +
+            '<th>Picture</th>' +
+            '<th>Description</th>' +
+            '<th>Author</th>' +
+            '<th>Publisher</th>' +
+            '<th>Available</th>' +
+            '<th></th>' +
+            '</tr>');
+
         $.each(data, function(indx, book){
-            let bookName = '<tr> <td>'+book.name+'</td>'
-            let bookisbn='<td>'+book.isbn+'</td>'
-            let bookpic='<td>'+book.picture+'</td>'
-            let bookdescription='<td>'+book.description+'</td>'
-            let bookauthor='<td>'+book.author+'</td>'
-            let bookpublisher='<td>'+book.publisher+'</td> '
-            let bookavailable='<td>'+book.available+'</td></tr>'
-       
-            booksTable.append('<p> <strong> Book Id:</p>'+book.id)
-            booksTable.append('<p> Book name:</p> '+bookName+'<br>')
-            booksTable.append('<p> Book isbn:</p> '+ bookisbn)
-            booksTable.append('<p> Book picture:</p> '+ bookpic)
-            booksTable.append('<p> Book description:</p> '+ bookdescription)
-            booksTable.append('<p> Book author:</p> '+ bookauthor)
-            booksTable.append('<p> Book publisher:</p> '+ bookpublisher)
-            booksTable.append('<p> Book availability: </p>'+bookavailable+'<br> <br>');
-            
-    })
+            let bookDeleteButton = document.createElement("button");
+            bookDeleteButton.setAttribute('id', 'delete-' + indx)
+            bookDeleteButton.innerHTML = "Remove Book";
+            bookDeleteButton.addEventListener("click", function () {
+                deleteBook(book);
+            });
+
+            booksTable.append('<tr>' +
+                '<td>' + book.id + '</td>' +
+                '<td>' + book.name + '</td>' +
+                '<td>' + book.isbn + '</td>' +
+                '<td>' + book.picture + '</td>' +
+                '<td>' + book.description + '</td>' +
+                '<td>' + book.author + '</td>' +
+                '<td>' + book.publisher + '</td>' +
+                '<td>' + book.available + '</td>' +
+                '<td>' + bookDeleteButton.outerHTML + '</td>' +
+                '</tr>');
+        });
     }
 
     var addBook = function (e) {
@@ -210,7 +230,7 @@ $(document).ready(function(){
 
         var call = $.ajax({
             type: "PUT",
-            url: "/api/bookstores/"+urlParam('bookstoreId')+"/books",
+            url: "/api/bookstores/" + bookstoreId + "/books",
             data: text, 
             headers: {
                 'Accept': 'application/json',
@@ -220,12 +240,31 @@ $(document).ready(function(){
                     // populate table
                     populateBooksTable(data);
                  
-            }
-            ,
+            },
             failure: function (err) {
                 alert("failed");
             }
         });
+    }
+
+    var deleteBook = function(book){
+        let bookToRemove = book;
+        var call = $.ajax({
+            type: "DELETE",
+            url: "/api/books",
+            data: JSON.stringify(bookToRemove), // serializes the form's elements.
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function (data) {
+                populateBooks();
+            },
+            failure: function (err) {
+                alert("Book removal failed with err:" + err);
+            }
+        });
+
     }
 
     $('#addBook').submit(addBook);
