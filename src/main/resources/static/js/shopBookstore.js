@@ -88,6 +88,7 @@
     
             $.each(books, function (indx, book) {
                 let buttonId = 'delete-' + indx;
+                if(book.available){
                 booksTable.append('<tr>' +
                     '<td>' + book.id + '</td>' +
                     '<td>' + book.name + '</td>' +
@@ -102,6 +103,7 @@
                 $('#' + buttonId).click(function () {
                     addBookToCart(book);
                 });
+            }
             });
             $(booksTable).show();
         };
