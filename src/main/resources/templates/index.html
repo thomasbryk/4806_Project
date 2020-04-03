@@ -4,66 +4,76 @@
 <head>
     <title>BookStore</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="js/scripts.js"></script>
+    <link rel="stylesheet" href="css/editBookstore.css">
+    <script>
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    </script>
 </head>
 
 <body>
-    <h1>Create Bookstore Owner</h1>
+    <h1>Welcome</h1>
+    <div class="container">
+    <h2> Create Bookstore Owner</h2>
     <p>Please include all mandatory fields as indicated by (*). No parameter authentication yet.</p>
 
-    <form id="ownerCreate" th:action="@{/newBookstoreOwner}" method="post">
-        <label>(*) Name:</label>
-        <input type="text" name="name"><br><br>
-        <label>(*) Username:</label>
-        <input type="text" name="username"><br><br>
-        <label>(*) Password:</label>
-        <input type="text" name="password"><br><br>
-        <input type="submit" value="New Owner" />
+    <form id="ownerCreate" action="/api/bookstoreowners" method="post">
+        <label>(*) Name:</label><br>
+        <input type="text" name="name" placeholder="name.."><br><br>
+        <label>(*) Username:</label><br>
+        <input type="text" name="username" placeholder="username.."><br><br>
+        <label>(*) Password:</label><br>
+        <input type="password" name="password" placeholder="password.."><br><br>
+        <input class="button" type="submit" value="New Owner" />
 
     </form>
 
     <h1>Create Customer</h1>
-    <form id="customerCreate" th:action="@{/newCustomer}" method="post">
-        <label>(*) Name:</label>
-        <input type="text" name="name"><br><br>
-        <label>(*) Username:</label>
-        <input type="text" name="username"><br><br>
-        <label>(*) Password:</label>
-        <input type="text" name="password"><br><br>
-        <label>Address:</label>
-        <input type="text" name="address"><br><br>
-        <label>Email:</label>
-        <input type="text" name="email"><br><br>
-        <label>phoneNumber:</label>
-        <input type="text" name="phoneNumber"><br><br>
-        <input type="submit" value="New Customer" />
+    <form id="customerCreate" action="/api/customers" method="post">
+        <label>(*) Name:</label><br>
+        <input type="text" name="name" placeholder="name.."><br><br>
+        <label>(*) Username:</label><br>
+        <input type="text" name="username" placeholder="username.."><br><br>
+        <label>(*) Password:</label><br>
+        <input type="password" name="password" placeholder="password.."><br><br>
+        <label>Address:</label><br>
+        <input type="text" name="address" placeholder="address.."><br><br>
+        <label>Email:</label><br>
+        <input type="text" name="email" placeholder="email.."><br><br>
+        <label>Phone Number:</label><br>
+        <input type="text" name="phoneNumber" placeholder="phone number.."><br><br>
+        <input type="submit" value="New Customer" class="button"/>
     </form>
+</div>
 
-    <h1>Or login</h1>
+<div class="container">
+    <h2>Or login</h2>
     <form action="/login">
-        <input type="submit" value="Go to login page" />
+        <input type="submit" value="Go to login page" class="button"/>
     </form>
+    </div>
 </body>
 
 </html>
 
 <script>
     $(document).ready(function(){
-    $.fn.serializeObject = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
+    
     var auth = function(username, password){
         $.ajax
         ({
@@ -83,11 +93,11 @@
     var createUser = function (e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
 
+
         var form = $(this);
         var url = form.attr('action');
         var textObj = form.serializeObject();
         var text = JSON.stringify(textObj);
-        console.log(textObj);
 
         var call = $.ajax({
             type: "POST",

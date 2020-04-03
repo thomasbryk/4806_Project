@@ -1,20 +1,15 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import models.Book;
 import models.Bookstore;
 import models.BookstoreSpec;
 import models.Sale;
 import repositories.BookstoreRepository;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/bookstores")
@@ -80,7 +75,45 @@ public class BookstoreController {
         return b.getBooks();
     }
 
-  
+    /**
+     * Retrieve available Book entities that are in Bookstore with given ID
+     * @param id ID of Bookstore that will be searched for all Book entities
+     * @return List of available Book entities found in Bookstore with given ID
+     */
+    @GetMapping("/{id}/books/available")
+    public Iterable<Book> getBooksAvailableByBookstore(@PathVariable long id) {
+        Bookstore bookstore = bookstoreRepository.findById(id);
+        if (bookstore == null)
+            return null;
+        ArrayList<Book> books = new ArrayList<>();
+        for (Book book : bookstore.getBooks()){
+            if (book.getAvailable())
+                books.add(book);
+        }
+        if (books.size() == 0)
+            return null;
+        return books;
+    }
+
+    /**
+     * Retrieve sold Book entities that are in Bookstore with given ID bookstoreOwnerId
+     * @param id ID of Bookstore that will be searched for all Book entities
+     * @return List of sold Book entities found in Bookstore with given ID bookstoreOwnerId
+     */
+    @GetMapping("/{id}/books/sold")
+    public Iterable<Book> getBooksSoldByBookstore(@PathVariable long id) {
+        Bookstore bookstore = bookstoreRepository.findById(id);
+        if (bookstore == null)
+            return null;
+        ArrayList<Book> books = new ArrayList<>();
+        for (Book book : bookstore.getBooks()){
+            if (!book.getAvailable())
+                books.add(book);
+        }
+        if (books.size() == 0)
+            return null;
+        return books;
+    }
   
     /**
      * Returns sales of a given bookstore
@@ -93,18 +126,11 @@ public class BookstoreController {
         return b.getSales();
     }
 
-
-    /**
-     * Deletes a bookstore given the JSON representation as a request body
-     * @param bookstore Serialized bookstore from JSON
-     * @return bookstore if present or null otherwise 
-     */
     @DeleteMapping()
     public Bookstore deleteBookStore(@RequestBody Bookstore bookstore) {
-      bookstoreRepository.delete(bookstore);
-      return bookstoreRepository.findById(bookstore.getId()).isPresent() ? bookstore : null;
+        bookstoreRepository.delete(bookstore);
+        return  bookstoreRepository.findById(bookstore.getId()).isPresent() ? bookstore : null;
     }
-
 }
 
 

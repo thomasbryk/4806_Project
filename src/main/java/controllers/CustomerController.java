@@ -23,6 +23,7 @@ public class CustomerController {
 
     @Autowired
     CustomerRepository customerRepository;
+
     
     
     /**
@@ -107,6 +108,22 @@ public class CustomerController {
         book.addShoppingCart(sc);
         customerRepository.save(b);
         return sc;
+    }
+
+    /**
+     * Appends a book to the customer's shopping cart
+     * @param id ID of customer to add book to
+     * @param book Book object to add to cart
+     * @return Shopping cart with added book
+     */
+    @DeleteMapping("/{id}/shoppingcart")
+    public ShoppingCart removeBookFromShoppingCart(@PathVariable long id, @RequestBody Book book){
+        Customer b = customerRepository.findById(id);
+        ShoppingCart sc = b.getShoppingCart();
+        sc.removeBook(book);
+        b = customerRepository.save(b);
+        
+        return b.getShoppingCart();
     }
     
     /**

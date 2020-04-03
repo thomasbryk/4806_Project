@@ -1,51 +1,48 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Edit Bookstore</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
+<html>
+
+    <head>
+        <title>Edit Bookstore</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/editBookstore.js"></script>
+        <link rel="stylesheet" href="css/editBookstore.css">
+    </head>
+
     <body>
-        <form action="#" th:action="@{/viewBookstoreOwner}" method="get">
-            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstore.getBookstoreOwner().getId()}" />
-            <input type="submit" value="Back to BookstoreOwner"/>
+        <form action="/viewBookstoreOwner" method="get">
+            <input id="ownerId" type="hidden" name="bookstoreOwnerId"  />
+            <input type="submit" value="Back to BookstoreOwner" class="button1"/>
         </form>
         <form action="/perform_logout">
-            <input type="submit" value="Log out" />
+            <input type="submit" value="Log out" class="button1"/>
         </form>
-        <p th:text="'BookStore ID: ' + ${bookstore.getId()}" />
-        <p th:text="'BookStore Owner: ' + ${bookstore.getBookstoreOwner().getName()}" />
-        <h1>Add Book</h1>
-        <form action="/addBook" method="post">
-            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-            <label>Name:</label>
+        <br><br>
+        <div class="container">  
+             <h1>Current Bookstore</h1>
+        <div id="bookstoreInfo">
+        </div>
+        </div>
+        <h2>Add Book</h2>
+        <form id="addBook" action="#" method="post" class="container">
+            <label>Name:</label><br>
             <input type="text" name="name"><br><br>
-            <label>isbn:</label>
+            <label>ISBN:</label><br>
             <input type="text" name="isbn"><br><br>
-            <label>picture:</label>
+            <label>Picture:</label><br>
             <input type="text" name="picture"><br><br>
-            <label>description:</label>
+            <label>Description:</label><br>
             <input type="text" name="description"><br><br>
-            <label>author:</label>
+            <label>Author:</label><br>
             <input type="text" name="author"><br><br>
-            <label>publisher:</label>
+            <label>Publisher:</label><br>
             <input type="text" name="publisher"><br><br>
-            <input type="submit" value="Add Book">
+            <input type="submit" value="Add Book" class="button">
         </form>
-        <h1>Books</h1>
-        <table>
-            <th:block th:each="book: ${bookstore.getBooks()}">
-                <tr>
-                    <td th:text="${book.getId()}"></td>
-                    <td th:text="${book.getName()}"></td>
-                    <td>
-                        <form th:if="${book.getAvailable()}" action="#" th:action="@{/removeBook}" method="post">
-                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-                            <input type="hidden" name="bookId" th:value="${book.getId()}" />
-                            <input type="submit" value="Remove Book"/>
-                        </form>
-                    </td>
-                </tr>
-            </th:block>
+        <h2>Books</h2>
+        <div id="booksMessage" class="container">There are currently no books in this bookstore.</div>
+        <table id="books" class="bookTable">
         </table>
     </body>
 </html>
