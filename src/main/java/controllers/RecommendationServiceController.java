@@ -18,7 +18,7 @@ import java.util.HashSet;
  */
 @RestController
 public class RecommendationServiceController {
-    private static int recommendationCustomerRange = 3;
+    private static int recommendationCustomerRange = 3;             //Determines how many customers are used to generate recommendations.
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -29,9 +29,12 @@ public class RecommendationServiceController {
 
 
     /**
-     * Retrieve BookstoreOwner with given ID
-     * @param id ID of BookstoreOwner to be retrieved
-     * @return BookstoreOwner found in repository from given ID
+     * Gets book recommendations for customer. Book recommendations are based on purchases from other customers that h
+     * have a similiar purchase history to the current customer. Recommendations are only shown if another copy
+     * of the same book is available for sale.
+     *
+     * @param id ID of Customer to be retrieved
+     * @return list of book recommendations
      */
     @GetMapping("/api/getBookRecommendations/{id}")
     public ArrayList<Book> getBookRecommendations(@PathVariable long id) {
@@ -44,17 +47,18 @@ public class RecommendationServiceController {
             return recommendedAndAvailableBooks;
         }
 
+        // Get all customers, and convert to ArrayList
         Iterable<Customer> cs = customerRepository.findAll();
         ArrayList<Customer> customers = new ArrayList<Customer>();
-
         for (Customer c : cs){
             customers.add(c);
         }
 
-
+        //Get all recommendations for Customer from RecommendationService
         recommendedBooks.addAll(recommendationService.getRecommendations(customer, customers, recommendationCustomerRange));
         Iterable<Book> availableBooks = bookRepository.findByAvailable(true);
 
+        //For each recommendation, add it to recommended books to display ONLY if there is another copy available for purchase.
         for (Book recommendedBook : recommendedBooks){
             for (Book availableBook : availableBooks){
                 if (recommendedBook.equals(availableBook)){
