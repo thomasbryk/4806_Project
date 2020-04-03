@@ -1,14 +1,7 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import models.Book;
 import models.Bookstore;
@@ -133,18 +126,11 @@ public class BookstoreController {
         return b.getSales();
     }
 
-
-    /**
-     * Deletes a bookstore given the JSON representation as a request body
-     * @param bookstore Serialized bookstore from JSON
-     * @return bookstore if present or null otherwise 
-     */
     @DeleteMapping()
     public Bookstore deleteBookStore(@RequestBody Bookstore bookstore) {
-      bookstoreRepository.delete(bookstore);
-      return bookstoreRepository.findById(bookstore.getId()).isPresent() ? bookstore : null;
+        bookstoreRepository.delete(bookstore);
+        return  bookstoreRepository.findById(bookstore.getId()).isPresent() ? bookstore : null;
     }
-
 }
 
 
