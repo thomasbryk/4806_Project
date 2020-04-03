@@ -94,16 +94,14 @@ $(document).ready(function(){
         let cartTable = $('#books');
         cartTable.empty();
         $.each(cart.books, function(indx, book){
-            let bookName = '<td>'+book.name+'</td>';
-            let bookDeleteButton = document.createElement("button");
-            bookDeleteButton.setAttribute('id','delete-'+indx);
-            bookDeleteButton.addEventListener("click",function(){
+            let buttonId = 'delete-' + indx;
+            cartTable.append('<tr>' +
+                '<td>' + book.name + '</td>' +
+                '<td><button id="' + buttonId + '">Remove Book from Cart</button></td>' +
+                '</tr>');
+            $('#' + buttonId).click(function () {
                 removeBookFromCart(indx);
             });
-            bookDeleteButton.innerHTML = "Remove Book from Cart";
-            cartTable.append('<tr>'+bookName+"<td>");
-            cartTable.append(bookDeleteButton);
-            cartTable.append("</td></tr>");
         })
     };
 
