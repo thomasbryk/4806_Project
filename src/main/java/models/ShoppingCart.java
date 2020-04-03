@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -44,6 +45,7 @@ public class ShoppingCart {
         //if it is cleared here, it causes issues when Hibernate tries to persist.
         this.books = new ArrayList<Book>();
     }
+
 
     @OneToOne(mappedBy = "shoppingCart")
     public Customer getCustomer() { return this.customer; }
