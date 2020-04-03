@@ -1,29 +1,14 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Customer</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-    <script src="js/scripts.js"></script>
-    <script src="js/viewCustomer.js"></script>
-    <script>
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-    </script>
-</head>
+<html>
+
+    <head>
+        <title>Customer</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/viewCustomer.js"></script>
+    </head>
+
     <body>
         <form action="/" method="get">
             <input type="submit" value="Home"/>
@@ -60,4 +45,5 @@
         <table id="bookRecommendationTable">
         </table>
     </body>
+
 </html>

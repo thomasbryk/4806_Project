@@ -167,16 +167,14 @@ $(document).ready(function(){
                     books = data;
                     bookRecommendationTable.empty();
                     $.each(data, function(indx, book){
-                        let bookName = '<td>'+book.name+'</td>';
-                        let addToCartButton = document.createElement("button");
-                        addToCartButton.setAttribute('id','add-'+indx);
-                        addToCartButton.addEventListener("click",function(){
+                        let buttonId = 'add-' + indx;
+                        bookRecommendationTable.append('<tr>' +
+                            '<td>' + book.name + '</td>' +
+                            '<td><button id="' + buttonId + '">Add Book to Cart</button></td>' +
+                            '</tr>');
+                        $('#' + buttonId).click(function () {
                             addBookToCart(indx);
                         });
-                        addToCartButton.innerHTML = "Add Book to Cart";
-                        bookRecommendationTable.append('<tr>'+bookName+'<td>');
-                        bookRecommendationTable.append(addToCartButton);
-                        bookRecommendationTable.append("</td></tr>");
                     })
                 }
             },
