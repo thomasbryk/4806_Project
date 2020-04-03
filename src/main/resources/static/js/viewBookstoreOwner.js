@@ -15,7 +15,7 @@ $(document).ready(function () {
                 alert("Failed to get owner info with err:"+err);
             }
         })
-    }
+    };
 
     var populateBookstores = function (data){
         let bookstoreList = $('#bookstores')
@@ -32,24 +32,23 @@ $(document).ready(function () {
                 alert("couldn't get bookstores");
             }
         })
-    }
+    };
 
     var populateBookstoreTable = function(data){
         let bookstoreTable = $('#bookstores');
         bookstoreTable.empty();
         $.each(data, function(indx, bookstore){
-            let bookstoreRemovalButton = document.createElement("button");
-            bookstoreRemovalButton.setAttribute('id', 'delete-' + indx)
-            bookstoreRemovalButton.innerHTML = "Remove Bookstore";
-            bookstoreRemovalButton.addEventListener("click", function () {
-                removeBookstore(bookstore);
-            });
+            let buttonId = 'delete-' + indx;
             bookstoreTable.append('<tr>' +
                 '<td>'+ '<a href="/editBookstore">'+ bookstore.id + '</a>' +  '</td>' +
-                '<td>' + bookstoreRemovalButton.outerHTML + '</td>' +
+                '<td><button id="' + buttonId  + '">Remove Bookstore</button></td>' +
                 '<tr>');
-        })
-    }
+            $('#' + buttonId).click(function () {
+                removeBookstore(bookstore);
+            });
+        });
+        $(bookstoreTable).show();
+    };
 
     var createNewBookstore = function(e) {
         e.preventDefault();
@@ -74,14 +73,13 @@ $(document).ready(function () {
             }
         });
 
-    }
+    };
 
     var removeBookstore = function(bookstore){
-        let removingBookstore = bookstore;
         var call = $.ajax({
             type: "DELETE",
             url: "/api/bookstores",
-            data: JSON.stringify(removingBookstore),
+            data: JSON.stringify(bookstore),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -93,10 +91,10 @@ $(document).ready(function () {
                 alert("Failed to remove the bookstore");
             }
         });
-    }
+    };
 
     $('#create-store-form').submit(createNewBookstore);
 
     populateBookstoreOwnerInfo();
     populateBookstores();
-})
+});
