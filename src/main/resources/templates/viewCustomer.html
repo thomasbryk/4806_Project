@@ -53,12 +53,18 @@
         <h1>Orders</h1>
         <table id="sales">
         </table>
+
+        <h1>Book Recommendations</h1>
+        <div id="emptyMessage">No recommendations to show</div>
+        <table id="bookRecommendationTable">
+        </table>
     </body>
 
     <script>
         $(document).ready(function(){
             var currentCart = {};
             var customer = {};
+            var books = {};
 
             var populateCustomerInfo = function(){
                 $.ajax({
@@ -117,6 +123,7 @@
                         // populate table
                         console.log(data)
                         let salesTable = $('#sales')
+                        salesTable.empty();
                         $.each(data, function(indx, sale){
                             salesTable.append('<tr><td>Sale ID: ' + sale.id+'</td></tr>');
                             $.each(sale.books, function(bookidx,book){
@@ -163,8 +170,6 @@
                     cartTable.append('<tr>'+bookName+"<td>");
                     cartTable.append(bookDeleteButton);
                     cartTable.append("</td></tr>")
-
-                    
                 })
             }
 
@@ -204,7 +209,7 @@
                             {books:[]}
                             );
                         populateSales();
-                        
+                        populateBookRecommendations();
                     }
                     ,
                     failure: function (err) {
@@ -215,12 +220,67 @@
 
             $('#checkout').submit(checkOut);
 
+            var populateBookRecommendations = function(){
+                $.ajax({
+                    type: "GET",
+                    url: "/api/getBookRecommendations/"+urlParam('customerId'),
+                    headers: {
+                        'Accept':'application/json'
+                    },
+                    success: function(data){
+                        if (data.length == 0){
+                            $('#emptyMessage').show();
+                            $('#bookRecommendationTable').empty();
+                        } else {
+                            $('#emptyMessage').hide();
+                            let bookRecommendationTable = $('#bookRecommendationTable');
+                            books = data;
+                            bookRecommendationTable.empty();
+                            $.each(data, function(indx, book){
+                                let bookName = '<td>'+book.name+'</td>';
+                                let addToCartButton = document.createElement("button");
+                                addToCartButton.setAttribute('id','add-'+indx);
+                                addToCartButton.addEventListener("click",function(){
+                                    addBookToCart(indx);
+                                });
+                                addToCartButton.innerHTML = "Add Book to Cart";
+                                bookRecommendationTable.append('<tr>'+bookName+'<td>');
+                                bookRecommendationTable.append(addToCartButton);
+                                bookRecommendationTable.append("</td></tr>")
+                            })
+                        }
+                    },
+                    failure: function(err){
+                        alert("Failed to get book recommendations with err:"+err);
+                    }
+                })
+            }
 
+            var addBookToCart = function(index){
+                let bookToAdd = books[index];
+                var call = $.ajax({
+                    type: "PUT",
+                    url: "/api/customers/"+urlParam('customerId')+'/shoppingcart',
+                    data: JSON.stringify(bookToAdd), // serializes the form's elements.
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (data) {
+                        window.location.href='/viewCustomer?customerId='+urlParam('customerId')
+                    }
+                    ,
+                    error: function (err) {
+                        alert("Book is already in cart");
+                    }
+                });
+            }
 
             populateBookstores();
             populateSales();
             populateCustomerInfo();
             populateShoppingCart();
+            populateBookRecommendations();
         })
     </script>
 </html>

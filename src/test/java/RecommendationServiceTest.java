@@ -139,4 +139,20 @@ public class RecommendationServiceTest {
 
         assert(this.recommendationService.getRecommendations(this.customer1, customers, 3).equals(expectedRecommendations));
     }
+
+    @Test
+    public void TestGetRecommendationsWithNewCustomer(){
+        ArrayList<Customer> customers = new ArrayList<Customer>();
+        customers.add(this.customer1);
+        customers.add(this.customer2);
+        customers.add(this.customer3);
+        customers.add(this.customer4);
+        customers.add(this.customer5);
+
+        HashSet<Book> expectedRecommendations = new HashSet<Book>();
+        Customer newCustomer = new Customer("newCustomer", "newcust-address", "newcust-email", "newcust-phoneNumber");
+        HashSet<Book> recommends = this.recommendationService.getRecommendations(newCustomer, customers, 3);
+        assert(this.recommendationService.getRecommendations(newCustomer, customers, 3).isEmpty());
+    }
+
 }
