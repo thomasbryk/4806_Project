@@ -98,10 +98,10 @@ public class RecommendationServiceTest {
     }
 
     /**
-     * Test the getFurthestCustomer() method in RecommendationService. This method traverses a map, where the key is a
-     * customer and the value is the distance, it is expected to return the customer with the largest distance.
+     * Test the getRecommendations() method in RecommendationService. This method finds the closes customers, (as specified by range),
+     * using the jaccard distance algorithm and comparing purchased books. Gathers recommendations from the closest customers.
      *
-     * Expected condition: Customer4 is returned as it has the furthest distance.
+     * Expected condition: Books 3,5,6 are recommended
      */
     @Test
     public void TestGetRecommendations(){
@@ -115,6 +115,27 @@ public class RecommendationServiceTest {
         expectedRecommendations.add(this.book3);
         expectedRecommendations.add(this.book5);
         expectedRecommendations.add(this.book6);
+
+        assert(this.recommendationService.getRecommendations(this.customer1, customers, 3).equals(expectedRecommendations));
+    }
+
+    /**
+     * Test the getRecommendations() method in RecommendationService with less clients than specified in the range.
+     * This method finds the closes customers, (as specified by range),
+     * using the jaccard distance algorithm and comparing purchased books. Gathers recommendations from the closest customers.
+     *
+     * Expected condition: Books 3,5,6 are recommended
+     */
+    @Test
+    public void TestGetRecommendationsWithCustomersLessThanRange(){
+        ArrayList<Customer> customers = new ArrayList<Customer>();
+        customers.add(this.customer2);
+        customers.add(this.customer5);
+
+        HashSet<Book> expectedRecommendations = new HashSet<Book>();
+        expectedRecommendations.add(this.book3);
+        expectedRecommendations.add(this.book4);
+        expectedRecommendations.add(this.book7);
 
         assert(this.recommendationService.getRecommendations(this.customer1, customers, 3).equals(expectedRecommendations));
     }
