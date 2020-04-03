@@ -3,6 +3,7 @@ import models.BookstoreOwner;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class BookstoreOwnerTest {
     private String name = "Test BookstoreOwner";
     private String username = "bookstoreUsername";

@@ -91,6 +91,8 @@ public class BookstoreController {
         Bookstore b = bookstoreRepository.findById(id);
         return b.getSales();
     }
+
+
 }
 
 

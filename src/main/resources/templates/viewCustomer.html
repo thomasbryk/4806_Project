@@ -159,7 +159,7 @@
                     bookDeleteButton.addEventListener("click",function(){
                         removeBookFromCart(indx)
                         });
-                    bookDeleteButton.innerHTML = "Remove Book from Cart" + indx;
+                    bookDeleteButton.innerHTML = "Remove Book from Cart";
                     cartTable.append('<tr>'+bookName+"<td>");
                     cartTable.append(bookDeleteButton);
                     cartTable.append("</td></tr>")
@@ -184,7 +184,7 @@
                         
                     }
                     ,
-                    failure: function (err) {
+                    error: function (err) {
                         alert("failed");
                     }
                 });
