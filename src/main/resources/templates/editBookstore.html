@@ -3,49 +3,234 @@
 <head>
     <title>Edit Bookstore</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    </script>
+
+<style>
+    body  {
+        background-color: rgb(12, 178, 243);
+         min-height: 100%;
+        background-size: cover;
+        font-family: Arial, Helvetica, sans-serif;
+        
+      }
+      
+      input[type=text], input[type=password] {
+        width: 70%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        box-sizing: border-box; 
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      
+      button:hover {
+        opacity: 0.8;
+      }
+      
+      .container {
+          border-raduis:5px;
+        padding: 10px;
+        background-color: rgba(220,220,220,0.5);
+        width:30%;
+      }
+      
+      .button {
+        background-color: #4CAF50;
+        color:white;
+        padding: 10px 10px; 
+        margin: 1px 0;
+        border: none;
+        cursor: pointer;
+        width: 30%;
+      }
+
+      .button1 {
+        background-color: rgb(27, 36, 66);
+        color: white;
+        padding: 10px 5px;
+        margin: 1px 0;
+        border: none;
+        cursor: pointer;
+        width: 15%;
+      }
+      
+      
+      span.psw {
+        float: right;
+        padding-top: 16px;
+      }
+      
+      .layer {
+          background-color: rgba(248, 247, 216, 0.7);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+      }
+      
+      .table{
+          background-color: #f1f1f1;
+      }
+    </style>
 </head>
+
     <body>
-        <form action="#" th:action="@{/viewBookstoreOwner}" method="get">
-            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstore.getBookstoreOwner().getId()}" />
-            <input type="submit" value="Back to BookstoreOwner"/>
+        <form action="/viewBookstoreOwner" method="get">
+            <input id="ownerId" type="hidden" name="bookstoreOwnerId"  />
+            <input type="submit" value="Back to BookstoreOwner" class="button1"/>
         </form>
         <form action="/perform_logout">
-            <input type="submit" value="Log out" />
+            <input type="submit" value="Log out" class="button1"/>
         </form>
-        <p th:text="'BookStore ID: ' + ${bookstore.getId()}" />
-        <p th:text="'BookStore Owner: ' + ${bookstore.getBookstoreOwner().getName()}" />
-        <h1>Add Book</h1>
-        <form action="/addBook" method="post">
+        <br>
+        <br>
+        <div class="container">  
+             <h1>Current Bookstore</h1>
+        <div id="bookstoreInfo">
+    
+        </div>
+        </div>
+        <h2>Add Book</h2>
+        <form id="addBook" action="#" method="post" class="container">
             <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-            <label>Name:</label>
+            <label>Name:</label><br>
             <input type="text" name="name"><br><br>
-            <label>isbn:</label>
+            <label>isbn:</label><br>
             <input type="text" name="isbn"><br><br>
-            <label>picture:</label>
+            <label>picture:</label><br>
             <input type="text" name="picture"><br><br>
-            <label>description:</label>
+            <label>description:</label><br>
             <input type="text" name="description"><br><br>
-            <label>author:</label>
+            <label>author:</label><br>
             <input type="text" name="author"><br><br>
-            <label>publisher:</label>
+            <label>publisher:</label><br>
             <input type="text" name="publisher"><br><br>
-            <input type="submit" value="Add Book">
+            <input type="submit" value="Add Book" class="button">
         </form>
-        <h1>Books</h1>
-        <table>
-            <th:block th:each="book: ${bookstore.getBooks()}">
-                <tr>
-                    <td th:text="${book.getId()}"></td>
-                    <td th:text="${book.getName()}"></td>
-                    <td>
-                        <form th:if="${book.getAvailable()}" action="#" th:action="@{/removeBook}" method="post">
-                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-                            <input type="hidden" name="bookId" th:value="${book.getId()}" />
-                            <input type="submit" value="Remove Book"/>
-                        </form>
-                    </td>
-                </tr>
-            </th:block>
+        <h2>Books Available</h2>
+        <table id="books" class="container">
         </table>
     </body>
 </html>
+
+<script>
+$(document).ready(function(){
+    $('#ownerId').val(urlParam('bookstoreOwnerId'))
+    var populateBooks = function(){
+        $.ajax({
+            type: "GET",
+            url: "/api/bookstores/"+urlParam('bookstoreId')+"/books",
+            headers: {
+                'Accept':'application/json'
+            },
+            success: function(data){
+                // populate table
+                populateBooksTable(data);
+
+            },
+            failure: function(err){
+                alert("Failed to get bookstores with err:"+err);
+            }
+        })
+
+    }
+
+    var populateBookstoreInfo = function(){
+        $.ajax({
+            type: "GET",
+            url: "/api/bookstores/"+urlParam('bookstoreId'),
+            headers: {
+                'Accept':'application/json'
+            },
+            success: function(data){
+                // populate table
+                let infoDiv = $("#bookstoreInfo")
+                infoDiv.append("<p>Bookstore ID: "+data.id+"</p>");
+                infoDiv.append("<p>Bookstore owner name: "+data.bookstoreOwner.name+'</p>')
+                
+            },
+            failure: function(err){
+                alert("Failed to get bookstore with err:"+err);
+            }
+        })
+    }
+
+    var populateBooksTable = function(data){
+        let booksTable = $('#books')
+        booksTable.empty();
+        $.each(data, function(indx, book){
+            let bookName = '<tr> <td>'+book.name+'</td>'
+            let bookisbn='<td>'+book.isbn+'</td>'
+            let bookpic='<td>'+book.picture+'</td>'
+            let bookdescription='<td>'+book.description+'</td>'
+            let bookauthor='<td>'+book.author+'</td>'
+            let bookpublisher='<td>'+book.publisher+'</td> '
+            let bookavailable='<td>'+book.available+'</td></tr>'
+       
+            booksTable.append('<p> <strong> Book Id:</p>'+book.id)
+            booksTable.append('<p> Book name:</p> '+bookName+'<br>')
+            booksTable.append('<p> Book isbn:</p> '+ bookisbn)
+            booksTable.append('<p> Book picture:</p> '+ bookpic)
+            booksTable.append('<p> Book description:</p> '+ bookdescription)
+            booksTable.append('<p> Book author:</p> '+ bookauthor)
+            booksTable.append('<p> Book publisher:</p> '+ bookpublisher)
+            booksTable.append('<p> Book availability: </p>'+bookavailable+'<br> <br>');
+            
+    })
+    }
+
+    var addBook = function (e) {
+        e.preventDefault(); 
+        var form = $(this);
+        var url = form.attr('action');
+        var textObj = form.serializeObject();
+        var text = JSON.stringify(textObj);
+
+        var call = $.ajax({
+            type: "PUT",
+            url: "/api/bookstores/"+urlParam('bookstoreId')+"/books",
+            data: text, 
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function (data) {
+                    // populate table
+                    populateBooksTable(data);
+                 
+            }
+            ,
+            failure: function (err) {
+                alert("failed");
+            }
+        });
+    }
+
+    $('#addBook').submit(addBook);
+
+    populateBooks();
+    populateBookstoreInfo();
+})
+</script>
