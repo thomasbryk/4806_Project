@@ -1,27 +1,28 @@
 $(document).ready(function () {
+    var bookstoreOwnerId = urlParam('bookstoreOwnerId');
+
     var populateBookstoreOwnerInfo = function(){
         $.ajax({
             type: 'GET',
-            url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId'),
+            url: "/api/bookstoreowners/" + bookstoreOwnerId,
             headers: {
                 'Accept':'application/json'
             },
             success: function(data){
-                let infoDiv = $("#bookstoreOwnerInfo")
+                let infoDiv = $("#bookstoreOwnerInfo");
                 infoDiv.append("<p>Bookstore Owner: "+data.name+"</p>");
                 infoDiv.append("<p>Bookstore Owner ID: "+data.id+"</p>");
             },
             failure: function(err){
-                alert("Failed to get owner info with err:"+err);
+                alert("Failed to get bookstore owner info with err:"+err);
             }
         })
-    }
+    };
 
     var populateBookstores = function (data){
-        let bookstoreList = $('#bookstores')
         $.ajax({
             type: "GET",
-            url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId')+"/bookstores",
+            url: "/api/bookstoreowners/" + bookstoreOwnerId + "/bookstores",
             headers: {
                 'Accept':'application/json'
             },
@@ -29,27 +30,25 @@ $(document).ready(function () {
                 populateBookstoreTable(data);
             },
             failure: function(err){
-                alert("couldn't get bookstores");
+                alert("Failed to retrieve bookstores. Error: "+err);
             }
-        })
-    }
+        });
+    };
 
     var populateBookstoreTable = function(data){
         let bookstoreTable = $('#bookstores');
         bookstoreTable.empty();
         $.each(data, function(indx, bookstore){
-            let bookstoreRemovalButton = document.createElement("button");
-            bookstoreRemovalButton.setAttribute('id', 'delete-' + indx)
-            bookstoreRemovalButton.innerHTML = "Remove Bookstore";
-            bookstoreRemovalButton.addEventListener("click", function () {
+            let buttonId = 'delete-' + indx;
+            bookstoreTable.append('<tr>' +
+                '<td><a href="/editBookstore?bookstoreOwnerId=' + bookstoreOwnerId + '&bookstoreId=' + bookstore.id + '">Bookstore ' + bookstore.id + '</a></td>' +
+                '<td><button id="' + buttonId + '">Remove Bookstore</button></td>' +
+                '</tr>');
+            $('#' + buttonId).click(function () {
                 removeBookstore(bookstore);
             });
-            bookstoreTable.append('<tr>' +
-                '<td>'+ '<a href="/editBookstore">'+ bookstore.id + '</a>' +  '</td>' +
-                '<td>' + bookstoreRemovalButton.outerHTML + '</td>' +
-                '<tr>');
         })
-    }
+    };
 
     var createNewBookstore = function(e) {
         e.preventDefault();
@@ -60,7 +59,7 @@ $(document).ready(function () {
 
         var call = $.ajax({
             type: "PUT",
-            url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId')+"/bookstores",
+            url: "/api/bookstoreowners/" + bookstoreOwnerId + "/bookstores",
             data: text,
             headers: {
                 'Accept': 'application/json',
@@ -70,18 +69,16 @@ $(document).ready(function () {
                 populateBookstoreTable(data);
             },
             failure: function (err) {
-                alert("failed to add a new bookstore");
+                alert("Failed to add a new bookstore. Error: "+err);
             }
         });
-
-    }
+    };
 
     var removeBookstore = function(bookstore){
-        let removingBookstore = bookstore;
         var call = $.ajax({
             type: "DELETE",
             url: "/api/bookstores",
-            data: JSON.stringify(removingBookstore),
+            data: JSON.stringify(bookstore),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -89,14 +86,13 @@ $(document).ready(function () {
             success: function (data) {
                 populateBookstores();
             },
-            failure: function () {
-                alert("Failed to remove the bookstore");
+            failure: function (err) {
+                alert("Failed to remove the bookstore. Error: "+err);
             }
         });
-    }
+    };
 
     $('#create-store-form').submit(createNewBookstore);
-
     populateBookstoreOwnerInfo();
     populateBookstores();
-})
+});

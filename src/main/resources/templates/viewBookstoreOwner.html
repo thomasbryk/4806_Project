@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <title>BookStoreOwner</title>
+    <title>Bookstore Owner</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <script src="js/scripts.js"></script>
@@ -14,13 +14,14 @@
         <form action="/perform_logout">
             <input type="submit" value="Log out" />
         </form>
-        <h1>BookStoreOwner</h1>
-        <div id="bookstoreOwnerInfo"/>
+        <h1>Bookstore Owner Information</h1>
+        <div id="bookstoreOwnerInfo"></div>
+        <h1>Bookstores</h1>
         <form id="create-store-form" action="#" method="put">
             <input type="hidden" name="bookstoreOwnerId" />
-            <input type="submit" value="Add Bookstore"/>
+            <input type="submit" value="Create New Bookstore"/>
         </form>
-        <h1>Bookstores</h1>
-        <table id="bookstores"/>
+        <br><br>
+        <table id="bookstores"></table>
     </body>
 </html>
