@@ -27,10 +27,6 @@ body  {
 input[type=text], input[type=password] {
   width: 70%;
   padding: 8px 10px;
-  {% comment %} margin: 8px 0; {% endcomment %}
-  {% comment %} display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box; {% endcomment %}
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
@@ -43,7 +39,7 @@ button:hover {
 }
 
 .container {
-    border-raduis:5px;
+  border-radius:5px;
   padding: 10px;
   background-color: rgba(220,220,220,0.5);
   width:30%;
@@ -84,13 +80,13 @@ span.psw {
 <body>
 <body>
 <h1> Login </h1>
-<form action="#" th:action="@{/}" method="get">
+<form action="/" method="get">
     <input type="submit" value="Home"/>
 </form>
 
 <div class="grid">
 
-    <form th:action="@{/login}" method="post" class="form login">
+    <form action="/login" method="post" class="form login">
 
         <br/>
 
