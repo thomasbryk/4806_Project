@@ -3,66 +3,224 @@
 <head>
     <title>Customer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    </script>
 </head>
     <body>
-        <form action="#" th:action="@{/}" method="get">
+        <form action="/" method="get">
             <input type="submit" value="Home"/>
         </form>
         <form action="/perform_logout">
             <input type="submit" value="Log out" />
         </form>
         <h1>Customer</h1>
-        <p th:text="'Customer ID: ' + ${customer.getId()}" />
-        <p th:text="'Customer Name: ' + ${customer.getName()}" />
+        <div id="customerInfo">
+
+        </div>
 
         <h1>ShoppingCart Contents</h1>
-        <table>
+        <table id="shoppingcart">
             <tr>
-                <form action="#" th:action="@{/newOrder}" method="post">
-                    <input type="hidden" name="shoppingCartId" th:value="${customer.getShoppingCart().getId()}" />
+                <form id="checkout" action="#"  method="post">
                     <input type="submit" value="Checkout"/>
                 </form>
             </tr>
-            <th:block th:each="book: ${customer.getShoppingCart().getBooks()}">
-                <tr>
-                    <td th:text="${book.getName()}" />
-                    <td>
-                        <form action="#" th:action="@{/removeBookFromCart}" method="post">
-                            <input type="submit" value="Remove Book From Cart"/>
-                        </form>
-                    </td>
-                </tr>
-            </th:block>
+            <tbody id="books">
+            </tbody>
         </table>
 
         <h1>Shop Bookstores</h1>
-        <table>
-            <th:block th:each="bookstore: ${bookstores}">
-                <tr>
-                    <td th:text="${bookstore.getId()}" />
-                    <td>
-                        <form action="#" th:action="@{/shopBookstore}" method="get">
-                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-                            <input type="hidden" name="customerId" th:value="${customer.getId()}" />
-                            <input type="submit" value="Shop store"/>
-                        </form>
-                    </td>
-                </tr>
-            </th:block>
+        <table id="bookstores">
         </table>
 
         <h1>Orders</h1>
-        <table>
-            <th:block th:each="sale: ${customer.getSales()}">
-                <tr>
-                    <td th:text="'Sale ID: ' + ${sale.getId()}" />
-                </tr>
-                <th:block th:each="book: ${sale.getBooks()}">
-                    <tr>
-                        <td th:text="'-  Book ID: ' + ${book.getId()} + ',  Name: ' + ${book.getName()} + ',  Bookstore: ' + ${book.getBookstore().getId()}"/>
-                    </tr>
-                </th:block>
-            </th:block>
+        <table id="sales">
         </table>
     </body>
+
+    <script>
+        $(document).ready(function(){
+            var currentCart = {};
+            var customer = {};
+
+            var populateCustomerInfo = function(){
+                $.ajax({
+                    type: "GET",
+                    url: "/api/customers/"+urlParam('customerId'),
+                    headers: {
+                        'Accept':'application/json'
+                    },
+                    success: function(data){
+                        // populate table
+                        let infoDiv = $("#customerInfo")
+                        infoDiv.append("<p>Customer username: "+data.username+"</p>");
+                        infoDiv.append("<p>Customer name: "+data.name+'</p>')
+                        
+                    },
+                    failure: function(err){
+                        alert("Failed to get bookstores with err:"+err);
+                    }
+                })
+            }
+
+            var populateBookstores = function(){
+                $.ajax({
+                    type: "GET",
+                    url: "/api/bookstores",
+                    headers: {
+                        'Accept':'application/json'
+                    },
+                    success: function(data){
+                        // populate table
+                        console.log(data)
+                        let bookstoresTable = $('#bookstores')
+                        $.each(data, function(indx, bookstore){
+                            let shopBookstoreForm = '<form action="/shopBookstore" method="get">'
+                            shopBookstoreForm += '<input type="hidden" name="bookstoreId" value="'+bookstore.id+'"/>'
+                            shopBookstoreForm += '<input type="hidden" name="customerId" value="'+urlParam('customerId')+'"/>'
+                            shopBookstoreForm += '<input type="submit" value="Shop store"/>'
+                            shopBookstoreForm += '</form>'
+                            bookstoresTable.append('<tr><td>'+bookstore.id+'</td><td>'+shopBookstoreForm+'</td></tr>')
+                        })
+                    },
+                    failure: function(err){
+                        alert("Failed to get bookstores with err:"+err);
+                    }
+                })
+            }
+            
+            var populateSales = function(){
+                $.ajax({
+                    type: "GET",
+                    url: "/api/customers/"+urlParam('customerId')+'/sales',
+                    headers: {
+                        'Accept':'application/json'
+                    },
+                    success: function(data){
+                        // populate table
+                        console.log(data)
+                        let salesTable = $('#sales')
+                        $.each(data, function(indx, sale){
+                            salesTable.append('<tr><td>Sale ID: ' + sale.id+'</td></tr>');
+                            $.each(sale.books, function(bookidx,book){
+                                salesTable.append('<tr><td>-  Book ID: ' + book.id + ',  Name: ' + book.name + ',  Bookstore: ' + book.bookstore.id + '<td/></tr>');
+                            })
+                        })
+                    },
+                    failure: function(err){
+                        alert("Failed to get bookstores with err:"+err);
+                    }
+                })
+            }
+
+            var populateShoppingCart = function(){
+                $.ajax({
+                    type: "GET",
+                    url: "/api/customers/"+urlParam('customerId')+'/shoppingcart',
+                    headers: {
+                        'Accept':'application/json'
+                    },
+                    success: function(data){
+                        // populate table
+                        updateShoppingCart(data);
+                        
+                    },
+                    failure: function(err){
+                        alert("Failed to get bookstores with err:"+err);
+                    }
+                })
+            }
+
+            var updateShoppingCart = function(cart){
+                currentCart = cart;
+                let cartTable = $('#books')
+                cartTable.empty();
+                $.each(cart.books, function(indx, book){
+                    let bookName = '<td>'+book.name+'</td>';
+                    let bookDeleteButton = document.createElement("button");
+                    bookDeleteButton.setAttribute('id','delete-'+indx)
+                    bookDeleteButton.addEventListener("click",function(){
+                        removeBookFromCart(indx)
+                        });
+                    bookDeleteButton.innerHTML = "Remove Book from Cart" + indx;
+                    cartTable.append('<tr>'+bookName+"<td>");
+                    cartTable.append(bookDeleteButton);
+                    cartTable.append("</td></tr>")
+
+                    
+                })
+            }
+
+            var removeBookFromCart = function(index){
+                console.log("here?")
+                let bookToRemove = currentCart.books[index];
+                var call = $.ajax({
+                    type: "DELETE",
+                    url: "/api/customers/"+urlParam('customerId')+'/shoppingcart',
+                    data: JSON.stringify(bookToRemove), // serializes the form's elements.
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (data) {
+                        updateShoppingCart(data);
+                        
+                    }
+                    ,
+                    failure: function (err) {
+                        alert("failed");
+                    }
+                });
+            
+            }
+
+            var checkOut = function(e){
+                e.preventDefault(); // avoid to execute the actual submit of the form
+                var call = $.ajax({
+                    type: "POST",
+                    url: "/api/customers/"+urlParam('customerId')+'/checkout',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    success: function (data) {
+                        updateShoppingCart(
+                            {books:[]}
+                            );
+                        populateSales();
+                        
+                    }
+                    ,
+                    failure: function (err) {
+                        alert("failed");
+                    }
+                });
+            }
+
+            $('#checkout').submit(checkOut);
+
+
+
+            populateBookstores();
+            populateSales();
+            populateCustomerInfo();
+            populateShoppingCart();
+        })
+    </script>
 </html>
