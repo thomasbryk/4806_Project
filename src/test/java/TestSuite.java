@@ -6,7 +6,8 @@ import org.junit.runners.Suite;
         BookstoreOwnerTest.class,
         BookstoreTest.class,
         BookTest.class,
-        ShoppingCartTest.class
+        ShoppingCartTest.class,
+        RecommendationServiceTest.class
 })
 
 public class TestSuite {

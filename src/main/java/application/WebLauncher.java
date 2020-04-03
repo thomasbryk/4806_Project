@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import net.kaczmarzyk.spring.data.jpa.web.SpecificationArgumentResolver;
 
 @SpringBootApplication
-@ComponentScan({"controllers","models","repositories","security"})
+@ComponentScan({"controllers","models","repositories","security", "services"})
 @EntityScan({"models"})
 @EnableJpaRepositories("repositories")
 public class WebLauncher implements WebMvcConfigurer{
