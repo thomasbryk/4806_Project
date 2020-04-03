@@ -41,7 +41,7 @@ public class Bookstore {
     public void setBookstoreOwner(BookstoreOwner bookstoreOwner) { this.bookstoreOwner = bookstoreOwner; }
     public void removeBookstoreOwner() { this.bookstoreOwner = null; }
 
-    @ManyToMany( cascade=ALL, mappedBy = "bookstores")
+    @ManyToMany( cascade=ALL)
     public List<Sale> getSales() { return this.sales; }
     public void setSales(List<Sale> sales) { this.sales = sales; }
     public void addSale(Sale sale) { this.sales.add(sale); }

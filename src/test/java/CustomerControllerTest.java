@@ -114,7 +114,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void TestFGetCustomerSales() throws Exception {
+    public void TestGGetCustomerSales() throws Exception {
         TestFCheckoutCustomer();
         mockMvc.perform(get(path + "/"+customer.getId()+"/sales").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
