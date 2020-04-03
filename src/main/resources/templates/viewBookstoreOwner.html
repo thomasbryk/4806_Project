@@ -24,49 +24,95 @@
     </script>
 </head>
     <body>
-        <form action="#" th:action="@{/}" method="get">
+        <form action="/" method="get">
             <input type="submit" value="Home"/>
         </form>
         <form action="/perform_logout">
             <input type="submit" value="Log out" />
         </form>
         <h1>BookStoreOwner</h1>
-        <p th:text="'BookStoreOwner ID: ' + ${bookstoreOwner.getId()}" />
-        <p th:text="'BookStore Name: ' + ${bookstoreOwner.getName()}" />
+        <div id="bookstoreOwnerInfo"/>
         <form id="create-store-form" action="#" method="post">
             <input type="hidden" name="bookstoreOwnerId" value="${bookstoreOwner.getId()}" />
             <input type="submit" value="Add Bookstore"/>
         </form>
         <h1>Bookstores</h1>
-        <table>
-            <th:block th:each="bookstore: ${bookstoreOwner.getBookstores()}">
-                <tr>
-                    <td><a th:href="@{/editBookstore(bookstoreOwnerId=${bookstoreOwner.getId()},bookstoreId=${bookstore.getId()})}" th:text="${bookstore.getId()}"></a></td>
-                    <td>
-                        <form id="delete-store-form" action="#" method="post">
-                            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />
-                            <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
-                            <input type="submit" value="Remove Bookstore"/>
-                        </form>
-                    </td>
-                </tr>
-            </th:block>
-        </table>
+        <!--<table id="bookstores">
+            <tbody id="bookstoreList"/>
+            <tr>
+                <form id="delete-store-form" action="#" method="post">
+                    <input type="hidden" name="bookstoreOwnerId" value="${bookstoreOwner.getId()}" />
+                    <input type="hidden" name="bookstoreId" value="${bookstore.getId()}" />
+                    <input type="submit" value="Remove Bookstore"/>
+                </form>
+            </tr>
+        </table>-->
     </body>
 </html>
 
 <script>
-        var newStore = {}
-        var storeRemove = {}
+        var newStore = {};
+        var bookstoreOwner = {};
 
+        var populateBookstoreOwnerInfo = function(){
+            $.ajax({
+                type: 'GET',
+                url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId'),
+                headers: {
+                    'Accept':'application/json'
+                },
+                success: function(data){
+                    let infoDiv = $("#bookstoreOwnerInfo")
+                    infoDiv.append("<p>Bookstore Owner: "+data.name+"</p>");
+                    infoDiv.append("<p>Bookstore Owner ID: "+data.id+"</p>");
+                },
+                failure: function(err){
+                    alert("Failed to get owner info with err:"+err);
+                }
+            })
+        }
+
+        var populateBookstoreList = function (){
+            $.ajax({
+                type: "GET",
+                url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId')+"/bookstores",
+                headers: {
+                    'Accept':'application/json'
+                },
+                success: function (data) {
+                    let bookstoresTable = $('#bookstoreList')
+                    $.each(data, function(){
+
+                    })
+                }
+            })
+        }
         var createNewBookstore = function(e) {
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                contentType: "application/json",
-                url: "/api/newBookstore"
+                url: "/api/newBookstore",
+                headers: {
+                    'Accept': 'application/json'
+                },
             });
 
-        }
+        }*/
 
+        /*var removeBookstore = function(e){
+            e.preventDefault();
+            var call = $.ajax({
+                type: "POST",
+                url: "/api/"
+                headers: {
+                    'Accept': 'application/json'
+                },
+            });
+        }*/
+
+       // $('#create-store-form').submit(createNewBookstore);
+       // $('#delete-store-form').submit(removeBookstore);
+
+        populateBookstoreOwnerInfo();
+        populateBookstoreList();
 </script>
