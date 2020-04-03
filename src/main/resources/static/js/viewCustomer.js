@@ -168,7 +168,7 @@ $(document).ready(function(){
                         let buttonId = 'add-' + indx;
                         bookRecommendationTable.append('<tr>' +
                             '<td>' + book.name + '</td>' +
-                            '<td><button id="' + buttonId + '">Add Book to Cart</button></td>' +
+                            '<td><button class="button" id="' + buttonId + '" >Add Book to Cart </button></td>' +
                             '</tr>');
                         $('#' + buttonId).click(function () {
                             addBookToCart(indx);

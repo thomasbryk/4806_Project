@@ -98,7 +98,7 @@
                     '<td>' + book.author + '</td>' +
                     '<td>' + book.publisher + '</td>' +
                     '<td>' + book.available + '</td>' +
-                    '<td><button id="' + buttonId + '" class="addBookButton">Add to Cart</button></td>' +
+                    '<td><button id="' + buttonId + '" class="button3">Add to Cart</button></td>' +
                     '</tr>');
                 $('#' + buttonId).click(function () {
                     addBookToCart(book);
