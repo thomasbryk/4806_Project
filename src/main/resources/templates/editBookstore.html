@@ -25,8 +25,9 @@
 
 <style>
     body  {
+        background-image: url("bg1.jpg")  ;
         background-color: rgb(12, 178, 243);
-         min-height: 100%;
+        min-height: 100%;
         background-size: cover;
         font-family: Arial, Helvetica, sans-serif;
         
@@ -60,6 +61,16 @@
         padding: 10px;
         background-color: rgba(220,220,220,0.5);
     }
+
+    table { border-collapse: collapse; }
+
+    td + td,
+    th + th {
+        border-left: 1px solid gray;
+        padding: 2px 5px;
+    }
+    tr + tr { border-top: 1px solid gray; }
+    th { border-bottom: 1px solid black;}
       
       .button {
         background-color: #4CAF50;
@@ -70,6 +81,13 @@
         cursor: pointer;
         width: 30%;
       }
+
+    .deleteButton {
+        background-color: #4CAF50;
+        color:white;
+        border: none;
+        cursor: pointer;
+    }
 
       .button1 {
         background-color: rgb(27, 36, 66);
@@ -122,19 +140,20 @@
         <form id="addBook" action="#" method="post" class="container">
             <label>Name:</label><br>
             <input type="text" name="name"><br><br>
-            <label>isbn:</label><br>
+            <label>ISBN:</label><br>
             <input type="text" name="isbn"><br><br>
-            <label>picture:</label><br>
+            <label>Picture:</label><br>
             <input type="text" name="picture"><br><br>
-            <label>description:</label><br>
+            <label>Description:</label><br>
             <input type="text" name="description"><br><br>
-            <label>author:</label><br>
+            <label>Author:</label><br>
             <input type="text" name="author"><br><br>
-            <label>publisher:</label><br>
+            <label>Publisher:</label><br>
             <input type="text" name="publisher"><br><br>
             <input type="submit" value="Add Book" class="button">
         </form>
-        <h2>Books Available</h2>
+        <h2>Books</h2>
+        <div id="booksMessage" class="container">There are currently no books in this bookstore.</div>
         <table id="books" class="bookTable">
         </table>
     </body>
@@ -184,9 +203,17 @@ $(document).ready(function(){
         })
     }
 
-    var populateBooksTable = function(data){
+    var populateBooksTable = function(books){
         let booksTable = $('#books');
         booksTable.empty();
+
+        if (books == null || books.length == 0) {
+            $("#booksMessage").show();
+            $("#books").hide();
+            return;
+        }
+        $("#booksMessage").hide();
+
         booksTable.append('<tr> ' +
             '<th>ID</th> ' +
             '<th>Name</th>' +
@@ -199,14 +226,8 @@ $(document).ready(function(){
             '<th></th>' +
             '</tr>');
 
-        $.each(data, function(indx, book){
-            let bookDeleteButton = document.createElement("button");
-            bookDeleteButton.setAttribute('id', 'delete-' + indx)
-            bookDeleteButton.innerHTML = "Remove Book";
-            bookDeleteButton.addEventListener("click", function () {
-                deleteBook(book);
-            });
-
+        $.each(books, function(indx, book){
+            let buttonId = 'delete-' + indx;
             booksTable.append('<tr>' +
                 '<td>' + book.id + '</td>' +
                 '<td>' + book.name + '</td>' +
@@ -216,9 +237,13 @@ $(document).ready(function(){
                 '<td>' + book.author + '</td>' +
                 '<td>' + book.publisher + '</td>' +
                 '<td>' + book.available + '</td>' +
-                '<td>' + bookDeleteButton.outerHTML + '</td>' +
+                '<td><button id="'+ buttonId + '" class="deleteButton">Remove Book</button></td>' +
                 '</tr>');
+            $('#' + buttonId).click(function(){
+                deleteBook(book);
+            });
         });
+        $("#books").show();
     }
 
     var addBook = function (e) {
