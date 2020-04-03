@@ -4,6 +4,7 @@ import static helpers.TestHelper.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -113,7 +114,17 @@ public class BookstoreControllerTest {
             .andExpect(jsonPath("$.[0].name").value("book_name"));
     }
 
-
+    @Test
+    public void TestFDeleteBookstore() throws Exception {
+        mockMvc.perform(
+            delete(path)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(asJsonString(bookstore))
+            .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").doesNotExist());
+    }
     
 
 

@@ -1,6 +1,7 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,6 +75,17 @@ public class BookstoreOwnerController {
         b.addBookstore(bookstore);
         bookstoreOwnerRepository.save(b);
         return b.getBookstores();
+    }
+    
+    /**
+     * Deletes a bookstore owner given the JSON representation as a request body
+     * @param bookstoreOwner Serialized bookstoreowner from JSON
+     * @return bookstoreOwner if present or null otherwise 
+     */
+    @DeleteMapping()
+    public BookstoreOwner deleteBookStoreOwner(@RequestBody BookstoreOwner bookstoreowner) {
+      bookstoreOwnerRepository.delete(bookstoreowner);
+      return bookstoreOwnerRepository.findById(bookstoreowner.getId()).isPresent() ? bookstoreowner : null;
     }
 }
 

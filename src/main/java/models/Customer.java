@@ -90,7 +90,7 @@ public class Customer extends BookstoreUser{
         this.phoneNumber = phoneNumber;
     }
 
-    @OneToOne( cascade=ALL)
+    @OneToOne( cascade=ALL,orphanRemoval=true)
     public ShoppingCart getShoppingCart(){
         return this.shoppingCart;
     }
