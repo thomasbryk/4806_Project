@@ -29,7 +29,7 @@ To perform the basic functionality of the bookstore, follow the instructions bel
 6. Once your shopping cart contains all books desired, press Checkout.
 7. An order will be created below containing the books checked out from shopping cart.
 
-#### Instructions for Book Recommendations
+### Instructions for Book Recommendations
 To view recommendations for books, perform the following steps:
 1. Repeat steps 1-3 in [Instructions](#instructions) to create bookstore owner, bookstore, and books.
       - Create multiple book records of the same book information. Perform this for multiple books (ex. Create two Book1 books, and two Book2 books).
@@ -53,7 +53,7 @@ To view recommendations for books, perform the following steps:
 5. #### [Weekly Scrum - April 3rd, 2020](../../issues/78)
 
 ## UML
-#### Class Diagram:
+### Class Diagram:
 ![Class Diagram](uml/UML_ClassDiagram.png)
-#### Database Schema:
+### Database Schema:
 ![Database Schema](uml/DatabaseSchema.png)
