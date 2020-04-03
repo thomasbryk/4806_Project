@@ -5,23 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <script src="js/scripts.js"></script>
-    <script>
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-    </script>
+    <script src="js/viewBookstoreOwner.js"></script>
 </head>
     <body>
         <form action="/" method="get">
@@ -33,113 +17,10 @@
         <h1>BookStoreOwner</h1>
         <div id="bookstoreOwnerInfo"/>
         <form id="create-store-form" action="#" method="put">
-            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />
+            <input type="hidden" name="bookstoreOwnerId" />
             <input type="submit" value="Add Bookstore"/>
         </form>
         <h1>Bookstores</h1>
-        <table id="bookstores">
+        <table id="bookstores"/>
     </body>
 </html>
-
-<script>
-        var populateBookstoreOwnerInfo = function(){
-            $.ajax({
-                type: 'GET',
-                url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId'),
-                headers: {
-                    'Accept':'application/json'
-                },
-                success: function(data){
-                    let infoDiv = $("#bookstoreOwnerInfo")
-                    infoDiv.append("<p>Bookstore Owner: "+data.name+"</p>");
-                    infoDiv.append("<p>Bookstore Owner ID: "+data.id+"</p>");
-                },
-                failure: function(err){
-                    alert("Failed to get owner info with err:"+err);
-                }
-            })
-        }
-
-        var populateBookstores = function (data){
-            let bookstoreList = $('#bookstores')
-            $.ajax({
-                type: "GET",
-                url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId')+"/bookstores",
-                headers: {
-                    'Accept':'application/json'
-                },
-                success: function (data) {
-                    populateBookstoreTable(data);
-                },
-                failure: function(err){
-                    alert("couldn't get bookstores");
-                }
-            })
-        }
-
-        var populateBookstoreTable = function(data){
-            let bookstoreTable = $('#bookstores');
-            bookstoreTable.empty();
-            $.each(data, function(indx, bookstore){
-                let bookstoreRemovalButton = document.createElement("button");
-                bookstoreRemovalButton.setAttribute('id', 'delete-' + indx)
-                bookstoreRemovalButton.innerHTML = "Remove Bookstore";
-                bookstoreRemovalButton.addEventListener("click", function () {
-                    removeBookstore(bookstore);
-                });
-                bookstoreTable.append('<tr>' +
-                    '<td>'+ '<a href="/editBookstore.html">'+ bookstore.id + '</a>' +  '</td>' +
-                    '<td>' + bookstoreRemovalButton.outerHTML + '</td>' +
-                    '<tr>');
-            })
-        }
-
-        var createNewBookstore = function(e) {
-            e.preventDefault();
-            var form =$(this);
-            var url = form.attr('action');
-            var textObj = form.serializeObject();
-            var text = JSON.stringify(textObj);
-
-            var call = $.ajax({
-                type: "PUT",
-                url: "/api/bookstoreowners/"+urlParam('bookstoreOwnerId')+"/bookstores",
-                data: text,
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function (data) {
-                    populateBookstoreTable(data);
-                },
-                failure: function (err) {
-                    alert("failed to add a new bookstore");
-                }
-            });
-
-        }
-
-        var removeBookstore = function(bookstore){
-            let removingBookstore = bookstore;
-            var call = $.ajax({
-                type: "DELETE",
-                url: "/api/bookstores",
-                data: JSON.stringify(removingBookstore),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function (data) {
-                    populateBookstores(data);
-                },
-                failure: function () {
-                    alert("Failed to remove the bookstore");
-                }
-            });
-        }
-
-       $('#create-store-form').submit(createNewBookstore);
-
-        populateBookstoreOwnerInfo();
-        populateBookstoreList();
-</script>
