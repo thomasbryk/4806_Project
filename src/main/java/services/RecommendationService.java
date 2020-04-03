@@ -32,6 +32,11 @@ public class RecommendationService {
         //Get the customers purchased books
         ArrayList<Book> customersPurchasedBooks = customer.getPurchasedBooks();
 
+        //Do not get recommendations if customer has not purchased any books yet.
+        if (customersPurchasedBooks.isEmpty()){
+            return bookRecommendations;
+        }
+
         //Return the top 'range' closest customers
         ArrayList<Customer> closeCustomers = findClosestCustomers(customer, customers, range);
 
