@@ -106,16 +106,18 @@
                     let booksTable = $('#books')
                     books = data;
                     $.each(data, function (indx, book) {
-                        let bookName = '<td>' + book.name + '</td>';
-                        let bookAddButton = document.createElement("button");
-                        bookAddButton.setAttribute('id', 'add-' + indx)
-                        bookAddButton.addEventListener("click", function () {
-                            addBookToCart(indx)
-                        });
-                        bookAddButton.innerHTML = "Add Book to Cart";
-                        booksTable.append('<tr>' + bookName + "<td>");
-                        booksTable.append(bookAddButton);
-                        booksTable.append("</td></tr>")
+                        if(book.available){
+                            let bookName = '<td>' + book.name + '</td>';
+                            let bookAddButton = document.createElement("button");
+                            bookAddButton.setAttribute('id', 'add-' + indx)
+                            bookAddButton.addEventListener("click", function () {
+                                addBookToCart(indx)
+                            });
+                            bookAddButton.innerHTML = "Add Book to Cart";
+                            booksTable.append('<tr>' + bookName + "<td>");
+                            booksTable.append(bookAddButton);
+                            booksTable.append("</td></tr>")
+                        }
                     })
                 },
                 error: function (err) {
