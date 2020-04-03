@@ -3,6 +3,25 @@
 <head>
     <title>BookStoreOwner</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    </script>
 </head>
     <body>
         <form action="#" th:action="@{/}" method="get">
@@ -14,8 +33,8 @@
         <h1>BookStoreOwner</h1>
         <p th:text="'BookStoreOwner ID: ' + ${bookstoreOwner.getId()}" />
         <p th:text="'BookStore Name: ' + ${bookstoreOwner.getName()}" />
-        <form action="#" th:action="@{/newBookstore}" method="post">
-            <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />
+        <form id="create-store-form" action="#" method="post">
+            <input type="hidden" name="bookstoreOwnerId" value="${bookstoreOwner.getId()}" />
             <input type="submit" value="Add Bookstore"/>
         </form>
         <h1>Bookstores</h1>
@@ -24,7 +43,7 @@
                 <tr>
                     <td><a th:href="@{/editBookstore(bookstoreOwnerId=${bookstoreOwner.getId()},bookstoreId=${bookstore.getId()})}" th:text="${bookstore.getId()}"></a></td>
                     <td>
-                        <form action="#" th:action="@{/removeBookstore}" method="post">
+                        <form id="delete-store-form" action="#" method="post">
                             <input type="hidden" name="bookstoreOwnerId" th:value="${bookstoreOwner.getId()}" />
                             <input type="hidden" name="bookstoreId" th:value="${bookstore.getId()}" />
                             <input type="submit" value="Remove Bookstore"/>
@@ -35,3 +54,19 @@
         </table>
     </body>
 </html>
+
+<script>
+        var newStore = {}
+        var storeRemove = {}
+
+        var createNewBookstore = function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/newBookstore"
+            });
+
+        }
+
+</script>
