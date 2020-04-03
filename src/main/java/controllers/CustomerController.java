@@ -125,6 +125,17 @@ public class CustomerController {
         
         return b.getShoppingCart();
     }
+    
+    /**
+     * Deletes a customer given the JSON representation as a request body
+     * @param customer Serialized customer from JSON
+     * @return customer if present or null otherwise 
+     */
+    @DeleteMapping()
+    public Customer deleteCustomer(@RequestBody Customer customer ) {
+      customerRepository.delete(customer);
+      return customerRepository.findById(customer.getId()).isPresent() ? customer : null;
+    }
 }
 
 

@@ -23,7 +23,10 @@ public class Book{
     @JsonIgnore
     private Sale sale;
 
-    public Book(){ this.shoppingCarts = new ArrayList<ShoppingCart>(); }
+    public Book(){
+        this.available = true;
+        this.shoppingCarts = new ArrayList<ShoppingCart>(); 
+    }
     public Book(String name, String isbn, String picture, String description, String author, String publisher){
         this.name = name;
         this.isbn = isbn;
