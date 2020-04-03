@@ -21,6 +21,7 @@ To perform the basic functionality of the bookstore, follow the instructions bel
 2. Create bookstore.
 3. Fill out the form with book information, and add book to bookstore.
       - Book will be added to the Bookstores list below. Repeat step 3 to multiple books.
+      - Note: to test recommendationService, since recommendations are based on purchase history, add multiple identical books
 4. Return to home page.
 5. Create customer user.
       - Login with customer username and password.
