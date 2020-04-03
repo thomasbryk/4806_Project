@@ -38,7 +38,7 @@ $(document).ready(function(){
                     shopBookstoreForm += '<input type="hidden" name="customerId" value="'+urlParam('customerId')+'"/>';
                     shopBookstoreForm += '<input type="submit" value="Shop store" class="button4"/>';
                     shopBookstoreForm += '</form>';
-                    bookstoresTable.append('<tr><td>'+bookstore.id+'</td><td>'+shopBookstoreForm+'</td></tr>');
+                    bookstoresTable.append('<tr><td>Bookstore '+bookstore.id+'</td><td>'+shopBookstoreForm+'</td></tr>');
                 })
             },
             failure: function(err){

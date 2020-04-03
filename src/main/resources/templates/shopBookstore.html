@@ -6,24 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <script src="js/scripts.js"></script>
+    <script src="js/shopBookstore.js"></script>
     <link rel="stylesheet" href="css/editBookstore.css">
-    <script>
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-    </script>
 </head>
 
 <body>
@@ -51,119 +35,11 @@
 
     <div class="container">
     <h1>Books</h1>
-    <table id="books">
+    <div id="booksMessage" class="container">There are currently no books in this bookstore.</div>
+    <table id="books" class="bookTable">
     </table>
     </div>
 </body>
-<script>
 
-    $(document).ready(function () {
-        var books = [];
-        var customer = {};
-        var bookstore = {};
-        $('#customerId').val(urlParam('customerId'))
-
-        var populateCustomerInfo = function(){
-            $.ajax({
-                type: "GET",
-                url: "/api/customers/"+urlParam('customerId'),
-                headers: {
-                    'Accept':'application/json'
-                },
-                success: function(data){
-                    // populate table
-                    let infoDiv = $("#customerInfo")
-                    infoDiv.append("<p>Customer username: "+data.username+"</p>");
-                    infoDiv.append("<p>Customer name: "+data.name+'</p>')
-                    
-                },
-                failure: function(err){
-                    alert("Failed to get customer with err:"+err);
-                }
-            })
-        }
-
-        var populateBookstoreInfo = function(){
-            $.ajax({
-                type: "GET",
-                url: "/api/bookstores/"+urlParam('bookstoreId'),
-                headers: {
-                    'Accept':'application/json'
-                },
-                success: function(data){
-                    // populate table
-                    let infoDiv = $("#bookstoreInfo")
-                    infoDiv.append("<p>Bookstore ID: "+data.id+"</p>");
-                    infoDiv.append("<p>Bookstore owner name: "+data.bookstoreOwner.name+'</p>')
-                    
-                },
-                failure: function(err){
-                    alert("Failed to get bookstore with err:"+err);
-                }
-            })
-        }
-
-        var populateBooks = function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/bookstores/" + urlParam('bookstoreId') + "/books",
-                headers: {
-                    'Accept': 'application/json'
-                },
-                success: function (data) {
-                    // populate table
-                    console.log(data)
-                    let booksTable = $('#books')
-                    books = data;
-                    $.each(data, function (indx, book) {
-                        if(book.available){
-                            let bookName = '<td>' + book.name + '</td>';
-                            let bookAddButton = document.createElement("button");
-                            bookAddButton.className = "button3";
-                            bookAddButton.setAttribute('id', 'add-' + indx)
-                            bookAddButton.addEventListener("click", function () {
-                                addBookToCart(indx)
-                            });
-                            bookAddButton.innerHTML = "Add Book to Cart";
-                            booksTable.append('<tr>' + bookName + "<td>");
-                            booksTable.append(bookAddButton);
-                            booksTable.append("</td></tr>")
-                        }
-                    })
-                },
-                error: function (err) {
-                    alert("Failed to get books with err:" + err);
-                }
-            })
-        }
-
-        var addBookToCart = function(index){
-            console.log("here?")
-            let bookToAdd = books[index];
-            var call = $.ajax({
-                type: "PUT",
-                url: "/api/customers/"+urlParam('customerId')+'/shoppingcart',
-                data: JSON.stringify(bookToAdd), // serializes the form's elements.
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function (data) {
-                    window.location.href='/viewCustomer?customerId='+urlParam('customerId')
-                    
-                }
-                ,
-                error: function (err) {
-                    alert("Book is already in cart");
-                }
-            });
-        
-        }
-
-        populateBooks();
-        populateBookstoreInfo();
-        populateCustomerInfo();
-    })
-</script>
 
 </html>
