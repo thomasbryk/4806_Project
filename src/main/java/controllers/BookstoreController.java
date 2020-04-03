@@ -16,6 +16,8 @@ import models.BookstoreSpec;
 import models.Sale;
 import repositories.BookstoreRepository;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/api/bookstores")
 public class BookstoreController {
@@ -80,7 +82,45 @@ public class BookstoreController {
         return b.getBooks();
     }
 
-  
+    /**
+     * Retrieve available Book entities that are in Bookstore with given ID
+     * @param id ID of Bookstore that will be searched for all Book entities
+     * @return List of available Book entities found in Bookstore with given ID
+     */
+    @GetMapping("/{id}/books/available")
+    public Iterable<Book> getBooksAvailableByBookstore(@PathVariable long id) {
+        Bookstore bookstore = bookstoreRepository.findById(id);
+        if (bookstore == null)
+            return null;
+        ArrayList<Book> books = new ArrayList<>();
+        for (Book book : bookstore.getBooks()){
+            if (book.getAvailable())
+                books.add(book);
+        }
+        if (books.size() == 0)
+            return null;
+        return books;
+    }
+
+    /**
+     * Retrieve sold Book entities that are in Bookstore with given ID bookstoreOwnerId
+     * @param id ID of Bookstore that will be searched for all Book entities
+     * @return List of sold Book entities found in Bookstore with given ID bookstoreOwnerId
+     */
+    @GetMapping("/{id}/books/sold")
+    public Iterable<Book> getBooksSoldByBookstore(@PathVariable long id) {
+        Bookstore bookstore = bookstoreRepository.findById(id);
+        if (bookstore == null)
+            return null;
+        ArrayList<Book> books = new ArrayList<>();
+        for (Book book : bookstore.getBooks()){
+            if (!book.getAvailable())
+                books.add(book);
+        }
+        if (books.size() == 0)
+            return null;
+        return books;
+    }
   
     /**
      * Returns sales of a given bookstore
